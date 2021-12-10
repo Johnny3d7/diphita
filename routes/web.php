@@ -13,12 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
+});*/
+
+Route::get('/', 'App\Http\Controllers\Admin\HomeController@index')->name('admin.index');
 
 Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')->group( function(){
-    Route::get('/index', 'HomeController@index')->name('index');
+    //Route::get('/index', 'HomeController@index')->name('index');
 
 
     //Adhérents routes
