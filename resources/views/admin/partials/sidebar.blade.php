@@ -43,8 +43,10 @@
                 </div>
             </a>
             <ul>
-              <li><a href="editor.html">Tous les adhérents</a></li>
-              <li><a href="mail_box.html">Tous les Souscripteurs</a></li>
+              <li><a href="editor.html">Les souscripteurs</a></li>
+              <li><a href="mail_box.html">Tous les bénéficiaires</a></li>
+              <li><a href="editor.html">Les bénéficiaires Oumé</a></li>
+              <li><a href="mail_box.html">Les bénéficiaires Ouéllé</a></li>
             </ul>
         </li>
         <li class="">
