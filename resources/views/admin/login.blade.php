@@ -79,7 +79,7 @@
                                         <input type="password" class="form-control" placeholder="Mot de passe">
                                     </div>
                                     <a href="#" class="btn_1 full_width text-center" style="background-color: #152040 !important;border-color:#152040">Connexion</a>
-                                        <p>Devenir un souscripteur ? <a data-toggle="modal" data-target="#sing_up" data-dismiss="modal"  href="#"> Inscrivez-vous ici</a></p>
+                                        <p>Devenir un souscripteur ? <a href="{{ route('client.adhesion') }}"> Inscrivez-vous ici</a></p>
                                         {{-- <div class="text-center">
                                             <a href="#" data-toggle="modal" data-target="#forgot_password" data-dismiss="modal" class="pass_forget_btn">Forget Password?</a>
                                         </div> --}}

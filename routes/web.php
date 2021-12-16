@@ -19,7 +19,7 @@ Route::get('/login', function () {
 
 Route::get('/adhesion', function () {
     return view('admin.demande.inscription');
-});
+})->name('client.adhesion');
 
 Route::get('/', 'App\Http\Controllers\Admin\HomeController@index')->name('admin.index');
 
