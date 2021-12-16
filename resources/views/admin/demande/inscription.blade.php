@@ -61,7 +61,11 @@
         }
 
         .txt-color1{
-            color:#152040 !important;
+            color:#29235c !important;
+        }
+
+        .txt-color-wh{
+            color:#ffffff !important;
         }
         .txt-upper{
             text-transform: uppercase !important;
@@ -72,11 +76,11 @@
         }
 
         .this-item-bg{
-            background-color: #152040 !important;
+            background-color: #29235c !important;
         }
 
         .this-item-bc{
-            border-color: #152040 !important;
+            border-color: #29235c !important;
         }
 
         .txt-center{
@@ -96,6 +100,9 @@
             
         }
 
+        .mb_15 {
+            margin-bottom: 15px !important;
+        }
         .mb_40 {
             margin-bottom: 40px !important;
         }
@@ -115,12 +122,28 @@
         .common_input input{
             color:#2A2A2A !important;
         }
+
+        .bande{
+            width: 100% !important;
+            display: block !important;
+            background-color: #29235c !important;
+            /*height: 50px !important;*/
+            padding: 0px 0px 0px 0px
+        }
+
+        .logo_dif{
+            width: 100%;
+            height: auto;
+        }
+        
     </style>
 </head>
 <body class="" >
+
 <section class="main_content dashboard_part">
         <!-- menu  -->
     <!--/ menu  -->
+    @include('admin.headclient')
     <div class="main_content_iner overly_inner" style="background-image: url({{ url('img/dl/Elderly-men-hugging-AA.jpg') }}); background-size:cover; background-repeat: no-repeat">
         <div class="container-fluid p-0 "> 
             <!-- page title  -->
@@ -136,8 +159,11 @@
                         </div>
                         <div class="white_card_body">
                             <div class="row">
-                                <div class="col-md-12 text-center mb_50">
+                                <div class="col-md-12 text-center mb_30">
                                     <span>Merci d'avoir considéré notre chaîne de solidarité. Pour enregistrer votre adhésion, veuillez compléter ce Formulaire d'Inscription. Les informations collectées via ce formulaire sont strictement confidentielles. Seuls les formulaires complets sont acceptés.</span>
+                                </div>
+                                <div class="col-12 mt_30 mb_15">
+                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">* Souscripteur</h4>
                                 </div>
                                 <div class="col-lg-4">
                                     <select class="nice_Select2 nice_Select_line wide" style="display: none;">
@@ -183,8 +209,8 @@
                                         <input type="email" placeholder="Email *">
                                     </div>
                                 </div>
-                                <div class="col-12 mt_30 mb_30">
-                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">* Les bénéficiaires</h4>
+                                <div class="col-12 mt_30 mb_15">
+                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">* Bénéficiaires</h4>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="common_input mb_15">
@@ -204,8 +230,8 @@
                                 <div class="col-lg-2">
                                     
                                 </div>
-                                <div class="col-12 mt_30 mb_30">
-                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">* Les ayants-droit</h4>
+                                <div class="col-12 mt_30 mb_15">
+                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">* Ayants-droit</h4>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="common_input mb_15">

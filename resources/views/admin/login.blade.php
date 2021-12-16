@@ -52,16 +52,96 @@
     <link rel="stylesheet" href="{{ url('css/colors/default.css') }}" id="colorSkinCSS">
 
     <style>
+        .main_content{
+            padding-left:0px !important;
+            padding-bottom: 0px !important;
+        }
         .my-auto{
             margin-top: auto;
             margin-bottom: auto;
+        }
+
+        .txt-color1{
+            color:#29235c !important;
+        }
+
+        .txt-color-wh{
+            color:#ffffff !important;
+        }
+        .txt-upper{
+            text-transform: uppercase !important;
+        }
+
+        .txt-lower{
+            text-transform: lowercase !important;
+        }
+
+        .this-item-bg{
+            background-color: #29235c !important;
+        }
+
+        .this-item-bc{
+            border-color: #29235c !important;
+        }
+
+        .txt-center{
+            text-align:center !important;
+        }
+        
+        .txt-bold{
+            font-weight: 900 !important;
+        }
+
+        .trans-bg{
+            background-color: #fffffff5;
+            -webkit-border-radius: 15px;
+            -moz-border-radius: 15px;
+            border-radius: 15px;
+            padding: 5px 30px 25px 30px;
+            
+        }
+
+        .mb_15 {
+            margin-bottom: 15px !important;
+        }
+        .mb_40 {
+            margin-bottom: 40px !important;
+        }
+
+        .mb_50 {
+            margin-bottom: 50px !important;
+        }
+
+        .common_date_picker input{
+            border-radius: 10px;
+            background-color: #ffffff00;
+            height: 47px;
+            line-height: 47px;
+            font-size: 15px;
+        }
+
+        .common_input input{
+            color:#2A2A2A !important;
+        }
+
+        .bande{
+            width: 100% !important;
+            display: block !important;
+            background-color: #29235c !important;
+            /*height: 50px !important;*/
+            padding: 0px 0px 0px 0px
+        }
+
+        .logo_dif{
+            width: 100%;
+            height: auto;
         }
     </style>
 </head>
 <body class="crm_body_bg" style="background-image: url({{ url('img/dl/Elderly-men-hugging-AA.jpg') }}); background-size:cover; background-repeat: no-repeat">
     
    
-      
+    @include('admin.headclient')
     <div class="container-fluid p-0 ">
                 <div class="row" >
                     <div class="col-lg-8"><img src="{{ url('img/dl/Elderly-men-hugging-AA.jpg') }}" style="opacity:0;" alt="" class="img-fluid"></div>
@@ -78,7 +158,7 @@
                                     <div class="form-group">
                                         <input type="password" class="form-control" placeholder="Mot de passe">
                                     </div>
-                                    <a href="#" class="btn_1 full_width text-center" style="background-color: #152040 !important;border-color:#152040">Connexion</a>
+                                    <a href="#" class="btn_1 full_width text-center" style="background-color: #29235c !important;border-color:#152040">Connexion</a>
                                         <p>Devenir un souscripteur ? <a href="{{ route('client.adhesion') }}"> Inscrivez-vous ici</a></p>
                                         {{-- <div class="text-center">
                                             <a href="#" data-toggle="modal" data-target="#forgot_password" data-dismiss="modal" class="pass_forget_btn">Forget Password?</a>
