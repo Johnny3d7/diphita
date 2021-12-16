@@ -17,6 +17,10 @@ Route::get('/login', function () {
     return view('admin.login');
 });
 
+Route::get('/adhesion', function () {
+    return view('admin.demande.inscription');
+});
+
 Route::get('/', 'App\Http\Controllers\Admin\HomeController@index')->name('admin.index');
 
 

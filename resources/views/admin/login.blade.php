@@ -60,36 +60,36 @@
 </head>
 <body class="crm_body_bg" style="background-image: url({{ url('img/dl/Elderly-men-hugging-AA.jpg') }}); background-size:cover; background-repeat: no-repeat">
     
-
-        <div class="row" >
-            <div class="col-lg-8"><img src="{{ url('img/dl/Elderly-men-hugging-AA.jpg') }}" style="opacity:0;" alt="" class="img-fluid"></div>
-            <div class="col-lg-4 my-auto" style="padding-right:30px">
-                <div class="modal-content cs_modal " >
-                    <div class="modal-header justify-content-center theme_bg_4" style="background-color: #bfc8e2 !important;">
-                                <img src="{{ url('img/logo1.png') }}" alt="">
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Nom d'utilisateur">
+   
+      
+    <div class="container-fluid p-0 ">
+                <div class="row" >
+                    <div class="col-lg-8"><img src="{{ url('img/dl/Elderly-men-hugging-AA.jpg') }}" style="opacity:0;" alt="" class="img-fluid"></div>
+                    <div class="col-lg-4 my-auto" style="padding-right:30px">
+                        <div class="modal-content cs_modal " >
+                            <div class="modal-header justify-content-center theme_bg_4" style="background-color: #bfc8e2 !important;">
+                                        <img src="{{ url('img/logo1.png') }}" alt="">
                             </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" placeholder="Mot de passe">
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Nom d'utilisateur">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Mot de passe">
+                                    </div>
+                                    <a href="#" class="btn_1 full_width text-center" style="background-color: #152040 !important;border-color:#152040">Connexion</a>
+                                        <p>Devenir un souscripteur ? <a data-toggle="modal" data-target="#sing_up" data-dismiss="modal"  href="#"> Inscrivez-vous ici</a></p>
+                                        {{-- <div class="text-center">
+                                            <a href="#" data-toggle="modal" data-target="#forgot_password" data-dismiss="modal" class="pass_forget_btn">Forget Password?</a>
+                                        </div> --}}
+                                </form>
                             </div>
-                            <a href="#" class="btn_1 full_width text-center" style="background-color: #152040 !important;border-color:#152040">Connexion</a>
-                                <p>Devenir un souscripteur ? <a data-toggle="modal" data-target="#sing_up" data-dismiss="modal"  href="#"> Inscrivez-vous ici</a></p>
-                                {{-- <div class="text-center">
-                                    <a href="#" data-toggle="modal" data-target="#forgot_password" data-dismiss="modal" class="pass_forget_btn">Forget Password?</a>
-                                </div> --}}
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>    
+    </div>
  
-    
-
-
 <!-- footer  -->
 <script src="{{ url('js/jquery-3.4.1.min.js') }}"></script>
 <!-- popper js -->
