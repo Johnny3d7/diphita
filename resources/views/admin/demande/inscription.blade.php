@@ -135,7 +135,13 @@
             width: 100%;
             height: auto;
         }
-        
+        .ml_30{
+            margin-left:30px;
+        }
+        @font-face {
+            font-family: Copperplate;
+            src: url({{ url('copperplate/Copperplate.ttf') }});
+        }
     </style>
 </head>
 <body class="" >
@@ -163,7 +169,7 @@
                                     <span>Merci d'avoir considéré notre chaîne de solidarité. Pour enregistrer votre adhésion, veuillez compléter ce Formulaire d'Inscription. Les informations collectées via ce formulaire sont strictement confidentielles. Seuls les formulaires complets sont acceptés.</span>
                                 </div>
                                 <div class="col-12 mt_30 mb_15">
-                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">* Souscripteur</h4>
+                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">Souscripteur</h4>
                                 </div>
                                 <div class="col-lg-4">
                                     <select class="nice_Select2 nice_Select_line wide" style="display: none;">
@@ -204,47 +210,53 @@
                                         <input type="text" placeholder="Téléphone *">
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <div class="common_input mb_15">
                                         <input type="email" placeholder="Email">
                                     </div>
                                 </div>
+                                <div class="col-lg-4">
+                                    <div class="common_input mb_15">
+                                        <input type="email" placeholder="Numéro CNI">
+                                    </div>
+                                </div>
                                 <div class="col-12 mt_30 mb_15">
-                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">* Bénéficiaires</h4>
-                                    <span>&nbsp;&nbsp;&nbsp;Vous pouvez inscrire au plus 5 personnes y compris vous-même.</span>
+                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">Bénéficiaires</h4>
+                                    <span>Vous pouvez inscrire au plus 5 personnes y compris vous-même.</span>
                                 </div>
                                 <div class="col-lg-4">
+                                    <select class="nice_Select2 nice_Select_line wide" style="display: none;">
+                                        <option value="1">Civilité <span>*</span></option>
+                                        <option value="1">M. </option>
+                                        <option value="1">Mme</option>
+                                        <option value="1">Mlle</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-lg-4">
                                     <div class="common_input mb_15">
-                                        <input type="text" placeholder="Nom & Prénoms *">
+                                        <input type="text" placeholder="Nom *">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="common_input mb_15">
-                                        <input type="text" placeholder="Résidence *">
+                                        <input type="text" placeholder="Prénoms *">
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-4">
+                                    <div class="common_input mb_15">
+                                        <input type="text" placeholder="Lieu de naissance *">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
                                     <div class="input-group common_date_picker">
                                         <input class="datepicker-here  digits" type="text" data-language="en" placeholder="Date de naissance *">
                                       </div>
                                 </div>
-                                <div class="col-lg-1">
-                                    
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" placeholder="Nom & Prénoms *">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" placeholder="Résidence *">
-                                    </div>
-                                </div>
                                 <div class="col-lg-3">
-                                    <div class="input-group common_date_picker">
-                                        <input class="datepicker-here  digits" type="text" data-language="en" placeholder="Date de naissance *">
-                                      </div>
+                                    <div class="common_input mb_15">
+                                        <input type="email" placeholder="Numéro CNI">
+                                    </div>
                                 </div>
                                 <div class="col-lg-1 my-auto">
                                     <button type="button" class="btn mb-3 btn-danger"><i class="ti-trash f_s_14"></i></button>
@@ -253,38 +265,25 @@
                                     <button type="button" class="btn mb-3 btn-success"><i class="ti-trash f_s_14 mr-2"></i>Ajouter</button>
                                 </div>
                                 <div class="col-12 mt_30 mb_15">
-                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">* Ayants-droit</h4>
-                                    <span>&nbsp;&nbsp;&nbsp;Inscrivez 3 noms et contacts d'ayants-droit.</span>
+                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">Ayants-droit</h4>
+                                    <span>Inscrivez 3 noms et contacts d'ayants-droit.</span>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="common_input mb_15">
-                                        <input type="text" placeholder="Nom & Prénoms *">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" placeholder="Résidence *">
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="input-group common_date_picker">
-                                        <input class="datepicker-here  digits" type="text" data-language="en" placeholder="Date de naissance *">
-                                    </div>
-                                </div>
-                                <div class="col-lg-1 my-auto">
-                                    
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" placeholder="Nom & Prénoms *">
+                                        <input type="text" placeholder="Nom *">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="common_input mb_15">
-                                        <input type="text" placeholder="Résidence *">
+                                        <input type="text" placeholder="Prénoms *">
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-4">
+                                    <div class="common_input mb_15">
+                                        <input type="text" placeholder="Contact *">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
                                     <div class="input-group common_date_picker">
                                         <input class="datepicker-here  digits" type="text" data-language="en" placeholder="Date de naissance *">
                                     </div>

@@ -136,6 +136,16 @@
             width: 100%;
             height: auto;
         }
+
+        .ml_30{
+            margin-left:30px;
+        }
+        @font-face {
+            font-family: Copperplate;
+            src: url({{ url('copperplate/Copperplate.ttf') }});
+        }
+
+
     </style>
 </head>
 <body class="crm_body_bg" style="background-image: url({{ url('img/dl/Elderly-men-hugging-AA.jpg') }}); background-size:cover; background-repeat: no-repeat">
