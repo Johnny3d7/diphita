@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,19 +14,7 @@ class AdherentController extends Controller
      */
     public function index()
     {
-        //+
-        return view('admin.adherent.index');
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function souscripteurs()
-    {
         //
-        return view('main.stock.client.index');
     }
 
     /**
@@ -95,5 +83,9 @@ class AdherentController extends Controller
         //
     }
 
-    
+    public function adhesion()
+    {
+        //
+        return view('admin.demande.inscription');
+    }
 }

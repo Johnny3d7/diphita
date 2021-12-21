@@ -48,101 +48,10 @@
     <!-- menu css  -->
     <link rel="stylesheet" href="{{ url('css/metisMenu.css') }}">
     <!-- style CSS -->
-    <link rel="stylesheet" href="{{ url('css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url('css/stylechild.css') }}" />
     <link rel="stylesheet" href="{{ url('css/colors/default.css') }}" id="colorSkinCSS">
-    <style>
-        .main_content{
-            padding-left:0px !important;
-            padding-bottom: 0px !important;
-        }
-        .my-auto{
-            margin-top: auto;
-            margin-bottom: auto;
-        }
-
-        .txt-color1{
-            color:#29235c !important;
-        }
-
-        .txt-color-wh{
-            color:#ffffff !important;
-        }
-        .txt-upper{
-            text-transform: uppercase !important;
-        }
-
-        .txt-lower{
-            text-transform: lowercase !important;
-        }
-
-        .this-item-bg{
-            background-color: #29235c !important;
-        }
-
-        .this-item-bc{
-            border-color: #29235c !important;
-        }
-
-        .txt-center{
-            text-align:center !important;
-        }
-        
-        .txt-bold{
-            font-weight: 900 !important;
-        }
-
-        .trans-bg{
-            background-color: #fffffff5;
-            -webkit-border-radius: 15px;
-            -moz-border-radius: 15px;
-            border-radius: 15px;
-            padding: 5px 30px 25px 30px;
-            
-        }
-
-        .mb_15 {
-            margin-bottom: 15px !important;
-        }
-        .mb_40 {
-            margin-bottom: 40px !important;
-        }
-
-        .mb_50 {
-            margin-bottom: 50px !important;
-        }
-
-        .common_date_picker input{
-            border-radius: 10px;
-            background-color: #ffffff00;
-            height: 47px;
-            line-height: 47px;
-            font-size: 15px;
-        }
-
-        .common_input input{
-            color:#2A2A2A !important;
-        }
-
-        .bande{
-            width: 100% !important;
-            display: block !important;
-            background-color: #29235c !important;
-            /*height: 50px !important;*/
-            padding: 0px 0px 0px 0px
-        }
-
-        .logo_dif{
-            width: 100%;
-            height: auto;
-        }
-        .ml_30{
-            margin-left:30px;
-        }
-        @font-face {
-            font-family: Copperplate;
-            src: url({{ url('copperplate/Copperplate.ttf') }});
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url('css/main.css') }}" />
+   
 </head>
 <body class="" >
 
@@ -172,127 +81,143 @@
                                     <h4 class="m-0 txt-color1 txt-upper txt-bold">Souscripteur</h4>
                                 </div>
                                 <div class="col-lg-4">
-                                    <select class="nice_Select2 nice_Select_line wide" style="display: none;">
-                                        <option value="1">Civilité <span>*</span></option>
+                                    <select class="nice_Select2 nice_Select_line wide" name="souscript_civilite">
+                                        <option value="0">Civilité <span>*</span></option>
                                         <option value="1">M. </option>
-                                        <option value="1">Mme</option>
-                                        <option value="1">Mlle</option>
+                                        <option value="2">Mme</option>
+                                        <option value="3">Mlle</option>
                                     </select>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-4" >
                                     <div class="common_input mb_15">
-                                        <input type="text" placeholder="Prénom *">
+                                        <input type="text" name="souscript_nom" placeholder="Nom *">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="common_input mb_15">
-                                        <input type="text" placeholder="Nom *">
+                                        <input type="text" name="souscript_pnom" placeholder="Prénom *">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="common_input mb_15">
-                                        <input type="text" placeholder="Lieu de naissance * (Ville, Village)">
+                                        <input type="text" name="souscript_lnaiss" placeholder="Lieu de naissance * (Ville, Village)">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="input-group common_date_picker">
-                                      <input class="datepicker-here  digits" type="text" data-language="en" placeholder="Date de naissance *">
+                                      <input class="datepicker-here  digits" name="souscript_dnaiss" type="text" data-language="en" placeholder="Date de naissance *">
                                     </div>
                                   </div>
                                 
                                 <div class="col-lg-4">
                                     <div class="common_input mb_15">
-                                        <input type="text" placeholder="Résidence *">
+                                        <input type="text" name="souscript_lhab" placeholder="Lieu d'habitation *">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="common_input mb_15">
-                                        <input type="text" placeholder="Téléphone *">
+                                        <input type="text" name="souscript_contact" placeholder="Contact *">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="common_input mb_15">
-                                        <input type="email" placeholder="Email">
+                                        <input type="email" name="souscript_email" placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="common_input mb_15">
-                                        <input type="email" placeholder="Numéro CNI">
+                                        <input type="email" name="souscript_ncni" placeholder="Numéro CNI">
                                     </div>
                                 </div>
                                 <div class="col-12 mt_30 mb_15">
                                     <h4 class="m-0 txt-color1 txt-upper txt-bold">Bénéficiaires</h4>
                                     <span>Vous pouvez inscrire au plus 5 personnes y compris vous-même.</span>
                                 </div>
-                                <div class="col-lg-4">
-                                    <select class="nice_Select2 nice_Select_line wide" style="display: none;">
-                                        <option value="1">Civilité <span>*</span></option>
-                                        <option value="1">M. </option>
-                                        <option value="1">Mme</option>
-                                        <option value="1">Mlle</option>
-                                    </select>
+                                
+                                <div id="benef_bloc" class="row">
+                                    <div id="benef-title-0" class="col-lg-12 mb_15">
+                                        <h6 class="m-0 txt-color1 txt-upper txt-bold">Bénéficiaire 1</h6>
+                                    </div>
+                                    <div id="benef-civilite-0" class="col-lg-4 benef_civilite">
+                                        <select  name="benef_civilite[]" class="nice_Select2 nice_Select_line wide">
+                                            <option value="0" >Civilité <span>*</span></option>
+                                            <option value="1">M. </option>
+                                            <option value="2">Mme</option>
+                                            <option value="3">Mlle</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div id="benef-nom-0" class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" placeholder="Nom *" name="benef_nom[]">
+                                        </div>
+                                    </div>
+                                    <div id="benef-pnom-0" class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" placeholder="Prénoms *" name="benef_pnom[]">
+                                        </div>
+                                    </div>
+                                    <div id="benef-lnaiss-0" class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" placeholder="Lieu de naissance *" name="benef_lnaiss[]">
+                                        </div>
+                                    </div>
+                                    <div id="benef-dnaiss-0" class="col-lg-4">
+                                        <div class="input-group common_date_picker">
+                                            <input class="datepicker-here  digits" type="text" data-language="en" placeholder="Date de naissance *" name="benef_dnaiss[]">
+                                          </div>
+                                    </div>
+                                    <div id="benef-ncni-0" class="col-lg-3">
+                                        <div class="common_input mb_15">
+                                            <input type="email" placeholder="Numéro CNI" name="benef_ncni[]">
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                                 
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" placeholder="Nom *">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" placeholder="Prénoms *">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" placeholder="Lieu de naissance *">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="input-group common_date_picker">
-                                        <input class="datepicker-here  digits" type="text" data-language="en" placeholder="Date de naissance *">
-                                      </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="common_input mb_15">
-                                        <input type="email" placeholder="Numéro CNI">
-                                    </div>
-                                </div>
-                                <div class="col-lg-1 my-auto">
-                                    <button type="button" class="btn mb-3 btn-danger"><i class="ti-trash f_s_14"></i></button>
-                                </div>
                                 <div class="col-12 mt_15">
-                                    <button type="button" class="btn mb-3 btn-success"><i class="ti-trash f_s_14 mr-2"></i>Ajouter</button>
+                                    <button type="button" id="benef_btn" class="btn mb-3 btn-success"><i class="ti-trash f_s_14 mr-2"></i>Ajouter</button>
                                 </div>
                                 <div class="col-12 mt_30 mb_15">
                                     <h4 class="m-0 txt-color1 txt-upper txt-bold">Ayants-droit</h4>
                                     <span>Inscrivez 3 noms et contacts d'ayants-droit.</span>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" placeholder="Nom *">
+                                <div id="ayant_bloc" class="row">
+                                    <div id="ayant-title-0" class="col-lg-12 mb_15">
+                                        <h6 class="m-0 txt-color1 txt-upper txt-bold">Ayant-droit 1</h6>
                                     </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" placeholder="Prénoms *">
+                                    <div id="ayant-civilite-0" class="col-lg-4 ayant_civilite">
+                                        <select  class="nice_Select2 nice_Select_line wide" name="ayant_civilite[]">
+                                            <option value="0" >Civilité <span>*</span></option>
+                                            <option value="1">M. </option>
+                                            <option value="2">Mme</option>
+                                            <option value="3">Mlle</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" placeholder="Contact *">
+                                    <div id="ayant-nom-0" class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" placeholder="Nom *" name="ayant_nom[]">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="input-group common_date_picker">
-                                        <input class="datepicker-here  digits" type="text" data-language="en" placeholder="Date de naissance *">
+                                    <div id="ayant-pnom-0" class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" placeholder="Prénoms *" name="ayant_pnom[]">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-1 my-auto">
-                                    <button type="button" class="btn mb-3 btn-danger"><i class="ti-trash f_s_14"></i></button>
+                                    <div id="ayant-contact-0" class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" placeholder="Contact *" name="ayant_contact[]">
+                                        </div>
+                                    </div>
+                                    <div id="ayant-space-0" class="col-lg-8">
+                                        <div class="common_input mb_15">
+                                            
+                                        </div>
+                                    </div>
+                                   
                                 </div>
                                 <div class="col-12 mt_15 mb_15">
-                                    <button type="button" class="btn mb-3 btn-success"><i class="ti-trash f_s_14 mr-2"></i>Ajouter</button>
+                                    <button type="button" id="ayant_btn" class="btn mb-3 btn-success"><i class="ti-trash f_s_14 mr-2"></i>Ajouter</button>
                                 </div>
                                 <div class="col-12">
                                     <div class="create_report_btn mt_30">
@@ -382,6 +307,167 @@
 <!-- custom js -->
 <script src="{{ url('js/dashboard_init.js') }}"></script>
 <script src="{{ url('js/custom.js') }}"></script>
+
+<script>
+    var $i = 0;
+
+    $("#benef_btn").click(function (e) {
+
+        if ($('.benef_civilite').length <= 3) {
+        
+        $i++;
+        $nb_benef = $('.benef_civilite').length + 1;
+        e.preventDefault();
+        $('#benef_bloc').append(`
+        
+                                    <div id="benef-title-${$i}" class="col-lg-12 mb_15">
+                                        <h6 class="m-0 txt-color1 txt-upper txt-bold">Bénéficiaire N°${$nb_benef}</h6>
+                                    </div>
+                                    <div id="benef-civilite-${$i}" class="col-lg-4 benef_civilite">
+                                        <select  name="benef_civilite[]" class="nice_Select2 nice_Select_line wide">
+                                            <option value="0" >Civilité <span>*</span></option>
+                                            <option value="1">M. </option>
+                                            <option value="2">Mme</option>
+                                            <option value="3">Mlle</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div id="benef-nom-${$i}" class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" placeholder="Nom *" name="benef_nom[]">
+                                        </div>
+                                    </div>
+                                    <div id="benef-pnom-${$i}" class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" placeholder="Prénoms *" name="benef_pnom[]">
+                                        </div>
+                                    </div>
+                                    <div id="benef-lnaiss-${$i}" class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" placeholder="Lieu de naissance *" name="benef_lnaiss[]">
+                                        </div>
+                                    </div>
+                                    <div id="benef-dnaiss-${$i}" class="col-lg-4">
+                                        <div class="input-group common_date_picker">
+                                            <input class="datepicker-here  digits" type="text" data-language="en" placeholder="Date de naissance *" name="benef_dnaiss[]">
+                                          </div>
+                                    </div>
+                                    <div id="benef-ncni-${$i}" class="col-lg-3">
+                                        <div class="common_input mb_15">
+                                            <input type="email" placeholder="Numéro CNI" name="benef_ncni[]">
+                                        </div>
+                                    </div>
+                                    <div id="benef-supbloc-${$i}" class="col-lg-1 my-auto">
+                                        <button onclick="supprimer(event)" id="benef-sup-${$i}" type="button" class="btn mb-3 btn-danger"><i class="ti-trash f_s_14"></i></button>
+                                    </div>`); 
+        //alert("Je suis près à fonctionner");
+        console.log($('.benef_civilite').length);
+        } else {
+            
+        }
+        
+    });
+
+    
+
+</script>
+
+<script>
+    var $j = 0;
+
+$("#ayant_btn").click(function (e) {
+
+    if ($('.ayant_civilite').length <= 2) {
+    
+    $j++;
+    $nb_ayant = $('.ayant_civilite').length + 1;
+    e.preventDefault();
+    $('#ayant_bloc').append(`
+                                    <div id="ayant-title-${$j}" class="col-lg-12 mb_15">
+                                        <h6 class="m-0 txt-color1 txt-upper txt-bold">Ayant-droit N°${$nb_ayant}</h6>
+                                    </div>
+                                    <div id="ayant-civilite-${$j}" class="col-lg-4 ayant_civilite">
+                                        <select  class="nice_Select2 nice_Select_line wide" name="ayant_civilite[]">
+                                            <option value="0" >Civilité <span>*</span></option>
+                                            <option value="1">M. </option>
+                                            <option value="2">Mme</option>
+                                            <option value="3">Mlle</option>
+                                        </select>
+                                    </div>
+                                    <div id="ayant-nom-${$j}" class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" placeholder="Nom *" name="ayant_nom[]">
+                                        </div>
+                                    </div>
+                                    <div id="ayant-pnom-${$j}" class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" placeholder="Prénoms *" name="ayant_pnom[]">
+                                        </div>
+                                    </div>
+                                    <div id="ayant-contact-${$j}" class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" placeholder="Contact *" name="ayant_contact[]">
+                                        </div>
+                                    </div>
+                                    <div id="ayant-space-${$j}" class="col-lg-7">
+                                        <div class="common_input mb_15">
+                                            
+                                        </div>
+                                    </div>
+                                    <div id="ayant-supbloc-${$j}" class="col-lg-1 my-auto">
+                                        <button onclick="supprimer_ayant(event)" id="ayant-sup-${$j}" type="button" class="btn mb-3 btn-danger"><i class="ti-trash f_s_14"></i></button>
+                                    </div>`); 
+  
+    console.log($('.ayant_civilite').length);
+    } else {
+        
+    }
+    
+});
+
+</script>
+
+
+<script>
+    //supression bloc
+
+    //Bénef sup
+    function supprimer(e){
+   e.preventDefault();
+   //alert('bonjour');
+   //console.log(e.target.id);
+   var res = e.target.id.split('-');
+   var id = res[2];
+
+   $('#benef-title-'+id).remove();
+   $('#benef-civilite-'+id).remove();
+   $('#benef-nom-'+id).remove();
+   $('#benef-pnom-'+id).remove();
+   $('#benef-lnaiss-'+id).remove();
+   $('#benef-dnaiss-'+id).remove();
+   $('#benef-ncni-'+id).remove();
+   $('#benef-supbloc-'+id).remove();
+   $('#benef-space-'+id).remove();
+ 
+}
+
+//ayant droit sup
+function supprimer_ayant(e){
+   e.preventDefault();
+   //alert('bonjour');
+   //console.log(e.target.id);
+   var res = e.target.id.split('-');
+   var id = res[2];
+   
+   $('#ayant-title-'+id).remove();
+   $('#ayant-civilite-'+id).remove();
+   $('#ayant-nom-'+id).remove();
+   $('#ayant-pnom-'+id).remove();
+   $('#ayant-contact-'+id).remove();
+   $('#ayant-supbloc-'+id).remove();
+   $('#ayant-space-'+id).remove();
+}
+</script>
 </body>
 
 <!-- Mirrored from demo.dashboardpack.com/user-management-html/ by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 16 Oct 2021 10:40:27 GMT -->

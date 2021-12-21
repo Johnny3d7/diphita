@@ -21,7 +21,7 @@ body {
   font-family: "Mulish", sans-serif;
   padding: 0;
   margin: 0;
-  font-size: 14px;
+  font-size: 15px;
   position: relative;
   background: #F6F7FB;
 }
@@ -584,7 +584,7 @@ table.dataTable tbody th, table.dataTable tbody td {
 
 /* line 379, G:/admin_project/8 admin/management_html/scss/_reset.scss */
 .nice_Select .list li {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 500;
   text-transform: uppercase;
 }
@@ -603,7 +603,7 @@ table.dataTable tbody th, table.dataTable tbody td {
   border-radius: 6px;
   height: 36px;
   line-height: 36px;
-  font-size: 12px;
+  font-size: 15px;
   text-transform: capitalize;
 }
 
@@ -5647,7 +5647,7 @@ body::-webkit-scrollbar {
 }
 
 /* line 45, G:/admin_project/8 admin/management_html/scss/_dashboard_part.scss */
-.white_card .white_card_header {
+.trans-bg .white_card_header {
   padding: 22px 30px;
 }
 
