@@ -91,7 +91,7 @@
 
 @font-face {
     font-family: Copperplate;
-    src: url('copperplate/Copperplate.ttf');
+    src: url('/copperplate/Copperplate.ttf');
 }
 
 div#ayant_bloc, div#benef_bloc{

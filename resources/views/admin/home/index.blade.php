@@ -49,8 +49,8 @@
                             <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                         </div>
                         <div class="crm_body">
-                            <h4>2455</h4>
-                            <p>User Registrations</p>
+                            <h4>{{ Adherents::where(['valide'=>1, 'status'=> 1, 'role' => 1])->count() }}</h4>
+                            <p>Souscripteur(s)</p>
                         </div>
                     </div>
                 </div>
@@ -63,8 +63,8 @@
                             <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                         </div>
                         <div class="crm_body">
-                            <h4>2455</h4>
-                            <p>User Registrations</p>
+                            <h4>{{ Adherents::where(['valide'=>1, 'status'=> 1])->count() }}</h4>
+                            <p>Bénéficiaire(s)</p>
                         </div>
                     </div>
                 </div>

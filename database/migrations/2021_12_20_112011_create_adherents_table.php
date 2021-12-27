@@ -21,11 +21,12 @@ class CreateAdherentsTable extends Migration
             $table->string('pnom');
             $table->string('civilite');
             $table->string('email')->unique()->nullable();
-            $table->string('date_naiss')->nullable();
+            $table->dateTime('date_naiss')->nullable();
             $table->string('num_cni')->unique()->nullable();
             $table->string('lieu_naiss')->nullable();
             $table->string('lieu_hab')->nullable();
-            $table->string('contact')->nullable();
+            $table->string('contact')->unique()->nullable();
+            $table->string('contact_format')->unique()->nullable();
             $table->integer('role');
             $table->integer('parent')->nullable();
             $table->integer('valide')->default(0);

@@ -27,9 +27,9 @@
             </div>
             </a>
             <ul>
-              <li><a href="user_list.html">A traiter</a></li>
-              <li><a href="add_new_user.html">Valider</a></li>
-              <li><a href="add_new_user.html">Rejeter</a></li>
+              <li><a href="{{ route("client.adhesion.liste") }}">A traiter</a></li>
+              <li><a href="{{ route('admin.adhesion.valider.liste') }}">Valider</a></li>
+              <li><a href="{{ route('admin.adhesion.rejeter.liste') }}">Rejeter</a></li>
             </ul>
         </li>
         <li class="">
@@ -42,8 +42,8 @@
                 </div>
             </a>
             <ul>
-              <li><a href="editor.html">Les souscripteurs</a></li>
-              <li><a href="mail_box.html">Tous les bénéficiaires</a></li>
+              <li><a href="{{ route('admin.adherent.index') }}">Les souscripteurs</a></li>
+              <li><a href="{{ route('admin.beneficiaires.index') }}">Tous les bénéficiaires</a></li>
               <li><a href="editor.html">Les souscripteurs Oumé</a></li>
               <li><a href="mail_box.html">Les souscripteurs Ouéllé</a></li>
             </ul>
@@ -152,7 +152,9 @@
             </ul>
         </li>
         <li class="">
-          <a href="Board.html" aria-expanded="false">
+          
+          <a href="{{ route('logout') }}" onclick="event.preventDefault();
+          document.getElementById('logout-form-sidebar').submit();" aria-expanded="false">
               <div class="nav_icon_small">
                   <img src="{{ url('img/menu-icon/9.svg') }}" alt="">
               </div>
@@ -160,6 +162,9 @@
                   <span>Se déconnecter</span>
               </div>
           </a>
+          <form id="logout-form-sidebar" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+          </form>
         </li>
       </ul>
 </nav>

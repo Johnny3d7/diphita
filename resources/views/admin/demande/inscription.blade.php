@@ -73,159 +73,214 @@
                             </div>
                         </div>
                         <div class="white_card_body">
-                            <div class="row">
-                                <div class="col-md-12 text-center mb_30">
-                                    <span>Merci d'avoir considéré notre chaîne de solidarité. Pour enregistrer votre adhésion, veuillez compléter ce Formulaire d'Inscription. Les informations collectées via ce formulaire sont strictement confidentielles. Seuls les formulaires complets sont acceptés.</span>
-                                </div>
-                                <div class="col-12 mt_30 mb_15">
-                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">Souscripteur</h4>
-                                </div>
-                                <div class="col-lg-4">
-                                    <select class="nice_Select2 nice_Select_line wide" name="souscript_civilite">
-                                        <option value="0">Civilité <span>*</span></option>
-                                        <option value="1">M. </option>
-                                        <option value="2">Mme</option>
-                                        <option value="3">Mlle</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-4" >
-                                    <div class="common_input mb_15">
-                                        <input type="text" name="souscript_nom" placeholder="Nom *">
+                            <form action="{{ route('adhesion.store') }}" method="post">
+                                @csrf
+                                @method('POST')
+                                <div class="row">
+                                    <div class="col-md-12 text-center mb_30">
+                                        <span>Merci d'avoir considéré notre chaîne de solidarité. Pour enregistrer votre adhésion, veuillez compléter ce Formulaire d'Inscription. Les informations collectées via ce formulaire sont strictement confidentielles. Seuls les formulaires complets sont acceptés.</span>
                                     </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" name="souscript_pnom" placeholder="Prénom *">
+                                    <div class="col-md-12 text-center mt_15">
+                                        @include('admin.partials.message')
                                     </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" name="souscript_lnaiss" placeholder="Lieu de naissance * (Ville, Village)">
+                                    <div class="col-12 mt_30 mb_15">
+                                        <h4 class="m-0 txt-color1 txt-upper txt-bold">Souscripteur</h4>
                                     </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="input-group common_date_picker">
-                                      <input class="datepicker-here  digits" name="souscript_dnaiss" type="text" data-language="en" placeholder="Date de naissance *">
-                                    </div>
-                                  </div>
-                                
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" name="souscript_lhab" placeholder="Lieu d'habitation *">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="text" name="souscript_contact" placeholder="Contact *">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="email" name="souscript_email" placeholder="Email">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="common_input mb_15">
-                                        <input type="email" name="souscript_ncni" placeholder="Numéro CNI">
-                                    </div>
-                                </div>
-                                <div class="col-12 mt_30 mb_15">
-                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">Bénéficiaires</h4>
-                                    <span>Vous pouvez inscrire au plus 5 personnes y compris vous-même.</span>
-                                </div>
-                                
-                                <div id="benef_bloc" class="row">
-                                    <div id="benef-title-0" class="col-lg-12 mb_15">
-                                        <h6 class="m-0 txt-color1 txt-upper txt-bold">Bénéficiaire 1</h6>
-                                    </div>
-                                    <div id="benef-civilite-0" class="col-lg-4 benef_civilite">
-                                        <select  name="benef_civilite[]" class="nice_Select2 nice_Select_line wide">
-                                            <option value="0" >Civilité <span>*</span></option>
+                                    <div class="col-lg-4">
+                                        <select class="nice_Select2 nice_Select_line wide @error('souscript_civilite') is-invalid @enderror" name="souscript_civilite" required>
+                                            <option value="0">Civilité <span>*</span></option>
                                             <option value="1">M. </option>
                                             <option value="2">Mme</option>
                                             <option value="3">Mlle</option>
                                         </select>
+                                        @error('souscript_civilite')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </div>
-                                    
-                                    <div id="benef-nom-0" class="col-lg-4">
+                                    <div class="col-lg-4" >
                                         <div class="common_input mb_15">
-                                            <input type="text" placeholder="Nom *" name="benef_nom[]">
+                                            <input type="text" class="@error('souscript_nom') is-invalid @enderror" name="souscript_nom" placeholder="Nom *" required>
+                                            @error('souscript_nom')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                     </div>
-                                    <div id="benef-pnom-0" class="col-lg-4">
+                                    <div class="col-lg-4">
                                         <div class="common_input mb_15">
-                                            <input type="text" placeholder="Prénoms *" name="benef_pnom[]">
+                                            <input type="text" name="souscript_pnom" class="@error('souscript_pnom') is-invalid @enderror" placeholder="Prénom *" required>
+                                            @error('souscript_pnom')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                     </div>
-                                    <div id="benef-lnaiss-0" class="col-lg-4">
+                                    <div class="col-lg-4">
                                         <div class="common_input mb_15">
-                                            <input type="text" placeholder="Lieu de naissance *" name="benef_lnaiss[]">
+                                            <input type="text" name="souscript_lnaiss" class="@error('souscript_lnaiss') is-invalid @enderror" placeholder="Lieu de naissance * (Ville, Village)" required>
+                                            @error('souscript_lnaiss')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                     </div>
-                                    <div id="benef-dnaiss-0" class="col-lg-4">
+                                    <div class="col-lg-4">
                                         <div class="input-group common_date_picker">
-                                            <input class="datepicker-here  digits" type="text" data-language="en" placeholder="Date de naissance *" name="benef_dnaiss[]">
-                                          </div>
-                                    </div>
-                                    <div id="benef-ncni-0" class="col-lg-3">
-                                        <div class="common_input mb_15">
-                                            <input type="email" placeholder="Numéro CNI" name="benef_ncni[]">
+                                          <input class="datepicker-here  digits" class="@error('souscript_dnaiss') is-invalid @enderror" name="souscript_dnaiss" type="text" data-language="en" placeholder="Date de naissance *" required >
+                                          @error('souscript_dnaiss')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                          @enderror
                                         </div>
+                                      </div>
+                                    
+                                    <div class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" name="souscript_lhab" class="@error('souscript_lhab') is-invalid @enderror" placeholder="Lieu d'habitation *" required>
+                                            @error('souscript_lhab')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" name="souscript_contact" class="@error('souscript_contact') is-invalid @enderror" placeholder="Contact *" required data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask>
+                                            @error('souscript_contact')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="email" name="souscript_email" class="@error('souscript_email') is-invalid @enderror" placeholder="Email" required>
+                                            @error('souscript_email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="common_input mb_15">
+                                            <input type="text" name="souscript_ncni" class="@error('souscript_ncni') is-invalid @enderror" placeholder="Numéro CNI" required>
+                                            @error('souscript_ncni')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt_30 mb_15">
+                                        <h4 class="m-0 txt-color1 txt-upper txt-bold">Bénéficiaires</h4>
+                                        <span>Vous pouvez inscrire au plus 5 personnes y compris vous-même.</span>
+                                    </div>
+                                    
+                                    <div id="benef_bloc" class="row">
+                                        <div id="benef-title-0" class="col-lg-12 mb_15">
+                                            <h6 class="m-0 txt-color1 txt-upper txt-bold">Bénéficiaire N°1</h6>
+                                        </div>
+                                        <div id="benef-civilite-0" class="col-lg-4 benef_civilite">
+                                            <select  name="benef_civilite[]" class="nice_Select2 nice_Select_line wide" required>
+                                                <option value="0" >Civilité <span>*</span></option>
+                                                <option value="1">M. </option>
+                                                <option value="2">Mme</option>
+                                                <option value="3">Mlle</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div id="benef-nom-0" class="col-lg-4">
+                                            <div class="common_input mb_15">
+                                                <input type="text" placeholder="Nom *" name="benef_nom[]" required>
+                                            </div>
+                                        </div>
+                                        <div id="benef-pnom-0" class="col-lg-4">
+                                            <div class="common_input mb_15">
+                                                <input type="text" placeholder="Prénoms *" name="benef_pnom[]" required>
+                                            </div>
+                                        </div>
+                                        <div id="benef-lnaiss-0" class="col-lg-4">
+                                            <div class="common_input mb_15">
+                                                <input type="text" placeholder="Lieu de naissance *" name="benef_lnaiss[]" required>
+                                            </div>
+                                        </div>
+                                        <div id="benef-dnaiss-0" class="col-lg-4">
+                                            <div class="input-group common_date_picker">
+                                                <input class="datepicker-here  digits" type="text" data-language="en" placeholder="Date de naissance *" name="benef_dnaiss[]" required>
+                                              </div>
+                                        </div>
+                                        <div id="benef-ncni-0" class="col-lg-3">
+                                            <div class="common_input mb_15">
+                                                <input type="text" placeholder="Numéro CNI" name="benef_ncni[]" required>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                    <div class="col-12 mt_15">
+                                        <button type="button" id="benef_btn" class="btn mb-3 btn-success"><i class="ti-trash f_s_14 mr-2"></i>Ajouter</button>
+                                    </div>
+                                    <div class="col-12 mt_30 mb_15">
+                                        <h4 class="m-0 txt-color1 txt-upper txt-bold">Ayants-droit</h4>
+                                        <span>Inscrivez 3 noms et contacts d'ayants-droit.</span>
+                                    </div>
+                                    <div id="ayant_bloc" class="row">
+                                        <div id="ayant-title-0" class="col-lg-12 mb_15">
+                                            <h6 class="m-0 txt-color1 txt-upper txt-bold">Ayant-droit N°1</h6>
+                                        </div>
+                                        <div id="ayant-civilite-0" class="col-lg-4 ayant_civilite">
+                                            <select  class="nice_Select2 nice_Select_line wide" name="ayant_civilite[]" required>
+                                                <option value="0" >Civilité <span>*</span></option>
+                                                <option value="1">M. </option>
+                                                <option value="2">Mme</option>
+                                                <option value="3">Mlle</option>
+                                            </select>
+                                        </div>
+                                        <div id="ayant-nom-0" class="col-lg-4">
+                                            <div class="common_input mb_15">
+                                                <input type="text" placeholder="Nom *" name="ayant_nom[]" required>
+                                            </div>
+                                        </div>
+                                        <div id="ayant-pnom-0" class="col-lg-4">
+                                            <div class="common_input mb_15">
+                                                <input type="text" placeholder="Prénoms *" name="ayant_pnom[]" required>
+                                            </div>
+                                        </div>
+                                        <div id="ayant-contact-0" class="col-lg-4">
+                                            <div class="common_input mb_15">
+                                                <input type="text" placeholder="Contact *" name="ayant_contact[]" required data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask>
+                                            </div>
+                                        </div>
+                                        <div id="ayant-space-0" class="col-lg-8">
+                                            <div class="common_input mb_15">
+                                                
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="col-12 mt_15 mb_15">
+                                        <button type="button" id="ayant_btn" class="btn mb-3 btn-success"><i class="ti-trash f_s_14 mr-2"></i>Ajouter</button>
+                                    </div>
+                                    <div class="col-12  offset-lg-5">
+                                        <div class="create_report_btn mt_30">
+                                            <button class="btn btn-primary btn-lg m-1 this-item-bg this-item-bc" type="submit">Valider</button>
+                                            {{-- <a href="#"class="btn_1radius_btnd-blocktext-centerthis-item-bgthis-item-bc">Envoyermoninscription</a> --}}
+                                        </div>
+                                        
                                     </div>
                                     
                                 </div>
-                                
-                                <div class="col-12 mt_15">
-                                    <button type="button" id="benef_btn" class="btn mb-3 btn-success"><i class="ti-trash f_s_14 mr-2"></i>Ajouter</button>
-                                </div>
-                                <div class="col-12 mt_30 mb_15">
-                                    <h4 class="m-0 txt-color1 txt-upper txt-bold">Ayants-droit</h4>
-                                    <span>Inscrivez 3 noms et contacts d'ayants-droit.</span>
-                                </div>
-                                <div id="ayant_bloc" class="row">
-                                    <div id="ayant-title-0" class="col-lg-12 mb_15">
-                                        <h6 class="m-0 txt-color1 txt-upper txt-bold">Ayant-droit 1</h6>
-                                    </div>
-                                    <div id="ayant-civilite-0" class="col-lg-4 ayant_civilite">
-                                        <select  class="nice_Select2 nice_Select_line wide" name="ayant_civilite[]">
-                                            <option value="0" >Civilité <span>*</span></option>
-                                            <option value="1">M. </option>
-                                            <option value="2">Mme</option>
-                                            <option value="3">Mlle</option>
-                                        </select>
-                                    </div>
-                                    <div id="ayant-nom-0" class="col-lg-4">
-                                        <div class="common_input mb_15">
-                                            <input type="text" placeholder="Nom *" name="ayant_nom[]">
-                                        </div>
-                                    </div>
-                                    <div id="ayant-pnom-0" class="col-lg-4">
-                                        <div class="common_input mb_15">
-                                            <input type="text" placeholder="Prénoms *" name="ayant_pnom[]">
-                                        </div>
-                                    </div>
-                                    <div id="ayant-contact-0" class="col-lg-4">
-                                        <div class="common_input mb_15">
-                                            <input type="text" placeholder="Contact *" name="ayant_contact[]">
-                                        </div>
-                                    </div>
-                                    <div id="ayant-space-0" class="col-lg-8">
-                                        <div class="common_input mb_15">
-                                            
-                                        </div>
-                                    </div>
-                                   
-                                </div>
-                                <div class="col-12 mt_15 mb_15">
-                                    <button type="button" id="ayant_btn" class="btn mb-3 btn-success"><i class="ti-trash f_s_14 mr-2"></i>Ajouter</button>
-                                </div>
-                                <div class="col-12">
-                                    <div class="create_report_btn mt_30">
-                                        <a href="#" class="btn_1 radius_btn d-block text-center this-item-bg this-item-bc">Envoyer mon inscription</a>
-                                    </div>
-                                </div>
-                                
-                            </div>
+                            </form>
+                            
                         </div>
                     </div>
                 </div>
@@ -303,10 +358,14 @@
 <script src="{{ url('vendors/chart_am/animated.js') }}"></script>
 <script src="{{ url('vendors/chart_am/kelly.js') }}"></script>
 <script src="{{ url('vendors/chart_am/chart-custom.js') }}"></script>
+<script src="{{ url('js/inputmask/min/jquery.inputmask.bundle.min.js')}}"></script>
 @yield('js')
 <!-- custom js -->
 <script src="{{ url('js/dashboard_init.js') }}"></script>
 <script src="{{ url('js/custom.js') }}"></script>
+<script>
+    $('[data-mask]').inputmask();
+</script>
 
 <script>
     var $i = 0;
@@ -354,7 +413,7 @@
                                     </div>
                                     <div id="benef-ncni-${$i}" class="col-lg-3">
                                         <div class="common_input mb_15">
-                                            <input type="email" placeholder="Numéro CNI" name="benef_ncni[]">
+                                            <input type="text" placeholder="Numéro CNI" name="benef_ncni[]">
                                         </div>
                                     </div>
                                     <div id="benef-supbloc-${$i}" class="col-lg-1 my-auto">
@@ -406,7 +465,7 @@ $("#ayant_btn").click(function (e) {
                                     </div>
                                     <div id="ayant-contact-${$j}" class="col-lg-4">
                                         <div class="common_input mb_15">
-                                            <input type="text" placeholder="Contact *" name="ayant_contact[]">
+                                            <input type="text" placeholder="Contact *" name="ayant_contact[]" data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask>
                                         </div>
                                     </div>
                                     <div id="ayant-space-${$j}" class="col-lg-7">
@@ -467,6 +526,11 @@ function supprimer_ayant(e){
    $('#ayant-supbloc-'+id).remove();
    $('#ayant-space-'+id).remove();
 }
+</script>
+
+<script>
+
+ 
 </script>
 </body>
 

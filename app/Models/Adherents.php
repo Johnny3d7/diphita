@@ -29,6 +29,7 @@ class Adherents extends Model
         'lieu_naiss',
         'lieu_hab',
         'contact',
+        'contact_format',
         'role',
         'parent',
         'valide',

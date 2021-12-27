@@ -82,12 +82,13 @@
                         <div class="page_title_right">
                             <div class="page_date_button d-flex align-items-center"> 
                                 <img src="{{ url('img/icon/calender_icon.svg') }}" alt="">
-                                    August 31, 2020
+                                {{ ucwords((new Carbon\Carbon(Now()))->locale('fr')->isoFormat('DD MMMM YYYY')) }}</td>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+             @include('admin.partials.message')
             @yield('content')
         </div>
     </div>
@@ -286,10 +287,14 @@
 <script src="{{ url('vendors/chart_am/animated.js') }}"></script>
 <script src="{{ url('vendors/chart_am/kelly.js') }}"></script>
 <script src="{{ url('vendors/chart_am/chart-custom.js') }}"></script>
+<script src="{{ url('js/inputmask/min/jquery.inputmask.bundle.min.js')}}"></script>
 @yield('js')
 <!-- custom js -->
 <script src="{{ url('js/dashboard_init.js') }}"></script>
 <script src="{{ url('js/custom.js') }}"></script>
+<script>
+    $('[data-mask]').inputmask();
+</script>
 </body>
 
 <!-- Mirrored from demo.dashboardpack.com/user-management-html/ by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 16 Oct 2021 10:40:27 GMT -->

@@ -64,14 +64,26 @@
                                         <img src="{{ url('img/logo1.png') }}" alt="">
                             </div>
                             <div class="modal-body">
-                                <form>
+                                <form method="POST" action="{{ route('checkuser') }}" autocomplete="off">
+                                    @csrf
+                                    @method('POST')
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Nom d'utilisateur">
+                                        <input type="text" placeholder="Nom d'utilisateur" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                        @error('name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control" placeholder="Mot de passe">
+                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Mot de passe" >
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
-                                    <a href="#" class="btn_1 full_width text-center" style="background-color: #29235c !important;border-color:#152040">Connexion</a>
+                                    <button  type="submit" class="btn_1 full_width text-center" style="background-color: #29235c !important;border-color:#152040">Connexion</button>
                                         <p>Devenir un souscripteur ? <a href="{{ route('client.adhesion') }}"> Inscrivez-vous ici</a></p>
                                         {{-- <div class="text-center">
                                             <a href="#" data-toggle="modal" data-target="#forgot_password" data-dismiss="modal" class="pass_forget_btn">Forget Password?</a>
