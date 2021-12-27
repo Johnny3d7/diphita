@@ -111,11 +111,12 @@ class AdherentController extends Controller
         
         $date = (new \DateTime())->format("dmy");
 
-        $order = $this->generate_order(Adherents::count());
+        $order = $this->generate_order(Adherents::where('valide',1)->count());
+
+        $order = (int)($order + 1);
 
         $num_adhe = $suffix.$date.'S'.$order;
         
-
         $adhesion->valide = 1;
         $adhesion->status = 1;
         $adhesion->num_adhesion = $num_adhe;
@@ -126,7 +127,9 @@ class AdherentController extends Controller
         $beneficiaires = Adherents::where('parent',$id)->get();
 
         foreach ($beneficiaires as $benef) {
-            $benef->num_adhesion = $suffix.$date.'B'.$this->generate_order(Adherents::count());
+            $no = $this->generate_order(Adherents::where('valide',1)->count());
+            $no = (int)($no + 1);
+            $benef->num_adhesion = $suffix.$date.'B'.$no;
             $benef->valide = 1;
             $benef->save();
         }
