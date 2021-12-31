@@ -295,6 +295,21 @@
 <script>
     $('[data-mask]').inputmask();
 </script>
+<script>
+    $(document).ready(function () {
+        $('#table_diphita').DataTable({
+            paging: true,
+            "language": {
+                "url": "{{ url('js/language/french_json.json')}}"
+     },
+            searching: true,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+} );
+    });
+</script>
 </body>
 
 <!-- Mirrored from demo.dashboardpack.com/user-management-html/ by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 16 Oct 2021 10:40:27 GMT -->

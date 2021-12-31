@@ -19,6 +19,7 @@ class Adherents extends Model
 
     protected $fillable = [
         'num_adhesion',
+        'num_contrat',
         'nom',
         'pnom',
         'slug',
@@ -31,9 +32,12 @@ class Adherents extends Model
         'contact',
         'contact_format',
         'role',
+        'date_adhesion',
+        'date_fincarence',
         'parent',
         'valide',
         'status',
+        'admin_id'
     ];
 
 

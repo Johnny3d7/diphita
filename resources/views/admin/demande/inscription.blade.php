@@ -51,6 +51,12 @@
     <link rel="stylesheet" href="{{ url('css/stylechild.css') }}" />
     <link rel="stylesheet" href="{{ url('css/colors/default.css') }}" id="colorSkinCSS">
     <link rel="stylesheet" href="{{ url('css/main.css') }}" />
+    <style>
+        .main_content {
+            padding-left:0px !important;
+    padding-bottom: 0px !important;
+}
+    </style>
    
 </head>
 <body class="" >
@@ -227,7 +233,7 @@
                                     </div>
                                     
                                     <div class="col-12 mt_15">
-                                        <button type="button" id="benef_btn" class="btn mb-3 btn-success"><i class="ti-trash f_s_14 mr-2"></i>Ajouter</button>
+                                        <button type="button" id="benef_btn" class="btn mb-3 btn-success"><i class="ti-plus f_s_14 mr-2"></i>Ajouter</button>
                                     </div>
                                     <div class="col-12 mt_30 mb_15">
                                         <h4 class="m-0 txt-color1 txt-upper txt-bold">Ayants-droit</h4>
@@ -265,10 +271,9 @@
                                                 
                                             </div>
                                         </div>
-                                       
                                     </div>
                                     <div class="col-12 mt_15 mb_15">
-                                        <button type="button" id="ayant_btn" class="btn mb-3 btn-success"><i class="ti-trash f_s_14 mr-2"></i>Ajouter</button>
+                                        <button type="button" id="ayant_btn" class="btn mb-3 btn-success"><i class="ti-plus f_s_14 mr-2"></i>Ajouter</button>
                                     </div>
                                     <div class="col-12  offset-lg-5">
                                         <div class="create_report_btn mt_30">

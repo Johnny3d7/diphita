@@ -42,6 +42,7 @@ class AdherentController extends Controller
     public function create()
     {
         //
+        return view('admin.adherent.create');
     }
 
     /**
@@ -52,7 +53,7 @@ class AdherentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Stockage d'une adhésion
        
     }
 
@@ -106,31 +107,41 @@ class AdherentController extends Controller
         //
         $adhesion = Adherents::where('id',$id)->first();
 
+        //Numero de contrat
+
+        $cf_suffix = "CF-";
+        
+        $cf_order = $this->generate_order(Adherents::where(['valide'=>1,'role'=>1])->count());
+
+        $num_contrat = $cf_suffix.$cf_order;
+
         //Numero de souscripteur a generer
         $suffix= "DIP";
         
         $date = (new \DateTime())->format("dmy");
 
         $order = $this->generate_order(Adherents::where('valide',1)->count());
-
-        $order = (int)($order + 1);
+        
+        //$order = (int)($order + 1);
 
         $num_adhe = $suffix.$date.'S'.$order;
         
         $adhesion->valide = 1;
         $adhesion->status = 1;
         $adhesion->num_adhesion = $num_adhe;
+        $adhesion->num_contrat = $num_contrat;
 
         $adhesion->save();
 
         //Numero des beneficiaires a generer
         $beneficiaires = Adherents::where('parent',$id)->get();
-
+        dd($beneficiaires);
         foreach ($beneficiaires as $benef) {
             $no = $this->generate_order(Adherents::where('valide',1)->count());
-            $no = (int)($no + 1);
+            //$no = (int)($no + 1);
             $benef->num_adhesion = $suffix.$date.'B'.$no;
             $benef->valide = 1;
+            $benef->num_contrat = $num_contrat;
             $benef->save();
         }
 
@@ -355,6 +366,11 @@ class AdherentController extends Controller
 
         return view('client.adhesion.rejeter',compact('adhesions'));
         
+    }
+
+    public function formulaire_print(){
+
+        return view('admin.adherent.formulaire_print');
     }
     
 }

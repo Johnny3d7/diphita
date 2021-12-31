@@ -16,6 +16,7 @@ class CreateAdherentsTable extends Migration
         Schema::create('adherents', function (Blueprint $table) {
             $table->increments('id');
             $table->string('num_adhesion')->unique()->nullable();
+            $table->string('num_contrat')->nullable();
             $table->string('slug');
             $table->string('nom');
             $table->string('pnom');
@@ -28,9 +29,12 @@ class CreateAdherentsTable extends Migration
             $table->string('contact')->unique()->nullable();
             $table->string('contact_format')->unique()->nullable();
             $table->integer('role');
+            $table->dateTime('date_adhesion')->nullable();
+            $table->dateTime('date_fincarence')->nullable();
             $table->integer('parent')->nullable();
             $table->integer('valide')->default(0);
             $table->integer('status')->default(1);
+            $table->integer('admin_id')->nullable();
             $table->timestamps();
         });
     }

@@ -46,6 +46,9 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
 
     //Adhesion
 
+    //Formulaire d'ajout d'un adhérent
+    Route::get('/adhesions/create', 'AdherentController@create')->name('adhesion.create');
+    
     //Adhesion deja valider
     Route::get('/adhesions-valider-liste', 'AdherentController@adhesion_valider_liste')->name('adhesion.valider.liste');
 
@@ -66,6 +69,9 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     //Adhérents routes
     Route::get('/adherents', 'AdherentController@index')->name('adherent.index');
     Route::get('/beneficiaires', 'AdherentController@beneficiaires')->name('beneficiaires.index');
+
+    //Adhérent formulaire print
+    Route::get('/adherent-formulaire-print', 'AdherentController@formulaire_print')->name('adherent.formulaire-print');
 
     //Contrats 
     Route::get('/contrats', 'ContratController@index')->name('contrat.index');

@@ -46,7 +46,7 @@
 
                     <div class="QA_table mb_30">
                         <!-- table-responsive -->
-                        <table class="table lms_table_active " id="tabledata">
+                        <table class="table display nowrap table-striped" id="table_diphita">
                             <thead>
                                 
                                 <tr>
@@ -87,7 +87,7 @@
                                 
                                
                             </tbody>
-                        </table>
+                        </table> 
                     </div>
                 </div>
             </div>
@@ -97,10 +97,5 @@
 @endsection
 
 @section('js')
-    <script>
-        $(document).ready(function () {
-            $("").dataTable({
-            });
-        });
-    </script>
+    
 @endsection

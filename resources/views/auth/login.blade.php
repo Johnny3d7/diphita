@@ -56,43 +56,43 @@
 <body class="crm_body_bg" style="background-image: url({{ url('img/dl/Elderly-men-hugging-AA.jpg') }}); background-size:cover; background-repeat: no-repeat">
     @include('admin.headclient')
     <div class="container-fluid p-0 ">
-                <div class="row" >
-                    <div class="col-lg-8"><img src="{{ url('img/dl/Elderly-men-hugging-AA.jpg') }}" style="opacity:0;" alt="" class="img-fluid"></div>
-                    <div class="col-lg-4 my-auto" style="padding-right:30px">
-                        <div class="modal-content cs_modal " >
-                            <div class="modal-header justify-content-center theme_bg_4" style="background-color: #bfc8e2 !important;">
-                                        <img src="{{ url('img/logo1.png') }}" alt="">
+        <div class="row" >
+            <div class="col-lg-8"><img src="{{ url('img/dl/Elderly-men-hugging-AA.jpg') }}" style="opacity:0;" alt="" class="img-fluid"></div>
+            <div class="col-lg-4 my-auto" style="padding-right:30px">
+                <div class="modal-content cs_modal " >
+                    <div class="modal-header justify-content-center theme_bg_4" style="background-color: #bfc8e2 !important;">
+                                <img src="{{ url('img/logo1.png') }}" alt="">
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{{ route('checkuser') }}" autocomplete="off">
+                            @csrf
+                            @method('POST')
+                            <div class="form-group">
+                                <input type="text" placeholder="Nom d'utilisateur" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
-                            <div class="modal-body">
-                                <form method="POST" action="{{ route('checkuser') }}" autocomplete="off">
-                                    @csrf
-                                    @method('POST')
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Nom d'utilisateur" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-                                        @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Mot de passe" >
-                                        @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <button  type="submit" class="btn_1 full_width text-center" style="background-color: #29235c !important;border-color:#152040">Connexion</button>
-                                        <p>Devenir un souscripteur ? <a href="{{ route('client.adhesion') }}"> Inscrivez-vous ici</a></p>
-                                        {{-- <div class="text-center">
-                                            <a href="#" data-toggle="modal" data-target="#forgot_password" data-dismiss="modal" class="pass_forget_btn">Forget Password?</a>
-                                        </div> --}}
-                                </form>
+                            <div class="form-group">
+                                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Mot de passe" >
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
-                        </div>
+                            <button  type="submit" class="btn_1 full_width text-center" style="background-color: #29235c !important;border-color:#152040">Connexion</button>
+                                <p>Devenir un souscripteur ? <a href="{{ route('client.adhesion') }}"> Inscrivez-vous ici</a></p>
+                                {{-- <div class="text-center">
+                                    <a href="#" data-toggle="modal" data-target="#forgot_password" data-dismiss="modal" class="pass_forget_btn">Forget Password?</a>
+                                </div> --}}
+                        </form>
                     </div>
                 </div>
+            </div>
+        </div>
     </div>
  
 <!-- footer  -->

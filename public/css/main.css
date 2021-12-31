@@ -1,9 +1,9 @@
 
 
-.main_content{
+/* .main_content{
     padding-left:0px !important;
     padding-bottom: 0px !important;
-}
+} */
 .my-auto{
     margin-top: auto;
     margin-bottom: auto;
@@ -49,6 +49,10 @@
     
 }
 
+.v-align-mid{
+    vertical-align: middle !important;
+}
+
 .mb_15 {
     margin-bottom: 15px !important;
 }
@@ -60,12 +64,21 @@
     margin-bottom: 50px !important;
 }
 
+.pl_0{
+    
+    padding-left: 0px !important;
+}
+
+.pr_0{
+    padding-right: 0px !important;
+}
+
 .common_date_picker input{
     border-radius: 10px;
     background-color: #ffffff00;
     height: 47px;
     line-height: 47px;
-    font-size: 15px;
+    font-size: 1rem !important;
 }
 
 .common_input input{
@@ -86,14 +99,106 @@
 }
 
 .ml_30{
-    margin-left:30px;
+    margin-left:30px !important;
 }
+
+.mt_15{
+    margin-top:15px !important;
+}
+
+.mt_30{
+    margin-top:30px !important;
+}
+
+.pt_50{
+    padding-top:50px !important;
+}
+
+.pb_50{
+    padding-bottom:50px !important;
+}
+
+.pt_40{
+    padding-top:40px !important;
+}
+
+.pb_40{
+    padding-bottom:40px !important;
+}
+
+.mt_5{
+    margin-top:5px !important;
+}
+
+.mt_10{
+    margin-top:10px !important;
+}
+
+.mb_10{
+    margin-bottom:10px !important;
+}
+
+.h-auto{
+    margin-left: auto !important;
+    margin-right:auto !important;
+}
+
+
 
 @font-face {
     font-family: Copperplate;
     src: url('/copperplate/Copperplate.ttf');
 }
 
+@font-face {
+    font-family: arialblack;
+    src: url('/ArialBlack/arial-black.ttf');
+}
+
+@font-face {
+    font-family: Cambria;
+    src: url('/cambria/Cambria.ttf');
+}
+
+@font-face {
+    font-family: ms-reference-sans-serif;
+    src: url('/ms-reference-sans-serif/MS_Reference_Sans_Serif.ttf');
+}
+
 div#ayant_bloc, div#benef_bloc{
     padding: 0px 15px 0px 15px;
 }
+
+.this-bc{
+   border-color: #BBC1C9 !important;
+}
+
+.font-cambria{
+    font-family: Cambria;
+}
+
+.font-arialblack{
+    font-family: arialblack;
+}
+
+.font-ms-reference-sans-serif{
+    font-family: ms-reference-sans-serif;
+}
+
+.dot {
+    height: 25px;
+    width: 25px;
+    background-color: none;
+    border-radius: 50%;
+    border: 2px solid #2F5597;
+    display: inline-block;
+  }
+
+  .dot-wh{
+    height: 25px;
+    width: 25px;
+    background-color: white;
+    border-radius: 50%;
+    border: 2px solid white;
+    display: inline-block;
+  }

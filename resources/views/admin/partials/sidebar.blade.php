@@ -27,6 +27,7 @@
             </div>
             </a>
             <ul>
+              <li><a href="{{ route("admin.adhesion.create") }}">Ajouter</a></li>
               <li><a href="{{ route("client.adhesion.liste") }}">A traiter</a></li>
               <li><a href="{{ route('admin.adhesion.valider.liste') }}">Valider</a></li>
               <li><a href="{{ route('admin.adhesion.rejeter.liste') }}">Rejeter</a></li>
