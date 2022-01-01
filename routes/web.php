@@ -48,6 +48,9 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
 
     //Formulaire d'ajout d'un adhérent
     Route::get('/adhesions/create', 'AdherentController@create')->name('adhesion.create');
+
+    //Formulaire d'ajout d'un adhérent
+    Route::post('/adhesions/store', 'AdherentController@store')->name('adhesion.store');
     
     //Adhesion deja valider
     Route::get('/adhesions-valider-liste', 'AdherentController@adhesion_valider_liste')->name('adhesion.valider.liste');
@@ -57,7 +60,7 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     
 
     //show
-    Route::get('/adhesion-show/{id}', 'AdherentController@show')->name('adhesion.show');
+    Route::get('/adherent/show/{id}', 'AdherentController@show')->name('adhesion.show');
 
     //Validation
     Route::get('/adhesion-valider/{id}', 'AdherentController@valider')->name('adhesion.valider');
@@ -71,7 +74,7 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     Route::get('/beneficiaires', 'AdherentController@beneficiaires')->name('beneficiaires.index');
 
     //Adhérent formulaire print
-    Route::get('/adherent-formulaire-print', 'AdherentController@formulaire_print')->name('adherent.formulaire-print');
+    Route::get('/adherent-formulaire-print/{id}', 'AdherentController@formulaire_print')->name('adherent.formulaire-print');
 
     //Contrats 
     Route::get('/contrats', 'ContratController@index')->name('contrat.index');

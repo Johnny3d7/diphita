@@ -46,7 +46,7 @@
 
                     <div class="QA_table mb_30">
                         <!-- table-responsive -->
-                        <table class="table lms_table_active " id="tabledata">
+                        <table class="table table_diphita ">
                             <thead>
                                 
                                 <tr>

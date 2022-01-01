@@ -46,7 +46,7 @@
 
                     <div class="QA_table mb_30">
                         <!-- table-responsive -->
-                        <table class="table display nowrap table-striped" id="table_diphita">
+                        <table class="table display nowrap table-striped table_diphita">
                             <thead>
                                 
                                 <tr>

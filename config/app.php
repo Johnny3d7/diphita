@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Console\Application;
+
 return [
 
     /*
@@ -229,6 +231,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Adherents' => App\Models\Adherents::class,
+        'AyantDroit' => App\Models\AyantDroit::class,
 
     ],
 

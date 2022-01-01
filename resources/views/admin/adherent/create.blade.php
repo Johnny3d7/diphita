@@ -23,7 +23,7 @@
                             <div class="main-title">
                                 <h3 class="m-0">Formulaire d'ajout d'un adhérent</h3>
                                 <div class="col-md-12 text-center mt_15">
-                                    @include('admin.partials.message')
+                                    
                                 </div>
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                     <div class="white_card_body">
                         <div class="card-body">
                             <h6 class="card-subtitle mb-2">Les champs marqués du signe <code class="highlighter-rouge">(*)</code> sont tous obligatoires.</h6>
-                            <form action="{{ route('adhesion.store') }}" method="post">
+                            <form action="{{ route('admin.adhesion.store') }}" method="post">
                                 @csrf
                                 @method('POST')
                                 <div class="form-row">

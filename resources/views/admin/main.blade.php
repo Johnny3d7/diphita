@@ -79,12 +79,14 @@
                                 <li class="breadcrumb-item active">@yield('subtitle')</li>
                             </ol>
                         </div>
+                        
                         <div class="page_title_right">
                             <div class="page_date_button d-flex align-items-center"> 
                                 <img src="{{ url('img/icon/calender_icon.svg') }}" alt="">
                                 {{ ucwords((new Carbon\Carbon(Now()))->locale('fr')->isoFormat('DD MMMM YYYY')) }}</td>
                             </div>
                         </div>
+                        <a href="{{ url()->previous() }}" class="white_btn3">Retour</a>
                     </div>
                 </div>
             </div>
@@ -297,7 +299,7 @@
 </script>
 <script>
     $(document).ready(function () {
-        $('#table_diphita').DataTable({
+        $('.table_diphita').DataTable({
             paging: true,
             "language": {
                 "url": "{{ url('js/language/french_json.json')}}"

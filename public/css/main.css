@@ -202,3 +202,12 @@ div#ayant_bloc, div#benef_bloc{
     border: 2px solid white;
     display: inline-block;
   }
+
+  .dot-orange{
+    height: 25px;
+    width: 25px;
+    background-color: orangered;
+    border-radius: 50%;
+    border: 2px solid orangered;
+    display: inline-block;
+  }

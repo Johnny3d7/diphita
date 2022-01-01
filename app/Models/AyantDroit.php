@@ -42,4 +42,9 @@ class AyantDroit extends Model
             ->generateSlugsFrom('nom','pnom')
             ->saveSlugsTo('slug');
     }
+
+    public function adherent()
+    {
+        return $this->belongsTo(Adherents::class, 'id_adherent');
+    }
 }

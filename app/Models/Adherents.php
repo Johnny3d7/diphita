@@ -50,4 +50,11 @@ class Adherents extends Model
             ->generateSlugsFrom('num_cni','nom','pnom')
             ->saveSlugsTo('slug');
     }
+
+    
+
+    public function ayants()
+    {
+        return $this->hasMany(AyantDroit::class, 'id_adherent');
+    }
 }

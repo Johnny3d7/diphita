@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Adherents;
+use App\Models\AyantDroit;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AdherentController extends Controller
 {
@@ -54,7 +56,102 @@ class AdherentController extends Controller
     public function store(Request $request)
     {
         //Stockage d'une adhésion
-       
+        $validatedData = $request->validate([
+            "souscript_civilite" => "required|integer",
+            "souscript_nom" => "required",
+            "souscript_pnom" => "required",
+            "souscript_lhab" => "required",
+            "souscript_lnaiss" => "required",
+            "souscript_dnaiss" => "required",
+            "souscript_email" => "required|email|unique:adherents,email",
+            "souscript_contact" => "required|unique:adherents,contact",
+            "souscript_ncni" => "required|unique:adherents,num_cni",
+            "benef_civilite.*" => "required",
+            "benef_nom.*" => "required",
+            "benef_pnom.*" => "required",
+            "benef_lnaiss.*" => "required",
+            "benef_dnaiss.*" => "required",
+            "benef_ncni.*" => "required|unique:adherents,num_cni",
+            "ayant_civilite.*" => "required",
+            "ayant_nom.*" => "required",
+            "ayant_pnom.*" => "required",
+            "ayant_contact.*" => "required|unique:ayantdroits,contact",
+        ], [
+            /*"nom.required" => "Le nom est un champ est requis",
+            "category.required" => "La catégorie est un champ est requis",
+            "statut.required" => "Name is required",
+            "adresse.required" => "Name is required",
+            "email.required" => "Name is required",
+            "email.email" => "Name is required",
+            "contact.required" => "Name is required",*/
+        ]);
+
+        //dd($request->all());
+        // Traiter le champ contact prévu pour les sms
+        $contact = explode("-", substr($request->souscript_contact, 7, 14));
+        $contact_format = "225".$contact[0].$contact[1].$contact[2].$contact[3].$contact[4];
+        
+        //dd(Adheregenerate_order(Adherents::count()));
+        //store souscripteur
+        $souscript_dnaiss = explode('-',$request->souscript_dnaiss);
+
+        $sous_dnaiss = $souscript_dnaiss[2].$souscript_dnaiss[1].$souscript_dnaiss[0];
+
+        $souscripteur = Adherents::create([
+            'nom' => $request->souscript_nom,
+            'pnom' => $request->souscript_pnom,
+            'civilite' => $request->souscript_civilite,
+            'email' => $request->souscript_email,
+            'date_naiss' => $sous_dnaiss,
+            'num_cni' => $request->souscript_ncni,
+            'lieu_naiss' => $request->souscript_lnaiss,
+            'lieu_hab' => $request->souscript_lhab,
+            'contact' => $request->souscript_contact,
+            'contact_format' => $contact_format,
+            'role' => 1,
+            'valide' => 0,
+            'status' => 0,
+        ]);
+
+        //store bénéficiaire(s)
+        $nb_benef = sizeof($request->benef_civilite);
+
+        for ($i=0; $i < $nb_benef; $i++) { 
+
+            $benef_dnaiss = explode('-',$request->benef_dnaiss[$i]);
+
+            $ben_dnaiss = $benef_dnaiss[2].$benef_dnaiss[1].$benef_dnaiss[0];
+
+            Adherents::create([
+                'nom' => $request->benef_nom[$i],
+                'pnom' => $request->benef_pnom[$i],
+                'civilite' => $request->benef_civilite[$i],
+                'date_naiss' => $ben_dnaiss,
+                'num_cni' => $request->benef_ncni[$i],
+                'lieu_naiss' => $request->benef_lnaiss[$i],
+                'parent' => $souscripteur->id,
+                'role' => 2,
+                'valide' => 0,
+                'status' => 1,
+            ]);
+        }
+
+        //store ayants-droit
+        $nb_ayant = sizeof($request->ayant_civilite);
+
+        for ($j=0; $j < $nb_ayant; $j++) { 
+            AyantDroit::create([
+                'nom' => $request->ayant_nom[$j],
+                'pnom' => $request->ayant_pnom[$j],
+                'civilite' => $request->ayant_civilite[$j],
+                'contact' => $request->ayant_contact[$j],
+                'priorite' => $j + 1,
+                'id_adherent' => $souscripteur->id,
+                'status' => 1,
+            ]);
+        }
+
+        return redirect()->back()->with('message', 'L\'ajout s\'est déroulé avec succès. Veuillez consulter la liste des adhésions s\'il vous plaît')->with('type', 'bg-success');
     }
 
     /**
@@ -65,7 +162,16 @@ class AdherentController extends Controller
      */
     public function show($id)
     {
-        //
+        //Le souscripteur
+        $souscripteur = Adherents::find($id);
+
+        //Les bénéficiaires
+        $benefs = Adherents::where(['status'=>1,'role'=>2,'parent'=>$id])->orderBy('created_at', 'DESC')->get();
+        
+        //Les ayants-droit
+        $ayants = AyantDroit::where(['status'=>1,'id_adherent'=>$id])->orderBy('created_at', 'DESC')->get();
+
+        return view('admin.adherent.show',compact('souscripteur','benefs','ayants'));
     }
 
     /**
@@ -130,18 +236,21 @@ class AdherentController extends Controller
         $adhesion->status = 1;
         $adhesion->num_adhesion = $num_adhe;
         $adhesion->num_contrat = $num_contrat;
-
+        $adhesion->date_adhesion = Carbon::now();
+        $adhesion->date_fincarence = Carbon::now()->addMonths(4);
         $adhesion->save();
 
         //Numero des beneficiaires a generer
         $beneficiaires = Adherents::where('parent',$id)->get();
-        dd($beneficiaires);
+        //dd($beneficiaires);
         foreach ($beneficiaires as $benef) {
             $no = $this->generate_order(Adherents::where('valide',1)->count());
             //$no = (int)($no + 1);
             $benef->num_adhesion = $suffix.$date.'B'.$no;
             $benef->valide = 1;
             $benef->num_contrat = $num_contrat;
+            $benef->date_adhesion = Carbon::now();
+            $benef->date_fincarence = Carbon::now()->addMonths(4);
             $benef->save();
         }
 
@@ -151,7 +260,7 @@ class AdherentController extends Controller
         $this->sms_inscription_valider($num_adhe,$adhesion->contact_format,$adhesion->nom,$adhesion->pnom,$adhesion->civilite);
         
 
-        return redirect()->back()->with('message', 'Validation réussie, l\'individu fait désormais partir des souscripteurs. Un sms lui a été envoyé')->with('type', 'bg-success');
+        return redirect()->back()->with('message', 'Validation réussie, l\'individu fait désormais partir des souscripteurs. Un sms lui a été envoyé.')->with('type', 'bg-success');
     }
 
     public function rejeter($id)
@@ -165,7 +274,7 @@ class AdherentController extends Controller
         // Envoyer un sms au concerné
         $this->sms_inscription_rejeter($adhesion->contact_format,$adhesion->nom,$adhesion->pnom,$adhesion->civilite);
 
-        return redirect()->back()->with('message', 'Rejet réussie, l\'individu est désormais dans la liste des adhésions rejetées .Un sms lui a été envoyé')->with('type', 'bg-danger');;
+        return redirect()->back()->with('message', 'Rejet réussie, l\'individu est désormais dans la liste des adhésions rejetées .Un sms lui a été envoyé.')->with('type', 'bg-danger');;
     }
 
     public function generate_order($nb){
@@ -368,9 +477,11 @@ class AdherentController extends Controller
         
     }
 
-    public function formulaire_print(){
+    public function formulaire_print($id){
 
-        return view('admin.adherent.formulaire_print');
+        $adherent = Adherents::find($id);
+
+        return view('admin.adherent.formulaire_print',compact('adherent'));
     }
     
 }

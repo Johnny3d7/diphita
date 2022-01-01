@@ -12,6 +12,14 @@
             padding-top: 0rem !important;
             padding-bottom: 0rem !important;
         }
+
+        #bl{
+        background-repeat: no-repeat;
+        background-position-x: center;
+        background-position-y: center;
+        background-size: 25%;
+        background-image:url({{ url('images/totem_obp.png') }}) ;
+    }
         
     </style>
 @endsection
@@ -41,7 +49,7 @@
                         </div>
                     </div>
                     <div class="white_card_body">
-                        <div class="card-body">
+                        <div class="card-body" id="logo_fond">
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-lg-3 txt-center">
@@ -61,13 +69,34 @@
                                         <h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">SOUSCRIPTEUR</h3>
                                     </div>
                                     <div class="col-lg-12" style=" border:1.5px solid #2F5597;  width:70% !important; background-color:#DAE3F3">
+                                        @if ($adherent->role == 1)
+                                            <div class="row">
+                                                <div class="col-lg-9">
+                                                    <h3 class="font-cambria mt_10 mb_10">Nom : {{ $adherent->nom }}</h3>
+                                                    <h3 class="font-cambria mt_10 mb_10">Prénom(s) : {{ $adherent->pnom }}</h3>
+                                                    <h3 class="font-cambria mt_10 mb_10">Numéro CNI : {{ $adherent->num_cni }}</h3>
+                                                    <h3 class="font-cambria mt_10 mb_10">Tél. : {{ $adherent->contact }} E-mail : {{ $adherent->email }}</h3>
+                                                    <h3 class="font-cambria mt_10 mb_10">Résidence : {{ $adherent->lieu_hab }}</h3>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="col-lg-12">
+                                                        <div class="font-cambria mt_10 mb_10 pb_50 pt_50 txt-center" style=" border:1.5px solid #2F5597; font-size:25px; background-color:white !important;">Photo du bénéficiaire (Facultatif) </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        @elseif($adherent->role == 2)
+                                        @php
+                                            // Contient le souscripteur au cas ou le bénéficiaire != du souscripteur
+                                            $sous = Adherents::where(['status'=> 1, 'role'=>1,'id'=>$adherent->parent])->first();
+                                        @endphp
                                         <div class="row">
                                             <div class="col-lg-9">
-                                                <h3 class="font-cambria mt_10 mb_10">Nom :</h3>
-                                                <h3 class="font-cambria mt_10 mb_10">Prénom(s) :</h3>
-                                                <h3 class="font-cambria mt_10 mb_10">Numéro CNI :</h3>
-                                                <h3 class="font-cambria mt_10 mb_10">Tél. : .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . E-mail : .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .</h3>
-                                                <h3 class="font-cambria mt_10 mb_10">Résidence :</h3>
+                                                <h3 class="font-cambria mt_10 mb_10">Nom : {{ $sous->nom }}</h3>
+                                                <h3 class="font-cambria mt_10 mb_10">Prénom(s) : {{ $sous->pnom }}</h3>
+                                                <h3 class="font-cambria mt_10 mb_10">Numéro CNI : {{ $sous->num_cni }}</h3>
+                                                <h3 class="font-cambria mt_10 mb_10">Tél. : {{ $sous->contact }} E-mail : {{ $sous->email }}</h3>
+                                                <h3 class="font-cambria mt_10 mb_10">Résidence : {{ $sous->lieu_hab }}</h3>
                                             </div>
                                             <div class="col-lg-3">
                                                 <div class="col-lg-12">
@@ -75,7 +104,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+                                        @endif                
                                     </div>
                                 </div>
                                 <div class="row justify-content-center mt_30">
@@ -84,9 +113,9 @@
                                             <div class="col-lg-6">
                                                 <h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">BÉNÉFICIAIRE</h3>
                                             </div>
-                                            <div class="col" style="display: flex !important;"><div class="dot-wh v-align-mid mt_10 mb_10"></div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;Mme</h3></div>
-                                            <div class="col" style="display: flex !important;"><div class="dot-wh v-align-mid mt_10 mb_10"></div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;Mlle</h3></div>
-                                            <div class="col" style="display: flex !important;"><div class="dot-wh v-align-mid mt_10 mb_10"></div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;M</h3></div>
+                                            <div class="col" style="display: flex !important;"><div class="@if($adherent->civilite == 2) dot-orange @else dot-wh @endif  v-align-mid mt_10 mb_10"></div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;Mme</h3></div>
+                                            <div class="col" style="display: flex !important;"><div class="@if($adherent->civilite == 3) dot-orange @else dot-wh @endif v-align-mid mt_10 mb_10"></div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;Mlle</h3></div>
+                                            <div class="col" style="display: flex !important;"><div class="@if($adherent->civilite == 1) dot-orange @else dot-wh @endif v-align-mid mt_10 mb_10"></div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;M</h3></div>
                                         </div>
                                         
                                     </div>
@@ -95,31 +124,31 @@
                                             <tbody>
                                               <tr>
                                                 <th scope="row">Numéro d’Identification</th>
-                                                <td>Mark</td>
+                                                <td>{{ $adherent->num_adhesion }}</td>
                                               </tr>
                                               <tr>
                                                 <th scope="row">Nom et prénom(s)</th>
-                                                <td>Mark</td>
+                                                <td>{{ $adherent->nom }} {{ $adherent->pnom }}</td>
                                               </tr>
                                               <tr>
                                                 <th scope="row">Date et lieu de naissance</th>
-                                                <td>Mark</td>
+                                                <td> {{ ucwords((new Carbon\Carbon($adherent->date_naiss))->locale('fr')->isoFormat('DD/MM/YYYY')) }} à {{ $adherent->lieu_naiss }}</td>
                                               </tr>
                                               <tr>
                                                 <th scope="row">Numéro CNI</th>
-                                                <td>Mark</td>
+                                                <td>{{ $adherent->num_cni }}</td>
                                               </tr>
                                               <tr>
                                                 <th scope="row">Lieu de résidence</th>
-                                                <td>Mark</td>
+                                                <td>{{ $adherent->lieu_hab }}</td>
                                               </tr>
                                               <tr>
                                                 <th scope="row">Date d’inscription</th>
-                                                <td>Jacob</td>
+                                                <td>{{ ucwords((new Carbon\Carbon($adherent->date_adhesion))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                                               </tr>
                                               <tr>
                                                 <th scope="row">Fin de carence</th>
-                                                <td>Jacob</td>
+                                                <td>{{ ucwords((new Carbon\Carbon($adherent->date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                                               </tr>
                                               <tr>
                                                 <th scope="row" rowspan="3" class="v-align-mid">Somme à payée: <span style=" border:1.5px solid #2F5597; padding:5px 10px 5px 10px">10000 Fcfa</span></th>
@@ -164,21 +193,24 @@
                                         <table class="table table-bordered">
                                             
                                             <tbody>
-                                              <tr>
-                                                <th scope="row" style="width: 5%">01</th>
-                                                <td style="width: 65%">Mark</td>
-                                                <td style="width: auto">+(225) 01-41-68-30-29</td>
-                                              </tr>
-                                              <tr>
-                                                <th scope="row" >02</th>
-                                                <td>Mark</td>
-                                                <td>Mark</td>
-                                              </tr>
-                                              <tr>
-                                                <th scope="row">03</th>
-                                                <td>Mark</td>
-                                                <td>Mark</td>
-                                              </tr>
+                                            @if ($adherent->role == 2)
+                                            @foreach ($sous->ayants as $ayant)
+                                                <tr>
+                                                    <th scope="row" style="width: 5%">{{ $ayant->priorite }}</th>
+                                                    <td style="width: 65%">{{ $ayant->nom }} {{ $ayant->pnom }}</td>
+                                                    <td style="width: auto">{{ $ayant->contact }}</td>
+                                                </tr>
+                                            @endforeach
+                                            @elseif($adherent->role == 1)
+                                            
+                                            @foreach ($adherent->ayants as $ayant)
+                                            <tr>
+                                                <th scope="row" style="width: 5%">{{ $ayant->priorite }}</th>
+                                                <td style="width: 65%">{{ $ayant->nom }} {{ $ayant->pnom }}</td>
+                                                <td style="width: auto">{{ $ayant->contact }}</td>
+                                            </tr>
+                                            @endforeach
+                                            @endif
                                             </tbody>
                                           </table>
                                 </div>
@@ -186,7 +218,7 @@
                                     <h3 class="font-cambria mt_15 mb_15 txt-center">NB : La double inscription d’un même bénéficiaire est formellement interdite ; sa découverte annule la plus récente. Toute fausse déclaration annule l’inscription.</h3>
                                 </div>
                                 <div class="row justify-content-center">
-                                    <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:25px;">Conseiller Diphita Prévoyance……………….………. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fait à Abidjan, le…..../…...../ 20….</div>
+                                    <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:25px;">Conseiller Diphita Prévoyance……………….………. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fait à Abidjan, le {{ ucwords((new Carbon\Carbon($adherent->date_adhesion))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</div>
                                 </div>
                                 <div class="row justify-content-center">
                                     <div class="col">
