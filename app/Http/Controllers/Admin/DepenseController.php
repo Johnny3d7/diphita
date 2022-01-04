@@ -15,6 +15,7 @@ class DepenseController extends Controller
     public function index()
     {
         //
+        return view('admin.depense.index');
     }
 
     /**
@@ -25,6 +26,7 @@ class DepenseController extends Controller
     public function create()
     {
         //
+        return view('admin.depense.create');
     }
 
     /**
@@ -36,6 +38,8 @@ class DepenseController extends Controller
     public function store(Request $request)
     {
         //
+
+        return redirect()->back();
     }
 
     /**

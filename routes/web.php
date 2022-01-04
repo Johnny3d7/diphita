@@ -101,20 +101,20 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     //Configuration
     
     //Droit d'inscription
-    Route::get('/prix-droit-inscription', 'ConfigurationController@droitInscription')->name('droit-inscription.index');
-    Route::post('/prix-droit-inscription/store', 'ConfigurationController@droitInscriptionStore')->name('droit-inscription.store');
+    Route::get('/montant-droit-inscription', 'ConfigurationController@droitInscription')->name('droit-inscription.index');
+    Route::post('/montant-droit-inscription/store', 'ConfigurationController@droitInscriptionStore')->name('droit-inscription.store');
 
     //Cotisations annuelles
-    Route::get('/prix-cotisation-annuelle', 'ConfigurationController@prixCotisationAnnuelle')->name('prix-cotisation-annuelle.index');
-    Route::post('/prix-cotisation-annuelle/store', 'ConfigurationController@prixCotisationAnnuelleStore')->name('prix-cotisation-annuelle.store');
+    Route::get('/montant-cotisation-annuelle', 'ConfigurationController@cotisationAnnuelle')->name('montant-cotisation-annuelle.index');
+    Route::post('/montant-cotisation-annuelle/store', 'ConfigurationController@cotisationAnnuelleStore')->name('montant-cotisation-annuelle.store');
 
     //Cotisations exceptionnelles
-    Route::get('/prix-cotisation-exceptionnelle', 'ConfigurationController@prixCotisationExceptionnelle')->name('prix-cotisation-exceptionnelle.index');
-    Route::post('/prix-cotisation-exceptionnelle/store', 'ConfigurationController@prixCotisationExceptionnelleStore')->name('prix-cotisation-exceptionnelle.store');
+    Route::get('/montant-cotisation-exceptionnelle', 'ConfigurationController@cotisationExcept')->name('montant-cotisation-exceptionnelle.index');
+    Route::post('/montant-cotisation-exceptionnelle/store', 'ConfigurationController@cotisationExceptionnelleStore')->name('montant-cotisation-exceptionnelle.store');
 
     //Kit d'inscription
-    Route::get('/prix-kit', 'ConfigurationController@prixKit')->name('prix-kit.index');
-    Route::post('/prix-kit/store', 'ConfigurationController@prixKitStore')->name('prix-kit.store');
+    Route::get('/montant-kit', 'ConfigurationController@traitementKit')->name('montant-kit.index');
+    Route::post('/montant-kit/store', 'ConfigurationController@traitementKitStore')->name('montant-kit.store');
 
 });
 

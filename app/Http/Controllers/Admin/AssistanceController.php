@@ -15,6 +15,7 @@ class AssistanceController extends Controller
     public function index()
     {
         //
+        return view('admin.assistance.index');
     }
 
     /**
@@ -25,6 +26,7 @@ class AssistanceController extends Controller
     public function create()
     {
         //
+        return view('admin.assistance.create');
     }
 
     /**
@@ -36,6 +38,7 @@ class AssistanceController extends Controller
     public function store(Request $request)
     {
         //
+        return redirect()->back();
     }
 
     /**

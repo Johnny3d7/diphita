@@ -236,11 +236,19 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-12 txt-center">
+                <a href="#" class="white_btn_1 btnblprint">Imprimer</a>
+            </div>
         </div>
     </div>
 </div>
 @endsection
 
 @section('js')
-
+<script>
+    $('.btnblprint').on('click', function(event) {
+        event.preventDefault();
+     window.print();
+    });
+ </script>
 @endsection

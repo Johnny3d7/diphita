@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CotisationAnnuelle;
+use App\Models\CotisationExceptionnelle;
+use App\Models\DroitInscription;
+use App\Models\TraitementKit;
 use Illuminate\Http\Request;
 
 class ConfigurationController extends Controller
@@ -81,5 +85,142 @@ class ConfigurationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function droitInscription()
+    {
+        //
+        $montant_actuel = DroitInscription::where('status',1)->first();
+
+        $montant_story = DroitInscription::orderBy('created_at', 'DESC')->get();
+
+        return view('admin.configuration.DroitInscription.index',compact('montant_story','montant_actuel'));
+    }
+
+    public function droitInscriptionStore(Request $request){
+
+        $validatedData = $request->validate([
+            "montant" => "required|integer",
+        ], [
+            "montant.required" => "Le champ montant est obligatoire",
+            "montant.integer" => "La valeur du champ montant doit être un nombre"
+        ]);
+
+            
+            foreach (DroitInscription::where('status',1)->get() as $cotisation) {
+                $cotisation->status = 0;
+                $cotisation->save();
+            }
+
+        
+            $montant = DroitInscription::create([
+                'montant' => $request->montant,
+                'status' => 1,
+            ]);
+
+
+        return redirect()->back()->with('message', 'Le montant a été mis à jour')->with('type', 'bg-success');
+    }
+
+    public function cotisationAnnuelle()
+    {
+        //
+        $montant_actuel = CotisationAnnuelle::where('status',1)->first();
+
+        $montant_story = CotisationAnnuelle::orderBy('created_at', 'DESC')->get();
+
+        return view('admin.configuration.CotisationAnnuelle.index',compact('montant_story','montant_actuel'));
+    }
+
+    public function cotisationAnnuelleStore(Request $request){
+
+        $validatedData = $request->validate([
+            "montant" => "required|integer",
+        ], [
+            "montant.required" => "Le champ montant est obligatoire",
+            "montant.integer" => "La valeur du champ montant doit être un nombre"
+        ]);
+
+            //dd(CotisationAnnuelle::where('status',1)->get());
+            foreach (CotisationAnnuelle::where('status',1)->get() as $cotisation) {
+                $cotisation->status = 0;
+                $cotisation->save();
+            }
+
+        
+        $montant = CotisationAnnuelle::create([
+            'montant' => $request->montant,
+            'status' => 1,
+        ]);
+
+        return redirect()->back()->with('message', 'Le montant a été mis à jour')->with('type', 'bg-success');
+    }
+
+    public function cotisationExcept()
+    {
+        //
+        $montant_actuel = CotisationExceptionnelle::where('status',1)->first();
+
+        $montant_story = CotisationExceptionnelle::orderBy('created_at', 'DESC')->get();
+
+        return view('admin.configuration.CotisationExcept.index',compact('montant_story','montant_actuel'));
+    }
+
+    public function cotisationExceptionnelleStore(Request $request){
+
+        $validatedData = $request->validate([
+            "montant" => "required|integer",
+        ], [
+            "montant.required" => "Le champ montant est obligatoire",
+            "montant.integer" => "La valeur du champ montant doit être un nombre"
+        ]);
+
+            
+            foreach (CotisationExceptionnelle::where('status',1)->get() as $cotisation) {
+                $cotisation->status = 0;
+                $cotisation->save();
+            }
+
+        
+        $montant = CotisationExceptionnelle::create([
+            'montant' => $request->montant,
+            'status' => 1,
+        ]);
+
+        return redirect()->back()->with('message', 'Le montant a été mis à jour')->with('type', 'bg-success');
+    }
+
+    public function traitementKit()
+    {
+        //
+        $montant_actuel = TraitementKit::where('status',1)->first();
+
+        $montant_story = TraitementKit::orderBy('created_at', 'DESC')->get();
+
+        return view('admin.configuration.TraitementKit.index',compact('montant_story','montant_actuel'));
+    }
+
+    public function traitementKitStore(Request $request){
+
+        $validatedData = $request->validate([
+            "montant" => "required|integer",
+        ], [
+            "montant.required" => "Le champ montant est obligatoire",
+            "montant.integer" => "La valeur du champ montant doit être un nombre"
+        ]);
+
+            
+            foreach (TraitementKit::where('status',1)->get() as $cotisation) {
+                $cotisation->status = 0;
+                $cotisation->save();
+            }
+
+        
+        $montant = TraitementKit::create([
+            'montant' => $request->montant,
+            'status' => 1,
+        ]);
+
+        return redirect()->back()->with('message', 'Le montant a été mis à jour')->with('type', 'bg-success');
     }
 }

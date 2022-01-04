@@ -73,8 +73,8 @@
             </div>
             </a>
             <ul>
-              <li><a href="login.html">Liste des cas</a></li>
-              <li><a href="resister.html">Créer un cas</a></li>
+              <li><a href="{{ route('admin.assistance.index') }}">Liste des cas</a></li>
+              <li><a href="{{ route('admin.assistance.create') }}">Créer un cas</a></li>
             </ul>
         </li>
         
@@ -88,8 +88,8 @@
             </div>
             </a>
             <ul>
-              <li><a href="admin_list.html">Ajouter une dépense</a></li>
-              <li><a href="add_new_admin.html">Liste des dépenses</a></li>
+              <li><a href="{{ route('admin.depense.create') }}">Ajouter une dépense</a></li>
+              <li><a href="{{ route('admin.depense.index') }}">Liste des dépenses</a></li>
             </ul>
         </li>
         
@@ -118,10 +118,10 @@
               </div>
             </a>
             <ul>
-              <li><a href="Basic_Elements.html">Droit d'inscription</a></li>
-              <li><a href="Groups.html">Cotisation annuelle</a></li>
-              <li><a href="Max_Length.html">Cotisation exceptionnelle</a></li>
-              <li><a href="Max_Length.html">Traitement et kits d'inscription</a></li>
+              <li><a href="{{ route('admin.droit-inscription.index') }}">Droit d'inscription</a></li>
+              <li><a href="{{ route('admin.montant-cotisation-annuelle.index') }}">Cotisation annuelle</a></li>
+              <li><a href="{{ route('admin.montant-cotisation-exceptionnelle.index') }}">Cotisation exceptionnelle</a></li>
+              <li><a href="{{ route('admin.montant-kit.index') }}">Traitement et kits d'inscription</a></li>
             </ul>
         </li>
         <li class="">

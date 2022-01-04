@@ -232,6 +232,10 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Adherents' => App\Models\Adherents::class,
         'AyantDroit' => App\Models\AyantDroit::class,
+        'CotisationAnnuelle' => App\Models\CotisationAnnuelle::class,
+        'TraitementKit' => App\Models\TraitementKit::class,
+        'DroitInscription' => App\Models\DroitInscription::class,
+        'CotisationExceptionnelle' => App\Models\CotisationExceptionnelle::class,
 
     ],
 
