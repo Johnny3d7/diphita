@@ -73,6 +73,10 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     Route::get('/adherents', 'AdherentController@index')->name('adherent.index');
     Route::get('/beneficiaires', 'AdherentController@beneficiaires')->name('beneficiaires.index');
 
+    //Bloquer ou débloquer le compte
+    Route::get('/adherent-bloquer/{id}', 'AdherentController@bloquer')->name('adherent.bloquer');
+    Route::get('/adherent-debloquer/{id}', 'AdherentController@debloquer')->name('adherent.debloquer');
+
     //Adhérent formulaire print
     Route::get('/adherent-formulaire-print/{id}', 'AdherentController@formulaire_print')->name('adherent.formulaire-print');
 

@@ -31,6 +31,7 @@ class CreateAdherentsTable extends Migration
             $table->integer('role');
             $table->dateTime('date_adhesion')->nullable();
             $table->dateTime('date_fincarence')->nullable();
+            $table->dateTime('date_debutcotisation')->nullable();
             $table->integer('parent')->nullable();
             $table->integer('valide')->default(0);
             $table->integer('status')->default(1);

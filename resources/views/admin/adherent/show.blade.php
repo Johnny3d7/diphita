@@ -34,10 +34,11 @@
                                             <div class="icon-wrapper-bg bg-primary"></div>
                                             <i class="ti-settings text-primary"></i>
                                         </div>
-                                            @if ($souscripteur->num_contrat)
-                                                <div class="widget-numbers"><span>{{ $souscripteur->num_contrat }}</span></div>
-                                            @else
+                                            @if ($souscripteur->num_contrat==null || $souscripteur->status==0)
                                                 <div class="widget-numbers"><span>INACTIF</span></div>
+                                                
+                                            @else
+                                            <div class="widget-numbers"><span>{{ $souscripteur->num_contrat }}</span></div>
                                             @endif
                                             
                                             <div class="widget-subheading">Numéro du contrat</div>
@@ -183,12 +184,18 @@
                             @if ($souscripteur->valide == 1)
                             <div class="row">
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Date d'adhésion:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $souscripteur->lieu_hab }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Date d'adhésion:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ ucwords((new Carbon\Carbon($souscripteur->date_adhesion))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</div></div>
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Date de fin de carence:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $souscripteur->lieu_hab }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Date de fin de carence:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ ucwords((new Carbon\Carbon($souscripteur->date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</div></div>
                                 </div>
+                                
                             </div>    
+                            <div class="row">
+                                <div class="col mb_15" style="font-size:16px !important">
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Date de début de cotisation:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ ucwords((new Carbon\Carbon($souscripteur->date_debutcotisation))->locale('fr')->isoFormat('Do MMMM YYYY')) }}</div></div>
+                                </div>
+                            </div>
                             @endif
                                                    
                         </div>
@@ -205,9 +212,21 @@
                         <li><a href="{{ route('admin.adhesion.valider', ['id' => $souscripteur->id]) }}"><i class="ti-check"></i> <span> <span>Valider</span> </span> </a></li>
                         <li><a href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"><i class="ti-trash"></i> <span> <span>Rejeter</span>  </span> </a></li>
                         @endif
+
+                        @if ($souscripteur->status == 0 && $souscripteur->valide == 1)
+                            <li><a href="{{ route('admin.adherent.debloquer', ['id' => $souscripteur->id]) }}"><i class="ti-unlock"></i> <span> <span>Débloquer compte</span>  </span> </a></li>
+                            
+                        @elseif ($souscripteur->status == 1 && $souscripteur->valide == 1)
+                            <li><a href="#"><i class="ti-money"></i> <span> <span>Versement</span>  </span> </a></li>
+                            <li><a href="{{ route('admin.adherent.bloquer', ['id' => $souscripteur->id]) }}"><i class="ti-lock"></i> <span> <span>Bloquer compte</span>  </span> </a></li>
+                            <li><a href="#"><i class="ti-save"></i> <span> <span>Cas de décès</span> </span> </a></li>
+                        @endif
                         
                     </ul>
                 </div>
+               
+                    
+                
             </div>
         </div>
         <div class="row">

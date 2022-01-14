@@ -34,6 +34,7 @@ class Adherents extends Model
         'role',
         'date_adhesion',
         'date_fincarence',
+        'date_debutcotisation',
         'parent',
         'valide',
         'status',

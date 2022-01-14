@@ -211,6 +211,16 @@ class AdherentController extends Controller
     public function valider($id)
     {
         //
+        //Récupère le mois et l'année actuel
+        $current_month_year = Carbon::now()->format('Y-m');
+
+        //Récupère la date du premier jour du mois en cours
+        $first_day_month = Carbon::createFromFormat('Y-m-d', $current_month_year.'-01');
+
+        //Récupère la date du 5ième jour du mois en cours
+        $fifth_day_month = Carbon::createFromFormat('Y-m-d', $current_month_year.'-05');
+
+
         $adhesion = Adherents::where('id',$id)->first();
 
         //Numero de contrat
@@ -238,9 +248,17 @@ class AdherentController extends Controller
         $adhesion->num_contrat = $num_contrat;
         $adhesion->date_adhesion = Carbon::now();
         $adhesion->date_fincarence = Carbon::now()->addMonths(4);
+
+        //Vérifie si la date d'aujourd'hui est entre le 1er et le 5 du mois en cours
+        if (Carbon::now()->between($first_day_month, $fifth_day_month)) {
+            $adhesion->date_debutcotisation = Carbon::createFromFormat('Y-m-d', $current_month_year.'-25');
+        } else {
+            $adhesion->date_debutcotisation = Carbon::createFromFormat('Y-m-d', $current_month_year.'-25')->addMonth();
+        }
+
         $adhesion->save();
 
-        //Numero des beneficiaires a generer
+        //Numéro des beneficiaires a génerer
         $beneficiaires = Adherents::where('parent',$id)->get();
         //dd($beneficiaires);
         foreach ($beneficiaires as $benef) {
@@ -257,7 +275,7 @@ class AdherentController extends Controller
        
         // Envoyer un sms au concerné
 
-        $this->sms_inscription_valider($num_adhe,$adhesion->contact_format,$adhesion->nom,$adhesion->pnom,$adhesion->civilite);
+        $this->sms_inscription_valider($num_adhe,$adhesion->contact_format,$adhesion->nom,$adhesion->pnom,$adhesion->civilite, $adhesion->date_debutcotisation, $adhesion->date_fincarence);
         
 
         return redirect()->back()->with('message', 'Validation réussie, l\'individu fait désormais partir des souscripteurs. Un sms lui a été envoyé.')->with('type', 'bg-success');
@@ -296,7 +314,7 @@ class AdherentController extends Controller
         return $no;
     }
 
-    public function sms_inscription_valider($num_adhe, $contact,$nom,$pnom,$civilite){
+    public function sms_inscription_valider($num_adhe, $contact,$nom,$pnom,$civilite, $date_debutcotisation, $date_fincarence){
 
         if ($civilite == 1) {
             $titre = "M.";
@@ -318,7 +336,7 @@ class AdherentController extends Controller
         'filename' => NULL,
         'saveAsModel' => false,
         'destination' => 'NAT',
-        'message' => $titre.' '.$nom.' '.$pnom.' votre inscription à Diphita Prévoyance s\'est déroulée avec succès. Votre numéro d\'adhésion est : '.$num_adhe,
+        'message' => 'Félicitations '.$titre.' '.$nom.' '.$pnom.' votre adhésion à notre chaîne de solidarité Diphita Prévoyance s\'est effetuée avec succès. Votre numéro ID: '.$num_adhe.'. Fin de carence: '.ucwords((new Carbon($date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')).'. Début de cotisation: '.ucwords((new Carbon($date_debutcotisation))->locale('fr')->isoFormat('DD/MM/YYYY')),
         'emailText' => NULL,
         'recipients' => 
         [

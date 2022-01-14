@@ -367,7 +367,7 @@
                                         </div>
                                         <div class="form-group col-lg-3" id="benef-ncni-${$i}">
                                             <label for="benef_ncni[]">Numéro CNI <code class="highlighter-rouge">*</code></label>
-                                            <input type="email" name="benef_ncni[]" class="form-control @error('benef_ncni[]') is-invalid @enderror" placeholder="Numéro CNI du souscripteur">
+                                            <input type="text" name="benef_ncni[]" class="form-control @error('benef_ncni[]') is-invalid @enderror" placeholder="Numéro CNI du souscripteur">
                                             @error('benef_ncni[]')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
