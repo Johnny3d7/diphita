@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\AdhesionsImport;
+use App\Imports\SouscripteursImport;
 use App\Models\Adherents;
 use App\Models\AyantDroit;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdherentController extends Controller
 {
@@ -45,6 +48,283 @@ class AdherentController extends Controller
     {
         //
         return view('admin.adherent.create');
+    }
+   
+    /**
+     * Show the form for importing datas.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function importation()
+    {
+        //
+        return view('admin.adherent.importation');
+    }
+
+    /**
+     * Post method for importing datas.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function importationPost(Request $request)
+    {
+        $fileValidator = \Validator::make($request->all(), [
+            'csv' => 'required|max:5000|mimes:xlsx,xls,csv'
+        ]);
+
+        if($fileValidator->passes()){
+            $results = [
+                "msg" => '',
+                "errs" => [],
+                "warns" => [],
+                "contrats" => []
+            ];
+
+            $collection = Excel::import(new AdhesionsImport, $request->file('csv'));
+            dd('fgj');
+            Excel::load($request->file('csv')->getRealPath(), function ($reader) use (&$results, $request) {
+                $nb_success = $nb_error = $nb_warning = 0;
+                dd($reader->toArray());
+                // foreach ($reader->toArray() as $key => $row) {
+                //     try {
+                //         $risque_id = $row["risque"] ? $this->getRisqueId($row["risque"]) : null;
+                //         $compagnie_id = $row["compagnie"] ? $this->getCompagnieId($row["compagnie"]) : null;
+                //         $client_id = $row["client"]&&$row["type_client"]&&$row["cellulaire_client"] ? $this->getClientId($row["client"], $row["type_client"], $row["cellulaire_client"]) : null;
+                //         $request2 = new Request([
+                //             "date_emission" => $row["date_emission"],
+                //             "numero_police" => $row["numero_police"],
+                //             "type_contrat" => $row["type_contrat"] ?? "nouvelle affaire",
+                //             "risque_nom" => $row["risque"],
+                //             "risque_id" => $risque_id,
+                //             "compagnie_nom" => $row["compagnie"],
+                //             "compagnie_id" => $compagnie_id,
+                //             "client_nom_prenom" => $row["client"],
+                //             "client_type" => $row["type_client"],
+                //             "client_cellulaire" => $row["cellulaire_client"],
+                //             "client_id" => $client_id,
+                //             "beneficiaire" => $row["beneficiaire"],
+                //             "taux" => $row["risque"] == "SANTE" && $row["taux"] ? $row["taux"] : null,
+                //             "effet" => $row["date_effet"],
+                //             "echeance" => $row["date_echeance"],
+                //             "duree" => ($row["date_effet"]&&$row["date_echeance"]) ? $row["date_effet"]->diff($row["date_echeance"])->days : '',
+                //             "prime_nette" => $row["prime_nette"],
+                //             "cout_police" => $row["cout_police"],
+                //             "taxe" => $row["taxe"],
+                //             "fga" => $row["fga"],
+                //             "frais_accessoire" => $row["frais_accessoires"],
+                //             "prime_ttc" => $row["prime_ttc"],
+                //             "commission" => $row["commission"] ?? 0,
+                //             "zone" => $row["zone"],
+                //             "flotte" => $row["flotte"] ? "1" : null,
+                //             "nom_flotte" => $row["flotte"],
+                //             "attestation_id" => $row["numero_attestation"],
+                //             "statut" => $row["statut"] ?? 0,
+                //             "marque" => $row['marque'],
+                //             "immatriculation" => $row['immatriculation'],
+                //             "mise_circulation" => $row['mise_circulation'],
+                //             "numero_chassis" => $row['numero_chassis'],
+                //             "energie" => $row['energie'],
+                //             "puissance" => $row['puissance'],
+                //             "tonnage" => $row['tonnage'],
+                //             "cylindre" => $row['cylindre'],
+                //             "nbre_place" => $row['nbre_place'],
+                //             "package" => $row['package'],
+                //             "categorie" => $row['categorie'],
+                //             "genre" => $row['genre'],
+                //             "zone" => $row['zone'],
+                //             "valeur_neuve" => $row['valeur_neuve'],
+                //             "valeur_venale" => $row['valeur_venale'],
+                //         ]);
+                //         if($risque_id && $compagnie_id && $client_id){
+                //             $request2->merge(['numero_emission' => $this->generateNumeroEmission($request2)]);
+                //         }
+
+                //     } catch (\Throwable $th) {
+                //         $results["msg"] = "Erreur Système";
+                //         array_push($results["errs"], [
+                //             "title" => "Erreur sur le fichier",
+                //             "msg" => ["Le fichier importé ne respecte pas les critères du fichier modèle ".$th->getMessage()]
+                //         ]);
+                //         return redirect()->back()->withErrors([
+                //             'csv' => 'Le fichier importé ne respecte pas les critères du fichier modèle'
+                //         ]);
+                //     }
+
+                //     $singleValidator = Validator::make($request2->all(), [
+                //         "date_emission" => "required",
+                //         "numero_police" => "required",
+                //         "risque_nom" => "required",
+                //         "risque_id" => "required",
+                //         "compagnie_nom" => "required",
+                //         "compagnie_id" => "required",
+                //         "client_nom_prenom" => "required",
+                //         "client_type" => "required",
+                //         "client_cellulaire" => "required",
+                //         "beneficiaire" => "required",
+                //         "effet" => "required",
+                //         "echeance" => "required",
+                //         "prime_nette" => "required",
+                //         "prime_ttc" => "required",
+                //     ],[
+                //         "date_emission.required" => "Veuillez entrer la date d'émission",
+                //         "numero_police.required" => "Veuillez entrer le numero de police",
+                //         "risque_nom.required"  => "Veuillez entrer le risque",
+                //         "risque_id.required"  => "Ce risque n'existe pas dans la liste des risques",
+                //         "compagnie_nom.required"  => "Veuillez entrer la compagnie",
+                //         "compagnie_id.required"  => "Cette compagnie n'existe pas dans la liste des compagnies",
+                //         "client_nom_prenom.required"  => "Veuillez entrer le client",
+                //         "client_type.required"  => "Veuillez entrer le type du client",
+                //         "client_cellulaire.required"  => "Veuillez entrer le cellulaire du client",
+                //         "beneficiaire.required"  => "Veuillez entrer le bénéficiaire",
+                //         "effet.required"  => "Veuillez entrer la date d'effet",
+                //         "echeance.required"  => "Veuillez entrer la date d'échéance",
+                //         "prime_nette.required"  => "Veuillez entrer la prime nette",
+                //         "prime_ttc.required"  => "Veuillez entrer la prime TTC",
+                //     ]);
+                    
+                //     if($singleValidator->passes()){
+                //         $contrat = $contratExist = Contrat::where('numero_police',$request2->numero_police)
+                //                                 ->where('effet',$request2->effet)
+                //                                 ->where('type_contrat',$request2->type_contrat)
+                //                                 ->where('date_emission',$request2->date_emission)
+                //                                 ->first();
+                //         if(!$contratExist){
+                //             $contrat = Contrat::create($request2->except([
+                //                 "risque_nom",
+                //                 "compagnie_nom",
+                //                 "client_nom_prenom",
+                //                 "client_type",
+                //                 "client_cellulaire",
+                //                 "marque",
+                //                 "immatriculation",
+                //                 "mise_circulation",
+                //                 "numero_chassis",
+                //                 "energie",
+                //                 "puissance",
+                //                 "tonnage",
+                //                 "cylindre",
+                //                 "nbre_place",
+                //                 "package",
+                //                 "categorie",
+                //                 "genre",
+                //                 "zone",
+                //                 "valeur_neuve",
+                //                 "valeur_venale",
+                //             ]));
+
+                //             $contrat->avenant = $this->generateNumeroAvenant($request2);
+    
+                //         // To uncomment
+                //             /*$query = Contrat::join('users', 'contrat.user_created_id', '=', 'users.id')
+                //                             ->join('client', 'contrat.client_id', '=', 'client.id')
+                //                             ->join('compagnie', 'contrat.compagnie_id', '=', 'compagnie.id')
+                //                             ->join('risque', 'contrat.risque_id', '=', 'risque.id');
+                //             $contract = $query->select('contrat.*', 'users.nom as nom_user', 'users.prenoms as prenom_user', 'client.nom as nom_client',
+                //             'client.prenom as prenom_client', 'client.raison_sociale', 'risque.nom as nom_risque', 'compagnie.denomination as nom_compagnie')
+                //                         ->where('contrat.id',$contrat->id)->first();
+                //             array_push($results["contrats"], $contract);*/
+                //             $nb_success ++;
+                //         } else {
+                //             array_push($results["warns"], [
+                //                 "title" => "Avertissement à la ligne ".($key+1),
+                //                 "msg" => ["Ce contrat existe déjà dans la base de donnée"],
+                //             ]);
+                //             $nb_warning ++;
+                //         }
+
+                //         $auto = Risque::whereNom('AUTOMOBILE')->first()->id;
+                //         if($contrat->risque_id == $auto){
+                //             $imm = $request2->immatriculation;
+                //             if($imm){
+                //                 //Création du véhicule
+                //                 try{
+                //                     $vehicule = Vehicule::whereImmatriculation($imm)->first();
+                //                     if(!$vehicule){
+                //                         $vehicule = Vehicule::create([
+                //                             "marque" => $request2->marque,
+                //                             "immatriculation" => $request2->immatriculation,
+                //                             "mise_circulation" => $request2->mise_circulation,
+                //                             "numero_chassis" => $request2->numero_chassis,
+                //                             "energie" => $request2->energie,
+                //                             "puissance" => $request2->puissance ? str_replace([",", " "], ["", ""], $request2->puissance) : null,
+                //                             "tonnage" => $request2->tonnage ? str_replace([",", " "], ["", ""], $request2->tonnage) : null,
+                //                             "cylindre" => $request2->cylindre ? str_replace([",", " "], ["", ""], $request2->cylindre) : null,
+                //                             "nbre_place" => $request2->nbre_place ? str_replace([",", " "], ["", ""], $request2->nbre_place) : null,
+                //                             "numero_emission" => $contrat->numero_emission,
+                //                             "client_id" => $request2->client_id,
+                //                             // "contrat_id" => $contrat->id
+                //                         ]);
+                //                     }
+        
+                //                     $package = VehiculeGarantie::whereEmissionId($contrat->id)->whereVehiculeId($vehicule->id)->first();
+                //                     // dd(VehiculeGarantie::all());
+                //                     if(!$package){
+                //                         //Création du package
+                //                         $package = VehiculeGarantie::create([
+                //                             "vehicule_id" => $vehicule->id,
+                //                             "emission_id" => $contrat->id,
+                //                             "package_id" => Package::whereLibelle($request2->package)->first()->id,
+                //                             "categorie" => $request2->categorie,
+                //                             "genre" => $request2->genre,
+                //                             "zone" => $request2->zone,
+                //                             "valeur_neuve" => $request2->valeur_neuve ? str_replace([",", " "], ["", ""], $request2->valeur_neuve) : null,
+                //                             "valeur_venale" => $request2->valeur_venale ? str_replace([",", " "], ["", ""], $request2->valeur_venale) : null,
+                //                             "prime_nette" => str_replace([",", " "], ["", ""], $request2->prime_nette),
+                //                             "prime_ttc" => str_replace([",", " "], ["", ""], $request2->prime_ttc)
+                //                         ]);
+                //                     }
+                //                 } catch(\Throwable $e){
+                //                     array_push($results["errs"], [
+                //                         "title" => "Erreur à la ligne ".($key+1),
+                //                         "msg" => "Veuillez renseigner correctement les caractéristiques du vehicule ".$e->getMessage(),
+                //                     ]);
+                //                     $nb_error ++;
+                //                 }
+                //             } else {
+                //                 array_push($results["errs"], [
+                //                     "title" => "Erreur à la ligne ".($key+1),
+                //                     "msg" => "Veuillez renseigner l'immatriulation du vehicule",
+                //                 ]);
+                //                 $nb_error ++;
+                //             }
+
+                //             // dd(VehiculeGarantie::whereEmissionId($contrat->id)->first(), $package);
+                //         }
+
+
+                //     // To delete and uncomment on top
+                //         $query = Contrat::join('users', 'contrat.user_created_id', '=', 'users.id')
+                //                         ->join('client', 'contrat.client_id', '=', 'client.id')
+                //                         ->join('compagnie', 'contrat.compagnie_id', '=', 'compagnie.id')
+                //                         ->join('risque', 'contrat.risque_id', '=', 'risque.id');
+                //         $contract = $query->select('contrat.*', 'users.nom as nom_user', 'users.prenoms as prenom_user', 'client.nom as nom_client',
+                //         'client.prenom as prenom_client', 'client.raison_sociale', 'risque.nom as nom_risque', 'compagnie.denomination as nom_compagnie')
+                //                     ->where('contrat.id',$contrat->id)->first();
+                //         array_push($results["contrats"], $contract);
+                //     // end to delete
+
+                //     } else {
+                //         array_push($results["errs"], [
+                //             "title" => "Erreur à la ligne ".($key+1),
+                //             "msg" => $singleValidator->errors()->all(),
+                //         ]);
+                //         $nb_error ++;
+                //     }
+
+                // }
+                // $results["msg"] = "$nb_success contrats importés avec succès. ".($nb_error ? " $nb_error erreurs." : '').($nb_warning ? " $nb_warning avertissements (Contrat déjà existant)." : '');
+                // foreach($results["errs"] as $errors){
+                //     Log::info($errors["title"].' : '. implode($errors["msg"],';'));
+                // }
+            });
+            return redirect()->back()->with(compact('results'));
+        } else {
+            return redirect()->back()->withErrors($validator->errors()->all());
+        }
+
+        dd($request->csv);
+        //
+        // return view('admin.adherent.importation');
     }
 
     /**

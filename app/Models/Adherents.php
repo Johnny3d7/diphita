@@ -58,4 +58,17 @@ class Adherents extends Model
     {
         return $this->hasMany(AyantDroit::class, 'id_adherent');
     }
+
+    /**
+     * Get the real type of the Adherent [Souscripteur = 1 | Beneficiaire = 2]
+     * @return True means Beneficiaire (having a subscriptor parent)
+     * @return False means Souscripteur
+     */
+    public function isBeneficiaire(){
+        return $this->role == 2 ? true : false;
+    }
+
+    public function beneficiaires(){
+        return $this->isBeneficiaire() ? null : self::where(['status'=>1,'role'=>2,'parent'=>$this->id])->orderBy('created_at', 'DESC')->get();
+    }
 }

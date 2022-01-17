@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="form-group col-lg-4">
                                         <label for="souscript_pnom">Nom & Prénom(s) <code class="highlighter-rouge">*</code></label>
-                                        <input type="text" name="souscript_pnom" class="form-control @error('souscript_pnom') is-invalid @enderror" placeholder="Nom & Prénom(s)" required>
+                                        <input type="text" name="souscript_pnom" class="form-control @error('souscript_pnom') is-invalid @enderror" placeholder="Nom & Prénom(s)" required value="{{ $souscripteur->nom }}">
                                         @error('souscript_pnom')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -59,7 +59,7 @@
                                     </div>
                                     <div class="form-group col-lg-4">
                                         <label for="souscript_pnom">Contact <code class="highlighter-rouge">*</code></label>
-                                        <input type="text" name="souscript_pnom" class="form-control @error('souscript_pnom') is-invalid @enderror" placeholder="Contact" required>
+                                        <input type="text" name="souscript_pnom" class="form-control @error('souscript_pnom') is-invalid @enderror" placeholder="Contact" required  value="{{ $souscripteur->pnom }}">
                                         @error('souscript_pnom')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -73,8 +73,10 @@
                                         <label for="souscript_nom">Numéro d'identification <code class="highlighter-rouge">*</code></label>
                                         <select class="form-control @error('souscript_civilite') is-invalid @enderror" name="souscript_civilite" required>
                                             <option selected value="0" disabled>--- Sélectionnez un bénéficiaire ---</option>
-                                            <option value="1">DIP010812B000074 </option>
-                                            <option value="2">DIP010817B000045</option>
+                                            @foreach ($souscripteur->beneficiaires() as $beneficiaire)
+                                                <option value="1">DIP010817B000045 [ {{ $beneficiaire->nom }} {{ $beneficiaire->pnom }} ]</option>
+                                            @endforeach
+                                            {{-- <option value="2">DIP010817B000045</option> --}}
                                         </select>
                                         @error('souscript_civilite')
                                         <span class="invalid-feedback" role="alert">

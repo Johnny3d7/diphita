@@ -46,6 +46,10 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
 
     //Adhesion
 
+    //Formulaire d'importation de données
+    Route::get('/adhesions/importation', 'AdherentController@importation')->name('adhesion.importation');
+    Route::post('/adhesions/importation', 'AdherentController@importationPost')->name('adhesion.importationPost');
+
     //Formulaire d'ajout d'un adhérent
     Route::get('/adhesions/create', 'AdherentController@create')->name('adhesion.create');
 
@@ -93,7 +97,8 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
 
     //Cas assisté
     Route::get('/assistances', 'AssistanceController@index')->name('assistance.index');
-    Route::get('/assistance/create', 'AssistanceController@create')->name('assistance.create');
+    // Route::get('/assistance/create', 'AssistanceController@create')->name('assistance.create');
+    Route::get('/assistance/create/{souscripteur}', 'AssistanceController@createSous')->name('assistance.createSous');
     Route::post('/assistance/store', 'AssistanceController@store')->name('assistance.store');
 
     //Demande adhésion en ligne
