@@ -38,12 +38,12 @@
                                     <div class="form-group{{ $errors->has('csv') ? ' has-error has-feedback' : '' }}">
                                         <label class="form-control my-1" for="csv" id="csvLabel" style="cursor: pointer;">Selectionnez un fichier à importer</label>
                                         <input type="file" name="csv" id="csv" class="form-control d-none" placeholder="Selectionnez un fichier à importer" required="required" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-                                        {{-- @if ($errors->has('csv'))
+                                        @if ($errors->has('csv'))
                                             <div class="container">
-                                                <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                                <span class="fa fa-remove form-control-feedback"></span>
                                                 <span class="help-block"><strong>{{ $errors->first('csv') }}</strong></span>
                                             </div>
-                                        @endif --}}
+                                        @endif
                                     </div>
                                     <div class="col-md-4 offset-md-4">
                                         <div class="input-group">
@@ -53,7 +53,7 @@
                                     </div>
                                 </form>
                             </div>
-                            {{-- <div class="row">
+                            <div class="row">
                                 @php
                                     $results = Session::get('results');
                                 @endphp
@@ -74,71 +74,45 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    @if (count($results['contrats']) > 0)
+                                    @if (count($results['data']) > 0)
                                         <div class="row">
                                             <div class="col-md-12 m-t-10">
                                                 <table id="datatable-buttons"
                                                     class="table table-striped table-colored-bordered table-bordered-info">
                                                     <thead>
-                                                    <tr>
-                                                        <th rowspan="2">N°</th>
-                                                        <th rowspan="2">Date d'émission</th>
-                                                        <th rowspan="2">Compagnie</th>
-                                                        <th rowspan="2">N° Police</th>
-                                                        <th rowspan="2">N° Emission</th>
-                                                        <th rowspan="2">Client</th>
-                                                        <th rowspan="2">Effet</th>
-                                                        <th rowspan="2">Echéance</th>
-                                                        <th rowspan="2">Risque</th>
-                                                        <th rowspan="2">Prime nette</th>
-                                                        <th rowspan="2">Acc</th>
-                                                        <th rowspan="2">Taxes</th>
-                                                        <th rowspan="2">FGA</th>
-                                                        <th rowspan="2">Prime TTC</th>
-                                                        <th colspan="2">Commissions</th>
-                                                        <th rowspan="2">Statut</th>
-                                                        <th rowspan="2">Ajouté le</th>
-                                                        <th rowspan="2">Ajouté par</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>%</th>
-                                                        <th>Montant</th>
-                                                    </tr>
+                                                        <tr>
+                                                            <th>idbeneficiaire</th>
+                                                            <th>civilite</th>
+                                                            <th>nomprenom</th>
+                                                            <th>nomprenom</th>
+                                                            <th>email</th>
+                                                            <th>cni</th>
+                                                            <th>datenaissance</th>
+                                                            <th>lieunaissance</th>
+                                                            <th>lieuhabitation</th>
+                                                            <th>contact</th>
+                                                            <th>Cas</th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody>
-                                                    @forelse($results['contrats'] as $key => $contrat)
+                                                    @forelse($results['data'] as $key => $contrat)
                                                         <tr>
-                                                            <td>{{ $key+1 }}</td>
-                                                            <td>{{ date('d/m/Y',strtotime($contrat->date_emission)) }}</td>
-                                                            <td>{{ $contrat->nom_compagnie }}</td>
-                                                            <td>{{ $contrat->numero_police }}</td>
-                                                            <td>{{ $contrat->numero_emission }}</td>
-                                                            <td>{{ $contrat->nom_client.' '.$contrat->prenom_client.' '.$contrat->raison_sociale }}</td>
-                                                            <td>{{ date('d/m/Y',strtotime($contrat->effet)) }}</td>
-                                                            <td>{{ date('d/m/Y',strtotime($contrat->echeance)) }}</td>
-                                                            <td>{{ $contrat->nom_risque }}</td>
-                                                            <td>{{ number_format($contrat->prime_nette,0,',',' ') }}</td>
-                                                            <td>{{ number_format($contrat->frais_accessoire,0,',',' ') }}</td>
-                                                            <td>{{ number_format($contrat->taxe,0,',',' ') }}</td>
-                                                            <td>{{ number_format($contrat->fga,0,',',' ') }}</td>
-                                                            <td>{{ number_format($contrat->prime_ttc,0,',',' ') }}</td>
-                                                            <td>{{ ($contrat->prime_ttc <> 0) ? round($contrat->commission / $contrat->prime_ttc * 100, 2) . '%' : '0%' }}</td>
-                                                            <td>{{ number_format($contrat->commission,0,',',' ') }}</td>
-                                                            <td>
-                                                                @if($contrat->statut == 0 and $contrat->etat == 0)
-                                                                    <span class="label label-danger">non soldé</span>
-                                                                @elseif($contrat->statut == 1 and $contrat->etat == 0)
-                                                                    <span class="label label-success">prime soldé</span>
-                                                                @else
-                                                                    <span class="label label-warning">contrat résilié</span>
-                                                                @endif
-                                                            </td>
-                                                            <td>{{ date('d/m/Y à H:i:s', strtotime($contrat->created_at)) }}</td>
-                                                            <td>{{ $contrat->prenom_user.' '.$contrat->nom_user }}</td>
+                                                            {{-- <td>{{ $data->role }}</td> --}}
+                                                            <td>{{ $data->num_adhesion }}</td>
+                                                            <td>{{ $data->civilite }}</td>
+                                                            <td>{{ $data->nom }}</td>
+                                                            <td>{{ $data->pnom }}</td>
+                                                            <td>{{ $data->email }}</td>
+                                                            <td>{{ $data->num_cni }}</td>
+                                                            <td>{{ $data->date_naiss }}</td>
+                                                            <td>{{ $data->lieu_naiss }}</td>
+                                                            <td>{{ $data->lieu_hab }}</td>
+                                                            <td>{{ $data->contact }}</td>
+                                                            <td>{{ $data->cas }}</td>
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="18">Aucune émission disponible</td>
+                                                            <td colspan="11">Aucune émission disponible</td>
                                                         </tr>
                                                     @endforelse 
                                                     </tbody>
@@ -148,7 +122,7 @@
                                     @endif
                                     
                                 @endisset
-                            </div> --}}
+                            </div>
                         </div>
                     </div>
                 </div>
