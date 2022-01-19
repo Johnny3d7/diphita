@@ -76,7 +76,7 @@
                                         <select id="id_beneficiaire" class="form-control @error('benef_num') is-invalid @enderror" name="benef_num" required>
                                             <option selected value="0" disabled>--- Sélectionnez un bénéficiaire ---</option>
                                             <option value="{{$adherent->num_adhesion}}">{{$adherent->num_adhesion}} </option>
-                                            @forelse ($adherent->beneficiaires as $benef)
+                                            @forelse ($adherent->beneficiaires() as $benef)
                                                 <option value="{{$benef->num_adhesion}}">{{$benef->num_adhesion}} </option>
                                             @empty
                                                 
