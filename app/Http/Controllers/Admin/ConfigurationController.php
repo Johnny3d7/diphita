@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CotisationAnnuelle;
 use App\Models\CotisationExceptionnelle;
 use App\Models\DroitInscription;
+use App\Models\DureeFincarences;
 use App\Models\TraitementKit;
 use Illuminate\Http\Request;
 
@@ -222,5 +223,40 @@ class ConfigurationController extends Controller
         ]);
 
         return redirect()->back()->with('message', 'Le montant a été mis à jour')->with('type', 'bg-success');
+    }
+
+
+    public function dureeFincarence()
+    {
+        //
+        $duree_actuel = DureeFincarences::where('status',1)->first();
+
+        $duree_story = DureeFincarences::orderBy('created_at', 'DESC')->get();
+
+        return view('admin.configuration.DureeCarence.index',compact('duree_story','duree_actuel'));
+    }
+
+    public function dureeFincarenceStore(Request $request){
+
+        $validatedData = $request->validate([
+            "duree" => "required|integer",
+        ], [
+            "duree.required" => "Le champ duree est obligatoire",
+            "duree.integer" => "La valeur du champ duree doit être un nombre"
+        ]);
+
+            
+            foreach (DureeFincarences::where('status',1)->get() as $duree) {
+                $duree->status = 0;
+                $duree->save();
+            }
+
+        
+        $montant = DureeFincarences::create([
+            'duree' => $request->duree,
+            'status' => 1,
+        ]);
+
+        return redirect()->back()->with('message', 'La durée de carence a été mise à jour.')->with('type', 'bg-success');
     }
 }

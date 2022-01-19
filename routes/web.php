@@ -97,8 +97,7 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
 
     //Cas assisté
     Route::get('/assistances', 'AssistanceController@index')->name('assistance.index');
-    // Route::get('/assistance/create', 'AssistanceController@create')->name('assistance.create');
-    Route::get('/assistance/create/{souscripteur}', 'AssistanceController@createSous')->name('assistance.createSous');
+    Route::get('/assistance/{id}/create', 'AssistanceController@create')->name('assistance.create');
     Route::post('/assistance/store', 'AssistanceController@store')->name('assistance.store');
 
     //Demande adhésion en ligne
@@ -124,6 +123,15 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     //Kit d'inscription
     Route::get('/montant-kit', 'ConfigurationController@traitementKit')->name('montant-kit.index');
     Route::post('/montant-kit/store', 'ConfigurationController@traitementKitStore')->name('montant-kit.store');
+
+    //Mois de carence
+    Route::get('/duree-fin-de-carence', 'ConfigurationController@dureeFincarence')->name('duree-carence.index');
+    Route::post('/duree-fin-de-carence/store', 'ConfigurationController@dureeFincarenceStore')->name('duree-carence.store');
+
+    //Ajax
+    
+    //Afficher les informations d'un bénéficiaire à partir de son numéro d'adhesion
+    Route::get('get-benef-info/{num_adhesion}', 'AjaxController@getBenefNomPnom')->name('get-benef-info.search');
 
 });
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDureeFincarencesTable extends Migration
+class CreateVersementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateDureeFincarencesTable extends Migration
      */
     public function up()
     {
-        Schema::create('duree_fincarences', function (Blueprint $table) {
+        Schema::create('versements', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('duree');
-            $table->string('status');
+            $table->string('montant');
+            $table->integer('id_admin');
+            $table->integer('id_adherent');
+            $table->string('parcouru');
+            $table->integer('status');
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ class CreateDureeFincarencesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('duree_fincarences');
+        Schema::dropIfExists('versements');
     }
 }

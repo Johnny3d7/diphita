@@ -226,12 +226,14 @@
                         @endif
 
                         @if ($souscripteur->status == 0 && $souscripteur->valide == 1)
-                            <li><a href="{{ route('admin.adherent.debloquer', ['id' => $souscripteur->id]) }}"><i class="ti-unlock"></i> <span> <span>Débloquer compte</span>  </span> </a></li>
+                            <li><a href="{{ route('admin.adherent.debloquer',['id' => $souscripteur->id]) }}"><i class="ti-unlock"></i> <span> <span>Activer compte</span>  </span> </a></li>
                             
                         @elseif ($souscripteur->status == 1 && $souscripteur->valide == 1)
                             <li><a href="#"><i class="ti-money"></i> <span> <span>Versement</span>  </span> </a></li>
-                            <li><a href="{{ route('admin.adherent.bloquer', ['id' => $souscripteur->id]) }}"><i class="ti-lock"></i> <span> <span>Bloquer compte</span>  </span> </a></li>
-                            <li><a href="{{ route('admin.assistance.createSous', $souscripteur) }}"><i class="ti-save"></i> <span> <span>Cas de décès</span> </span> </a></li>
+                            
+                            <li><a href="{{ route('admin.adherent.bloquer', ['id' => $souscripteur->id]) }}"><i class="ti-lock"></i> <span> <span>Désactiver compte</span>  </span> </a></li>
+                            <li><a href="{{ route('admin.assistance.create',['id' => $souscripteur->id]) }}"><i class="ti-save"></i> <span> <span>Cas de décès</span> </span> </a></li>
+
                         @endif
                         
                     </ul>

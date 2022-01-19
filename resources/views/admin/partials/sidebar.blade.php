@@ -85,7 +85,6 @@
             </a>
             <ul>
               <li><a href="{{ route('admin.assistance.index') }}">Liste des cas</a></li>
-              <li><a href="{{ route('admin.assistance.create') }}">Créer un cas</a></li>
             </ul>
         </li> --}}
         
@@ -132,7 +131,8 @@
               <li><a href="{{ route('admin.droit-inscription.index') }}">Droit d'inscription</a></li>
               <li><a href="{{ route('admin.montant-cotisation-annuelle.index') }}">Cotisation annuelle</a></li>
               <li><a href="{{ route('admin.montant-cotisation-exceptionnelle.index') }}">Cotisation exceptionnelle</a></li>
-              <li><a href="{{ route('admin.montant-kit.index') }}">Traitement et kits d'inscription</a></li>
+              <li><a href="{{ route('admin.montant-kit.index') }}">Kits d'inscription</a></li>
+              <li><a href="{{ route('admin.duree-carence.index') }}">Mois de carence</a></li>
             </ul>
         </li>
         <li class="">
