@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Adherents;
 use Illuminate\Http\Request;
 
 class AssistanceController extends Controller
@@ -27,6 +28,16 @@ class AssistanceController extends Controller
     {
         //
         return view('admin.assistance.create');
+    }
+    
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createSous(Adherents $souscripteur)
+    {
+        return view('admin.assistance.create', compact('souscripteur'));
     }
 
     /**

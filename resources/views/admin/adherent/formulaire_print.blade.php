@@ -36,7 +36,7 @@
 <div class="main_content_iner ">
     <div class="container-fluid p-0 sm_padding_15px">
         <div class="row justify-content-center">
-            <div class="col-lg-12">
+            <div class="col-md-12">
                 <div class="white_card card_height_100 mb_30">
                     <div class="white_card_header">
                         <div class="box_header m-0">
@@ -52,34 +52,34 @@
                         <div class="card-body" id="logo_fond">
                             <div class="container">
                                 <div class="row justify-content-center">
-                                    <div class="col-lg-3 txt-center">
-                                        <div class="col-lg-12"><img src="{{ url('img/dl/diphita_logo_bleu.png') }}" style="height: 170px; width:auto;" alt="" class="img-responsive"></div>
-                                        <div class="col-lg-12" style="font-family: ms-reference-sans-serif !important;">www.diphita.org</div>
+                                    <div class="col-md-3 txt-center">
+                                        <div class="col-md-12"><img src="{{ url('img/dl/diphita_logo_bleu.png') }}" style="height: 170px; width:auto;" alt="" class="img-responsive"></div>
+                                        <div class="col-md-12" style="font-family: ms-reference-sans-serif !important;">www.diphita.org</div>
                                     </div>
-                                    <div class="col-lg-9">
-                                        <div class="col-lg-12 txt-center"><h1 class="m-0 txt-upper txt-bold" style="font-family: Copperplate !important; text-transform:capitalize !important; font-size:65px !important; color:#2F5597 !important;">Diphita Prévoyance </h1></div>
-                                        <div class="col-lg-12 txt-center font-ms-reference-sans-serif">Siège social : Yopougon – Entre l’Hôtel Assonvon et l’Eglise Baptiste Œuvres et Missions
+                                    <div class="col-md-9">
+                                        <div class="col-md-12 txt-center"><h1 class="m-0 txt-upper txt-bold" style="font-family: Copperplate !important; text-transform:capitalize !important; font-size:65px !important; color:#2F5597 !important;">Diphita Prévoyance </h1></div>
+                                        <div class="col-md-12 txt-center font-ms-reference-sans-serif">Siège social : Yopougon – Entre l’Hôtel Assonvon et l’Eglise Baptiste Œuvres et Missions
                                             <br>Tél. : (00225) 0576017601 / 0566040004 | Email : info.diphita@gmail.com 
                                         </div>
-                                        <div class="col-lg-12 txt-bold txt-center mt_5 h-auto" style=" border:3px solid; border-radius: 8px; width:90%;"><h1 class="font-arialblack" style="color:#2F5597 !important;">FORMULAIRE D’ADHÉSION</h1></div>
+                                        <div class="col-md-12 txt-bold txt-center mt_5 h-auto" style=" border:3px solid; border-radius: 8px; width:90%;"><h1 class="font-arialblack" style="color:#2F5597 !important;">FORMULAIRE D’ADHÉSION</h1></div>
                                     </div>
                                 </div>
                                 <div class="row justify-content-center mt_30">
-                                    <div class="col-lg-12" style=" border:1.5px solid #2F5597;  width:70% !important; background-color:#2F5597">
+                                    <div class="col-md-12" style=" border:1.5px solid #2F5597;  width:70% !important; background-color:#2F5597">
                                         <h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">SOUSCRIPTEUR</h3>
                                     </div>
-                                    <div class="col-lg-12" style=" border:1.5px solid #2F5597;  width:70% !important; background-color:#DAE3F3">
+                                    <div class="col-md-12" style=" border:1.5px solid #2F5597;  width:70% !important; background-color:#DAE3F3">
                                         @if ($adherent->role == 1)
                                             <div class="row">
-                                                <div class="col-lg-9">
+                                                <div class="col-md-9">
                                                     <h3 class="font-cambria mt_10 mb_10">Nom : {{ $adherent->nom }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Prénom(s) : {{ $adherent->pnom }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Numéro CNI : {{ $adherent->num_cni }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Tél. : {{ $adherent->contact }} E-mail : {{ $adherent->email }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Résidence : {{ $adherent->lieu_hab }}</h3>
                                                 </div>
-                                                <div class="col-lg-3">
-                                                    <div class="col-lg-12">
+                                                <div class="col-md-3">
+                                                    <div class="col-md-12">
                                                         <div class="font-cambria mt_10 mb_10 pb_50 pt_50 txt-center" style=" border:1.5px solid #2F5597; font-size:25px; background-color:white !important;">Photo du bénéficiaire (Facultatif) </div>
                                                     </div>
                                                 </div>
@@ -91,15 +91,15 @@
                                             $sous = Adherents::where(['status'=> 1, 'role'=>1,'id'=>$adherent->parent])->first();
                                         @endphp
                                         <div class="row">
-                                            <div class="col-lg-9">
+                                            <div class="col-md-9">
                                                 <h3 class="font-cambria mt_10 mb_10">Nom : {{ $sous->nom }}</h3>
                                                 <h3 class="font-cambria mt_10 mb_10">Prénom(s) : {{ $sous->pnom }}</h3>
                                                 <h3 class="font-cambria mt_10 mb_10">Numéro CNI : {{ $sous->num_cni }}</h3>
                                                 <h3 class="font-cambria mt_10 mb_10">Tél. : {{ $sous->contact }} E-mail : {{ $sous->email }}</h3>
                                                 <h3 class="font-cambria mt_10 mb_10">Résidence : {{ $sous->lieu_hab }}</h3>
                                             </div>
-                                            <div class="col-lg-3">
-                                                <div class="col-lg-12">
+                                            <div class="col-md-3">
+                                                <div class="col-md-12">
                                                     <div class="font-cambria mt_10 mb_10 pb_50 pt_50 txt-center" style=" border:1.5px solid #2F5597; font-size:25px; background-color:white !important;">Photo du bénéficiaire (Facultatif) </div>
                                                 </div>
                                             </div>
@@ -108,9 +108,9 @@
                                     </div>
                                 </div>
                                 <div class="row justify-content-center mt_30">
-                                    <div class="col-lg-12" style=" border:1.5px solid #2F5597;  width:70% !important; background-color:#2F5597">
+                                    <div class="col-md-12" style=" border:1.5px solid #2F5597;  width:70% !important; background-color:#2F5597">
                                         <div class="row">
-                                            <div class="col-lg-6">
+                                            <div class="col-md-6">
                                                 <h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">BÉNÉFICIAIRE</h3>
                                             </div>
                                             <div class="col" style="display: flex !important;"><div class="@if($adherent->civilite == 2) dot-orange @else dot-wh @endif  v-align-mid mt_10 mb_10"></div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;Mme</h3></div>
@@ -154,23 +154,23 @@
                                                 <th scope="row" rowspan="3" class="v-align-mid">Somme à payée: <span style=" border:1.5px solid #2F5597; padding:5px 10px 5px 10px">10000 Fcfa</span></th>
                                                 <td>
                                                     <div class="row">
-                                                        <div class="col-lg-7">Droit d'inscription:</div>
-                                                        <div class="col-lg-5"><div class="dot v-align-mid"></div> 7000 frs CFA</td></div>
+                                                        <div class="col-md-7">Droit d'inscription:</div>
+                                                        <div class="col-md-5"><div class="dot v-align-mid"></div> 7000 frs CFA</td></div>
                                                     </div>
                                               </tr>
                                               <tr>
                                                 <td>
                                                     <div class="row">
-                                                        <div class="col-lg-7">Cotisation annuelle:</div>
-                                                        <div class="col-lg-5"><div class="dot v-align-mid"></div> 2000 frs CFA</td></div>
+                                                        <div class="col-md-7">Cotisation annuelle:</div>
+                                                        <div class="col-md-5"><div class="dot v-align-mid"></div> 2000 frs CFA</td></div>
                                                     </div>
                                                 </td>
                                               </tr>
                                               <tr>
                                                 <td>
                                                     <div class="row">
-                                                        <div class="col-lg-7">Traitement et kits d'inscription:</div>
-                                                        <div class="col-lg-5"><div class="dot v-align-mid"></div> 1000 frs CFA</td></div>
+                                                        <div class="col-md-7">Traitement et kits d'inscription:</div>
+                                                        <div class="col-md-5"><div class="dot v-align-mid"></div> 1000 frs CFA</td></div>
                                                     </div>
                                                 </td>
                                               </tr>
@@ -178,9 +178,9 @@
                                           </table>
                                 </div>
                                 <div class="row justify-content-center mt_30">
-                                    <div class="col-lg-12" style=" border:1.5px solid #2F5597;  width:70% !important; background-color:#2F5597">
+                                    <div class="col-md-12" style=" border:1.5px solid #2F5597;  width:70% !important; background-color:#2F5597">
                                         <div class="row">
-                                            <div class="col-lg-9">
+                                            <div class="col-md-9">
                                                 <h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">Ayants-droit désignés par ordre de priorité</h3>
                                             </div>
                                             <div class="col">
@@ -236,7 +236,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 txt-center">
+            <div class="col-md-12 txt-center">
                 <a href="#" class="white_btn_1 btnblprint">Imprimer</a>
             </div>
         </div>
@@ -248,7 +248,14 @@
 <script>
     $('.btnblprint').on('click', function(event) {
         event.preventDefault();
-     window.print();
+        // window.print();
+        var prtContent = document.getElementById("logo_fond");
+        var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+        WinPrint.document.write(prtContent.innerHTML);
+        WinPrint.document.close();
+        WinPrint.focus();
+        WinPrint.print();
+        WinPrint.close();
     });
  </script>
 @endsection
