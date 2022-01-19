@@ -1,7 +1,22 @@
+@php
+    $results = session('resultsBenef');
+    $resultsImportation = [
+        'Bénéficiaires' => session('resultsBenef'),
+        'Souscripteurs' => session('resultsSousc'),
+        'AyantDroits' => session('resultsAyant'),
+    ];
+@endphp
+
 @extends('admin.main')
 
 @section('css')
     <link rel="stylesheet" href="{{ url('css/main.css') }}" />
+    <style>
+        .modal-backdrop {
+            /* z-index: -1;
+            background-color: aqua; */
+        }
+    </style>
 @endsection
 
 @section('title')
@@ -53,75 +68,21 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="row">
-                                @php
-                                    $results = Session::get('results');
-                                @endphp
-                                @isset ($results)
-                                    <div class="col-md-12">
-                                        <div class="alert alert-dismissible alert-{{ count($results["errs"]) > 0 ? 'danger' : (count($results["warns"]) > 0 ? 'warning' : 'success') }}" role="alert">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="text-center">{{ $results['msg'] }}</h4>
-                                            <ul>
-                                                @foreach ($results['errs'] as $err)
-                                                    <li class="text-dark">
-                                                        {{ $err['title'] }} : 
-                                                        @foreach ($err['msg'] as $msg)
-                                                            {{ $msg }};
-                                                        @endforeach
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    @if (count($results['data']) > 0)
-                                        <div class="row">
-                                            <div class="col-md-12 m-t-10">
-                                                <table id="datatable-buttons"
-                                                    class="table table-striped table-colored-bordered table-bordered-info">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>idbeneficiaire</th>
-                                                            <th>civilite</th>
-                                                            <th>nomprenom</th>
-                                                            <th>nomprenom</th>
-                                                            <th>email</th>
-                                                            <th>cni</th>
-                                                            <th>datenaissance</th>
-                                                            <th>lieunaissance</th>
-                                                            <th>lieuhabitation</th>
-                                                            <th>contact</th>
-                                                            <th>Cas</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    @forelse($results['data'] as $key => $contrat)
-                                                        <tr>
-                                                            {{-- <td>{{ $data->role }}</td> --}}
-                                                            <td>{{ $data->num_adhesion }}</td>
-                                                            <td>{{ $data->civilite }}</td>
-                                                            <td>{{ $data->nom }}</td>
-                                                            <td>{{ $data->pnom }}</td>
-                                                            <td>{{ $data->email }}</td>
-                                                            <td>{{ $data->num_cni }}</td>
-                                                            <td>{{ $data->date_naiss }}</td>
-                                                            <td>{{ $data->lieu_naiss }}</td>
-                                                            <td>{{ $data->lieu_hab }}</td>
-                                                            <td>{{ $data->contact }}</td>
-                                                            <td>{{ $data->cas }}</td>
-                                                        </tr>
-                                                    @empty
-                                                        <tr>
-                                                            <td colspan="11">Aucune émission disponible</td>
-                                                        </tr>
-                                                    @endforelse 
-                                                    </tbody>
-                                                </table>
+
+                            <div class="row my-3">
+                                
+                                @foreach ($resultsImportation as $key => $results)
+                                    @isset ($results)
+                                        <div class="col-md-12">
+                                            <div class="alert alert-dismissible alert-{{ count($results["errs"]) > 0 ? 'danger' : (count($results["warns"]) > 0 ? 'warning' : 'success') }}" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h6 class="text-center text-info"><b>{{ $key }}</b></h6>
+                                                <h4 class="text-center">{{ $results['msg'] }} <a href="javascript:void(0)" data-toggle="modal" data-target="#importation{{ $key }}Modal">Details <i class="fa fa-info-circle"></i></a></h4>
+                                                
                                             </div>
-                                        </div>
-                                    @endif
-                                    
-                                @endisset
+                                        </div>                                        
+                                    @endisset
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -130,6 +91,14 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('modals')
+    @foreach ($resultsImportation as $key => $results)
+        @isset ($results)
+            @include('admin.adherent._detailsImportationModal')
+        @endisset
+    @endforeach
 @endsection
 
 @section('js')
@@ -141,3 +110,7 @@
     })
 </script>
 @endsection
+
+@php
+session()->forget(['resultsBenef', 'resultsSousc', 'resultsAyant']);
+@endphp

@@ -222,6 +222,8 @@
     </a>
 </div>
 
+@yield('modals')
+
 <!-- footer  -->
 <script src="{{ url('js/jquery-3.4.1.min.js') }}"></script>
 <!-- popper js -->

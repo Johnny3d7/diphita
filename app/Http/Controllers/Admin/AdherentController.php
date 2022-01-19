@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Imports\AdhesionsImport;
+use App\Imports\BeneficiairesImport;
 use App\Imports\SouscripteursImport;
 use App\Models\Adherents;
 use App\Models\AyantDroit;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -69,6 +71,8 @@ class AdherentController extends Controller
      */
     public function importationPost(Request $request)
     {
+        
+
         $fileValidator = Validator::make($request->all(), [
             'csv' => 'required|max:5000|mimes:xlsx,xls,csv'
         ]);
@@ -83,13 +87,15 @@ class AdherentController extends Controller
                 "contrats" => []
             ];
 
-            $benefimport = new AdhesionsImport();
+            $benefimport = new AdhesionsImport;
             // $benefimport->onlySheets('Bénéficiaires');
-
+                // dd($benefimport);
             $collection = Excel::import($benefimport, $request->file('csv'));
-            dd($collection['beneficiaires']);
-            $results = $collection;
-            return redirect()->back()->with(compact('results'));
+            // dd(session('resultsBenef'), session('resultsSousc'), session('resultsAyant'));
+            // dd($collection);
+            // $results = $collection;
+            // return redirect()->back()->with(compact('results'));
+            return redirect()->back();
 
             dd('fgj');
 
