@@ -50,6 +50,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-lg-4">
+
                                         <label for="souscript_nom">Nom & Prénom(s) <code class="highlighter-rouge">*</code></label>
                                         <input type="text" value="{{ $adherent->nom.' '.$adherent->pnom }}" readonly name="souscript_nom" class="form-control @error('souscript_nom') is-invalid @enderror" placeholder="Nom & Prénom(s)" required>
                                         @error('souscript_nom')
@@ -80,7 +81,7 @@
                                             @empty
                                                 
                                             @endforelse
-                                    
+                               
                                         </select>
                                         <input type="text" readonly name="benef_id" id="benef_id" style="display: none" required>
                                         @error('benef_num')

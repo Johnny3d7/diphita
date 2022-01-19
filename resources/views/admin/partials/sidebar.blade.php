@@ -27,10 +27,11 @@
             </div>
             </a>
             <ul>
-              <li><a href="{{ route("admin.adhesion.create") }}">Ajouter</a></li>
+              <li><a href="{{ route("admin.adhesion.importation") }}">Importation</a></li>
+              <li><a href="{{ route("admin.adhesion.create") }}">Ajout</a></li>
               <li><a href="{{ route("client.adhesion.liste") }}">A traiter</a></li>
-              <li><a href="{{ route('admin.adhesion.valider.liste') }}">Valider</a></li>
-              <li><a href="{{ route('admin.adhesion.rejeter.liste') }}">Rejeter</a></li>
+              <li><a href="{{ route('admin.adhesion.valider.liste') }}">Validées</a></li>
+              <li><a href="{{ route('admin.adhesion.rejeter.liste') }}">Rejetées</a></li>
             </ul>
         </li>
         <li class="">
@@ -64,6 +65,16 @@
             </ul>
         </li>
         <li class="">
+          <a  href="{{ route('admin.assistance.index') }}" aria-expanded="false">
+            <div class="nav_icon_small">
+              <img src="{{ url('img/menu-icon/3.svg') }}" alt="">
+          </div>
+          <div class="nav_title">
+              <span>Cas assistés</span>
+          </div>
+          </a>
+        </li>
+        {{-- <li class="">
             <a   class="has-arrow" href="#" aria-expanded="false">
               <div class="nav_icon_small">
                 <img src="{{ url('img/menu-icon/3.svg') }}" alt="">
@@ -75,7 +86,7 @@
             <ul>
               <li><a href="{{ route('admin.assistance.index') }}">Liste des cas</a></li>
             </ul>
-        </li>
+        </li> --}}
         
         <li class="">
             <a   class="has-arrow" href="#" aria-expanded="false">
@@ -87,8 +98,8 @@
             </div>
             </a>
             <ul>
-              <li><a href="{{ route('admin.depense.create') }}">Ajouter une dépense</a></li>
-              <li><a href="{{ route('admin.depense.index') }}">Liste des dépenses</a></li>
+              <li><a href="{{ route('admin.depense.create') }}">Ajout</a></li>
+              <li><a href="{{ route('admin.depense.index') }}">Liste</a></li>
             </ul>
         </li>
         
@@ -134,8 +145,8 @@
               </div>
             </a>
             <ul>
-              <li><a href="dark_sidebar.html">Liste des administrateurs</a></li>
-              <li><a href="light_sidebar.html">Créer un administrateur</a></li>
+              <li><a href="light_sidebar.html">Ajout</a></li>
+              <li><a href="dark_sidebar.html">Liste</a></li>
             </ul>
         </li>
         <li class="">

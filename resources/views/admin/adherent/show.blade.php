@@ -204,6 +204,18 @@
             </div>
             <div class="col-lg-3">
                 <div class="email-sidebar white_box">
+                    {{-- <div class="card mb-3 widget-chart border-0">
+                        <div class="widget-subheading">Solde</div>
+                        <div class="widget-numbers"><span>50 000 FCFA</span></div>
+                    </div> --}}
+                    <div class="card mb-3 widget-chart border-0">
+                        <div class="icon-wrapper rounded-circle">
+                            <div class="icon-wrapper-bg bg-primary"></div>
+                            <i class="ti-money text-primary"></i>
+                        </div>
+                            <div class="widget-numbers"><span>50 000 FCFA</span></div>
+                            <div class="widget-subheading">Solde</div>
+                    </div>
                     <a href="{{ route('admin.adherent.formulaire-print',['id'=>$souscripteur->id]) }}">
                         <button class="btn_1 w-100 mb-2 btn-lg email-gradient gradient-9-hover email__btn waves-effect"><i class="ti-eye"></i>Voir la fiche</button>
                     </a>
@@ -218,8 +230,10 @@
                             
                         @elseif ($souscripteur->status == 1 && $souscripteur->valide == 1)
                             <li><a href="#"><i class="ti-money"></i> <span> <span>Versement</span>  </span> </a></li>
+                            
                             <li><a href="{{ route('admin.adherent.bloquer', ['id' => $souscripteur->id]) }}"><i class="ti-lock"></i> <span> <span>Désactiver compte</span>  </span> </a></li>
                             <li><a href="{{ route('admin.assistance.create',['id' => $souscripteur->id]) }}"><i class="ti-save"></i> <span> <span>Cas de décès</span> </span> </a></li>
+
                         @endif
                         
                     </ul>

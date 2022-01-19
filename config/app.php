@@ -167,6 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -236,7 +237,7 @@ return [
         'TraitementKit' => App\Models\TraitementKit::class,
         'DroitInscription' => App\Models\DroitInscription::class,
         'CotisationExceptionnelle' => App\Models\CotisationExceptionnelle::class,
-
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

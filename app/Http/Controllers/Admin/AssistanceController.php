@@ -33,6 +33,16 @@ class AssistanceController extends Controller
 
         return view('admin.assistance.create',compact('adherent'));
     }
+    
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createSous(Adherents $souscripteur)
+    {
+        return view('admin.assistance.create', compact('souscripteur'));
+    }
 
     /**
      * Store a newly created resource in storage.
