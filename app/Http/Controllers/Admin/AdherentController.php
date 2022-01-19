@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Adherents;
 use App\Models\AyantDroit;
+use App\Models\CotisationAnnuelle;
+use App\Models\DroitInscription;
+use App\Models\DureeFincarences;
+use App\Models\TraitementKit;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -93,6 +97,8 @@ class AdherentController extends Controller
         
         //dd(Adheregenerate_order(Adherents::count()));
         //store souscripteur
+
+
         $souscript_dnaiss = explode('-',$request->souscript_dnaiss);
 
         $sous_dnaiss = $souscript_dnaiss[2].$souscript_dnaiss[1].$souscript_dnaiss[0];
@@ -118,9 +124,8 @@ class AdherentController extends Controller
 
         for ($i=0; $i < $nb_benef; $i++) { 
 
-            $benef_dnaiss = explode('-',$request->benef_dnaiss[$i]);
-
-            $ben_dnaiss = $benef_dnaiss[2].$benef_dnaiss[1].$benef_dnaiss[0];
+            //Format date
+            $ben_dnaiss = $this->formatDate($request->benef_dnaiss[$i]); 
 
             Adherents::create([
                 'nom' => $request->benef_nom[$i],
@@ -210,7 +215,25 @@ class AdherentController extends Controller
 
     public function valider($id)
     {
-        //
+        //Controle configuration
+
+        if (DureeFincarences::where('status',1)->first() == null){
+            return redirect()->back()->with('message', 'Vous devez configurer un délai de carence avant toute validation')->with('type', 'bg-danger');
+        } 
+
+        /*if (DroitInscription::where('status',1)->first() == null){
+            return redirect()->back()->with('message', 'Vous devez configurer le montant d\'inscription avant toute validation')->with('type', 'bg-danger');
+        }
+
+        if (TraitementKit::where('status',1)->first() == null){
+            return redirect()->back()->with('message', 'Vous devez configurer le montant du Kits avant toute validation')->with('type', 'bg-danger');
+        }
+
+        if (CotisationAnnuelle::where('status',1)->first() == null){
+            return redirect()->back()->with('message', 'Vous devez configurer le montant de la cotisation annuelle avant toute validation')->with('type', 'bg-danger');
+        }*/
+
+
         //Récupère le mois et l'année actuel
         $current_month_year = Carbon::now()->format('Y-m');
 
@@ -247,8 +270,9 @@ class AdherentController extends Controller
         $adhesion->num_adhesion = $num_adhe;
         $adhesion->num_contrat = $num_contrat;
         $adhesion->date_adhesion = Carbon::now();
-        $adhesion->date_fincarence = Carbon::now()->addMonths(4);
-
+        $adhesion->date_fincarence = Carbon::now()->addMonths(DureeFincarences::where('status',1)->first()->duree);
+        
+        
         //Vérifie si la date d'aujourd'hui est entre le 1er et le 5 du mois en cours
         if (Carbon::now()->between($first_day_month, $fifth_day_month)) {
             $adhesion->date_debutcotisation = Carbon::createFromFormat('Y-m-d', $current_month_year.'-25');
@@ -268,11 +292,12 @@ class AdherentController extends Controller
             $benef->valide = 1;
             $benef->num_contrat = $num_contrat;
             $benef->date_adhesion = Carbon::now();
-            $benef->date_fincarence = Carbon::now()->addMonths(4);
+            $benef->date_fincarence = Carbon::now()->addMonths(DureeFincarences::where('status',1)->first()->duree);
             $benef->save();
         }
 
-       
+        //Insérer cotisation
+
         // Envoyer un sms au concerné
 
         $this->sms_inscription_valider($num_adhe,$adhesion->contact_format,$adhesion->nom,$adhesion->pnom,$adhesion->civilite, $adhesion->date_debutcotisation, $adhesion->date_fincarence);
@@ -336,7 +361,7 @@ class AdherentController extends Controller
         'filename' => NULL,
         'saveAsModel' => false,
         'destination' => 'NAT',
-        'message' => 'Félicitations '.$titre.' '.$nom.' '.$pnom.' votre adhésion à notre chaîne de solidarité Diphita Prévoyance s\'est effetuée avec succès. Votre numéro ID: '.$num_adhe.'. Fin de carence: '.ucwords((new Carbon($date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')).'. Début de cotisation: '.ucwords((new Carbon($date_debutcotisation))->locale('fr')->isoFormat('DD/MM/YYYY')),
+        'message' => 'Félicitations '.$titre.' '.$nom.' '.$pnom.' votre adhésion à notre chaine de solidarité Diphita Prévoyance s\'est effetuée avec succès. Votre numéro ID: '.$num_adhe.'. Fin de carence: '.ucwords((new Carbon($date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')).'. Début de cotisation: '.ucwords((new Carbon($date_debutcotisation))->locale('fr')->isoFormat('DD/MM/YYYY')),
         'emailText' => NULL,
         'recipients' => 
         [
@@ -500,6 +525,36 @@ class AdherentController extends Controller
         $adherent = Adherents::find($id);
 
         return view('admin.adherent.formulaire_print',compact('adherent'));
+    }
+
+    public function bloquer($id){
+
+        $update_adherent = Adherents::where(['id'=>$id,'status'=>1])->update(['status' => 0]);
+
+        if ($update_adherent) {
+            return redirect()->back()->with('message', 'Compte désactivé avec succès')->with('type', 'bg-success');
+        } else {
+            return redirect()->back()->with('message', 'Une erreur c\'est produite')->with('type', 'bg-danger');
+        }    
+    }
+
+    public function debloquer($id){
+
+        $update_adherent = Adherents::where(['id'=>$id,'status'=>0])->update(['status' => 1]);
+
+        if ($update_adherent) {
+            return redirect()->back()->with('message', 'Compte activé avec succès')->with('type', 'bg-success');
+        } else {
+            return redirect()->back()->with('message', 'Une erreur c\'est produite')->with('type', 'bg-danger');
+        }
+        
+        
+    }
+
+    public function formatDate($date){
+        $benef_dnaiss = explode('-',$date);
+        $date_format = $benef_dnaiss[2].$benef_dnaiss[1].$benef_dnaiss[0];
+        return $date_format;
     }
     
 }

@@ -34,6 +34,7 @@ class CreateAdherentsTable extends Migration
             $table->dateTime('date_debutcotisation')->nullable();
             $table->integer('parent')->nullable();
             $table->integer('valide')->default(0);
+            $table->integer('cas')->default(0);
             $table->integer('status')->default(1);
             $table->integer('admin_id')->nullable();
             $table->timestamps();

@@ -37,10 +37,10 @@ class Adherents extends Model
         'date_debutcotisation',
         'parent',
         'valide',
+        'cas',
         'status',
         'admin_id'
     ];
-
 
     /**
      * Get the options for generating the slug.
@@ -52,10 +52,18 @@ class Adherents extends Model
             ->saveSlugsTo('slug');
     }
 
-    
-
     public function ayants()
     {
         return $this->hasMany(AyantDroit::class, 'id_adherent');
+    }
+
+    public function beneficiaires()
+    {
+        return $this->hasMany(SELF::class, 'parent');
+    }
+
+    public function assistances()
+    {
+        return $this->hasMany(Assistance::class, 'id_souscripteur');
     }
 }
