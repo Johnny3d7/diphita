@@ -60,7 +60,7 @@ class Adherents extends Model
     public function assistances()
     {
         return $this->hasMany(Assistance::class, 'id_souscripteur');
-
+    }
     /**
      * Get the real type of the Adherent [Souscripteur = 1 | Beneficiaire = 2]
      * @return True means Beneficiaire (having a subscriptor parent)
