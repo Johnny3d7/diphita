@@ -27,7 +27,6 @@
             </div>
             </a>
             <ul>
-              <li><a href="{{ route("admin.adhesion.importation") }}">Importation</a></li>
               <li><a href="{{ route("admin.adhesion.create") }}">Ajout</a></li>
               <li><a href="{{ route("client.adhesion.liste") }}">A traiter</a></li>
               <li><a href="{{ route('admin.adhesion.valider.liste') }}">Validées</a></li>
@@ -64,7 +63,7 @@
               <li><a href="add_new_admin.html">Exceptionnelles</a></li>
             </ul>
         </li>
-        <li class="">
+        {{-- <li class="">
           <a  href="{{ route('admin.assistance.index') }}" aria-expanded="false">
             <div class="nav_icon_small">
               <img src="{{ url('img/menu-icon/3.svg') }}" alt="">
@@ -73,8 +72,8 @@
               <span>Cas assistés</span>
           </div>
           </a>
-        </li>
-        {{-- <li class="">
+        </li> --}}
+        <li class="">
             <a   class="has-arrow" href="#" aria-expanded="false">
               <div class="nav_icon_small">
                 <img src="{{ url('img/menu-icon/3.svg') }}" alt="">
@@ -84,9 +83,10 @@
             </div>
             </a>
             <ul>
+              <li><a href="{{ route('admin.assistance.importation') }}">Importation</a></li>
               <li><a href="{{ route('admin.assistance.index') }}">Liste des cas</a></li>
             </ul>
-        </li> --}}
+        </li>
         
         <li class="">
             <a   class="has-arrow" href="#" aria-expanded="false">

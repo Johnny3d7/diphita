@@ -26,6 +26,9 @@
                                     
                                 </div>
                             </div>
+                            <span class="float-right">
+                                <a href="{{ route("admin.adhesion.importation") }}" class="btn btn-warning text-light"><i class="fa fa-upload"></i> Importer</a>
+                            </span>
                         </div>
                     </div>
                     <div class="white_card_body">

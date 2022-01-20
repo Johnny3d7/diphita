@@ -43,22 +43,22 @@ class AdherentsTableSeeder extends Seeder
 
         //Bénéficiaires
 
-        for ($i=0; $i < 8; $i++) { 
-            Adherents::create([
-                'nom' => $faker->lastName(),
-                'pnom' => $faker->firstName(),
-                'civilite' => $faker->title(),
-                'date_naiss' => $faker->dateTimeThisCentury->format('Y-m-d'),
-                'num_cni' => $faker->swiftBicNumber(),
-                'lieu_naiss' => $faker->city().'-'.$faker->country,
-                'role' => 2,
-                'date_adhesion' => date("Y-m-d", strtotime("-5 Months")),
-                'date_fincarence' => date("Y-m-d", strtotime("-1 Months")),
-                'parent' => $faker->numberBetween(1,3),
-                'valide' => 1,
-                'status' => 1,
-            ]);
-        }
+        // for ($i=0; $i < 8; $i++) { 
+        //     Adherents::create([
+        //         'nom' => $faker->lastName(),
+        //         'pnom' => $faker->firstName(),
+        //         'civilite' => $faker->title(),
+        //         'date_naiss' => $faker->dateTimeThisCentury->format('Y-m-d'),
+        //         'num_cni' => $faker->swiftBicNumber(),
+        //         'lieu_naiss' => $faker->city().'-'.$faker->country,
+        //         'role' => 2,
+        //         'date_adhesion' => date("Y-m-d", strtotime("-5 Months")),
+        //         'date_fincarence' => date("Y-m-d", strtotime("-1 Months")),
+        //         'parent' => $faker->numberBetween(1,3),
+        //         'valide' => 1,
+        //         'status' => 1,
+        //     ]);
+        // }
 
         
     }

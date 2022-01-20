@@ -99,6 +99,8 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     Route::get('/assistances', 'AssistanceController@index')->name('assistance.index');
     Route::get('/assistance/{id}/create', 'AssistanceController@create')->name('assistance.create');
     Route::post('/assistance/store', 'AssistanceController@store')->name('assistance.store');
+    Route::get('/assistance/importation', 'AssistanceController@importation')->name('assistance.importation');
+    Route::post('/assistance/importation', 'AssistanceController@importationPost')->name('assistance.importationPost');
 
     //Demande adhésion en ligne
     Route::get('/demandes-a-traiter', 'DemandeController@index')->name('demande.index');

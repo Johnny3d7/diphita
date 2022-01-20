@@ -18,6 +18,7 @@ class AyantDroitsImport implements ToCollection, WithHeadingRow
     */
     public function collection(Collection $collection)
     {
+        // Tableau de valeurs par defaut pour ecuperer le resultat de traitement
         $results = [
             "msg" => '',
             "errs" => [],
@@ -30,6 +31,7 @@ class AyantDroitsImport implements ToCollection, WithHeadingRow
         foreach ($collection as $key => $row) 
         {
             try {
+                // Création d'une Request en vue de la validation des informations renseignées dans chaque ligne
                 $request2 = new Request([
                     'civilite' => $row['civilite'] ?? null,
                     'nom' => $row['nomprenom'] ? trim(explode(' ', $row['nomprenom'])[0]) : null,
@@ -43,8 +45,8 @@ class AyantDroitsImport implements ToCollection, WithHeadingRow
                     'cas' => (isset($row['cas']) && $row['cas'] == "Oui") ? 1 : 0,
                     'adherent' => $row['idsouscripteur'] ?? null,
                 ]);
-                //code...
-                
+
+                // Validation des données de $request2
                 $singleValidator = Validator::make($request2->all(), [
                     'civilite' => 'required',
                     'nom' => 'required',
@@ -61,7 +63,8 @@ class AyantDroitsImport implements ToCollection, WithHeadingRow
                     "adherent.exists"  => "Le souscripteur ne fait pas partie de la base de données",
                 ]);
     
-                if($singleValidator->fails()){
+                if($singleValidator->fails()){ // Si la validation échoue ou retourne une erreur
+                    // Vérification que l'erreur est due à un doublon alors retourner un simple avertissement
                     $exists = AyantDroit::whereNom($request2->nom)->wherePnom($request2->pnom)->whereEmail($request2->email)->whereContact($request2->contact)->first();
                     if($exists){
                         array_push($results["warns"], [
@@ -69,15 +72,15 @@ class AyantDroitsImport implements ToCollection, WithHeadingRow
                             "msg" => ["Ayant droit déjà existant"],
                         ]);
                         $nb_warning ++;
-                    } else {
+                    } else { // C'est bien une erreur et non un doublon
                         array_push($results["errs"], [
                             "title" => "Erreur à la ligne ".($key+1),
                             "msg" => $singleValidator->errors()->all(),
                         ]);
                         $nb_error ++;
                     }
-                } else {
-                    try {
+                } else { // S'il n'y a aucune erreur de validation
+                    try { // Essayer d'enregistrer et relever les éventuelles erreurs
                         $adherent = Adherents::whereNumAdhesion($request2->adherent)->first();
                         $request2->merge([
                             'priorite' => count($adherent->ayants) + 1,
@@ -86,7 +89,7 @@ class AyantDroitsImport implements ToCollection, WithHeadingRow
                         $ayantdroit = AyantDroit::create($request2->all());
                         array_push($results["data"], $ayantdroit);
                         $nb_success ++;
-                    } catch (\Throwable $th) {
+                    } catch (\Throwable $th) { // En cas d'une quelconque erreur
                         array_push($results["errs"], [
                             "title" => "Erreur à la ligne ".($key+1),
                             "msg" => $th->getMessage(),
@@ -94,7 +97,7 @@ class AyantDroitsImport implements ToCollection, WithHeadingRow
                         $nb_error ++;
                     }
                 }
-            } catch (\Throwable $th) {
+            } catch (\Throwable $th) { // Cas d'une erreur survenue avant la validation : Cas de la date d'Excel
                 array_push($results["errs"], [
                     "title" => "Erreur à la ligne ".($key+1),
                     "msg" => ["La date de naissance doit être au format date ".$th->getMessage()],
@@ -103,7 +106,10 @@ class AyantDroitsImport implements ToCollection, WithHeadingRow
             }
             
         }
+        
+        // Stocker toutes les informations dans la variable de resultat
         $results["msg"] = "$nb_success ayant droit importés avec succès. ".($nb_error ? " $nb_error erreurs." : '').($nb_warning ? " $nb_warning avertissements." : '');
+        /* Mettre la variable de resultat dans la session de l'utilisateur pour y avoir accès n'importe où tant que la session est active ou que la variable n'a pas été supprimée de la session */
         session(['resultsAyant' => $results]);
     }
 }
