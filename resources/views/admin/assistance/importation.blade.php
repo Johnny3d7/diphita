@@ -1,9 +1,5 @@
 @php
-    $resultsImportation = [
-        'Bénéficiaires' => session('resultsBenef'),
-        'Souscripteurs' => session('resultsSousc'),
-        'AyantDroits' => session('resultsAyant'),
-    ];
+    $results = session('resultsCas');
 @endphp
 
 @extends('admin.main')
@@ -19,11 +15,11 @@
 @endsection
 
 @section('title')
-    Importation de contrats
+    Importation de cas assistés
 @endsection
 
 @section('subtitle')
-    Importation de contrats
+    Importation de cas assistés
 @endsection
 
 @section('content')
@@ -35,7 +31,7 @@
                     <div class="white_card_header">
                         <div class="box_header m-0">
                             <div class="main-title">
-                                <h3 class="m-0">Etat d'importation de contrats</h3>
+                                <h3 class="m-0">Etat d'importation de cas assistés</h3>
                                 <div class="col-md-12 text-center mt_15">
                                     
                                 </div>
@@ -47,7 +43,7 @@
                             {{-- <h6 class="card-subtitle mb-2">Les champs marqués du signe <code class="highlighter-rouge">(*)</code> sont tous obligatoires.</h6> --}}
                             
                             <div class="col-md-8 offset-md-2">
-                                <form class="form-horizontal" role="form" method="POST" action="{{ route('admin.adhesion.importationPost') }}" enctype="multipart/form-data">
+                                <form class="form-horizontal" role="form" method="POST" action="{{ route('admin.assistance.importationPost') }}" enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <div class="form-group{{ $errors->has('csv') ? ' has-error has-feedback' : '' }}">
                                         <label class="form-control my-1" for="csv" id="csvLabel" style="cursor: pointer;">Selectionnez un fichier à importer</label>
@@ -70,18 +66,16 @@
 
                             <div class="row my-3">
                                 
-                                @foreach ($resultsImportation as $key => $results)
-                                    @isset ($results)
-                                        <div class="col-md-12">
-                                            <div class="alert alert-dismissible alert-{{ count($results["errs"]) > 0 ? 'danger' : (count($results["warns"]) > 0 ? 'warning' : 'success') }}" role="alert">
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h6 class="text-center text-info"><b>{{ $key }}</b></h6>
-                                                <h4 class="text-center">{{ $results['msg'] }} <a href="javascript:void(0)" data-toggle="modal" data-target="#importation{{ $key }}Modal">Details <i class="fa fa-info-circle"></i></a></h4>
-                                                
-                                            </div>
-                                        </div>                                        
-                                    @endisset
-                                @endforeach
+                                @isset ($results)
+                                    <div class="col-md-12">
+                                        <div class="alert alert-dismissible alert-{{ count($results["errs"]) > 0 ? 'danger' : (count($results["warns"]) > 0 ? 'warning' : 'success') }}" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h6 class="text-center text-info"><b>Cas assistés</b></h6>
+                                            <h4 class="text-center">{{ $results['msg'] }} <a href="javascript:void(0)" data-toggle="modal" data-target="#importationModal">Details <i class="fa fa-info-circle"></i></a></h4>
+                                            
+                                        </div>
+                                    </div>                                        
+                                @endisset
                             </div>
                         </div>
                     </div>
@@ -93,11 +87,9 @@
 @endsection
 
 @section('modals')
-    @foreach ($resultsImportation as $key => $results)
-        @isset ($results)
-            @include('admin.adherent._detailsImportationModal')
-        @endisset
-    @endforeach
+    @isset ($results)
+        @include('admin.assistance._detailsImportationModal')
+    @endisset
 @endsection
 
 @section('js')
@@ -111,5 +103,5 @@
 @endsection
 
 @php
-session()->forget(['resultsBenef', 'resultsSousc', 'resultsAyant']);
+session()->forget('resultsCas');
 @endphp
