@@ -18,6 +18,14 @@ class Versement extends Model
     protected $fillable = [
         'montant',
         'status',
-        'id_adherent'
+        'id_adherent',
+        'parcouru',
+        'id_admin'
     ];
+    
+    public function adherent()
+    {
+        return $this->belongsTo(Adherents::class, 'id_adherent');
+    }
+
 }

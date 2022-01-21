@@ -16,11 +16,13 @@ class CreateVersementsTable extends Migration
         Schema::create('versements', function (Blueprint $table) {
             $table->increments('id');
             $table->string('montant');
-            $table->integer('id_admin');
-            $table->integer('id_adherent');
-            $table->string('parcouru');
-            $table->integer('status');
+            $table->integer('id_admin')->nullable();
+            $table->string('parcouru')->default(0);
+            $table->integer('status')->default(1);
             $table->timestamps();
+
+            //foreign key
+            $table->integer('id_adherent')->unsigned();
         });
     }
 

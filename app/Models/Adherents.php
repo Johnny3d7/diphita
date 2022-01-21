@@ -73,4 +73,8 @@ class Adherents extends Model
     public function beneficiaires(){
         return $this->isBeneficiaire() ? null : self::where(['status'=>1,'role'=>2,'parent'=>$this->id])->orderBy('created_at', 'DESC')->get();
     }
+
+    public function versements(){
+        return $this->hasMany(Versement::class, 'id_adherent');
+    }
 }

@@ -50,11 +50,20 @@
     <!-- style CSS -->
     <link rel="stylesheet" href="{{ url('css/style.css') }}" />
     <link rel="stylesheet" href="{{ url('css/colors/default.css') }}" id="colorSkinCSS">
+    <style>
+        /*.main_content .main_content_iner{
+            background: linear-gradient(rgba(246,247,251,0.9),
+     rgba(246,247,251,0.95)),
+        url("http://web.medcare-ci.com/wp-content/uploads/2021/06/pexels-jep-gambardella-7689757-scaled.jpg") !important;
+   
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+        }*/
+    </style>
 </head>
 <body class="crm_body_bg">
     
-
-
 <!-- main content part here -->
  
  <!-- sidebar  -->

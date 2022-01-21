@@ -95,7 +95,7 @@ class AssistanceController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('message', 'L\'enregistrement du cas s\'est déroulée avec succès ')->with('type', 'bg-success');;
+        return redirect()->back()->with('message', 'L\'enregistrement du cas s\'est déroulée avec succès ')->with('type', 'bg-success');
     }
 
     /**
@@ -107,6 +107,9 @@ class AssistanceController extends Controller
     public function show($id)
     {
         //
+        $assistance = Assistance::find($id);
+
+        return view('admin.assistance.show', compact('assistance'));
     }
 
     /**
@@ -118,6 +121,10 @@ class AssistanceController extends Controller
     public function edit($id)
     {
         //
+        $assistance = Assistance::find($id);
+
+        return view('admin.assistance.edit', compact('assistance'));
+
     }
 
     /**
@@ -141,11 +148,57 @@ class AssistanceController extends Controller
     public function destroy($id)
     {
         //
+        $assistance = Assistance::find($id);
+        $assistance->status = 0;
+        $assistance->save();
+        
+        return redirect()->back()->with('message', 'Assistance supprimée avec succès.')->with('type', 'bg-success');
+    }
+
+    public function valider($id)
+    {
+        //
+        $assistance = Assistance::find($id);
+        $assistance->valide = 1;
+        $assistance->save();
+        
+        return redirect()->back()->with('message', 'Assistance validée avec succès.')->with('type', 'bg-success');
+    }
+
+    public function rejeter($id)
+    {
+        //
+        $assistance = Assistance::find($id);
+        $assistance->valide = 2;
+        $assistance->save();
+
+        $adherent = Adherents::find($assistance->beneficiaire->id);
+        $adherent->cas = 1;
+        $adherent->save();
+        
+        return redirect()->back()->with('message', 'Assistance est passée au statut rejeté.')->with('type', 'bg-success');
+    }
+
+    public function assister($id)
+    {
+        //
+        $assistance = Assistance::find($id);
+        $assistance->assiste = 1;
+        $assistance->save();
+        
+        return redirect()->back()->with('message', 'Cas assisté avec succés. Le montant actuel de la caisse est de .')->with('type', 'bg-success');
     }
 
     public function formatDate($date){
         $date1 = explode('-',$date);
         $date_format = $date1[2].$date1[1].$date1[0];
         return $date_format;
+    }
+
+    public function assistance_sous($id){
+        $souscripteur = Adherents::find($id);
+        $assistances = Assistance::where(['status'=> 1,'id_souscripteur' => $id])->get();
+
+        return view('admin.assistance.assistance_sous',compact('assistances','souscripteur'));
     }
 }
