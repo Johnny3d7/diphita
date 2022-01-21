@@ -111,6 +111,10 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     Route::get('/assistance/{id}/destroy', 'AssistanceController@destroy')->name('assistance.destroy');
     
 
+    Route::get('/assistance/importation', 'AssistanceController@importation')->name('assistance.importation');
+    Route::post('/assistance/importation', 'AssistanceController@importationPost')->name('assistance.importationPost');
+
+
     //Demande adhésion en ligne
     Route::get('/demandes-a-traiter', 'DemandeController@index')->name('demande.index');
     Route::get('/demandes/valider', 'DemandeController@valider')->name('demande.valider');

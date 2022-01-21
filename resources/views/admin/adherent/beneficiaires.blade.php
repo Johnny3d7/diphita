@@ -46,7 +46,7 @@
 
                     <div class="QA_table mb_30">
                         <!-- table-responsive -->
-                        <table class="table lms_table_active " id="tabledata">
+                        <table class="table table_diphita ">
                             <thead>
                                 
                                 <tr>
@@ -70,6 +70,7 @@
                         
                                     <td><a href="#" class="status_btn" >Actif</a></td>
                                     <td>
+                                        @if($beneficiaire->role == 1)
                                         <div class="header_more_tool">
                                             <div class="dropdown">
                                                 <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
@@ -83,6 +84,9 @@
                                                 </div>
                                               </div>
                                         </div>
+                                        @else
+                                            <a href="{{ route('admin.adhesion.show', ['id' => $beneficiaire->souscripteur()->id ?? 0]) }}">{{ $beneficiaire->souscripteur()->num_adhesion ?? null }}</a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach

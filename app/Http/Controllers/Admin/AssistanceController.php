@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\AssistancesImport;
 use App\Models\Adherents;
 use App\Models\Assistance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AssistanceController extends Controller
 {
@@ -19,6 +21,41 @@ class AssistanceController extends Controller
     {
         //
         return view('admin.assistance.index');
+    }
+
+        /**
+     * Show the form for importing datas.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function importation()
+    {
+        return view('admin.assistance.importation');
+    }
+
+    /**
+     * Post method for importing datas.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function importationPost(Request $request)
+    {
+        $fileValidator = Validator::make($request->all(), [
+            'csv' => 'required|max:5000|mimes:xlsx,xls,csv'
+        ]);
+
+        if($fileValidator->fails()){
+            return redirect()->back()->withErrors($fileValidator->errors()->all());
+        } else {
+            try {
+                $import = new AssistancesImport;
+                $collection = Excel::import($import, $request->file('csv'));
+    
+                return redirect()->back();
+            } catch (\Throwable $th) {
+                return redirect()->back()->withErrors(['csv' => "Fichier incompatible avec les exigences de l'importation : ".$th->getMessage()]);
+            }
+        }
     }
 
     /**
