@@ -98,8 +98,9 @@
             </div>
             </a>
             <ul>
-              <li><a href="{{ route('admin.depense.create') }}">Ajout</a></li>
               <li><a href="{{ route('admin.depense.index') }}">Liste</a></li>
+              <li><a href="{{ route('admin.depense.create') }}">Ajout</a></li>
+              
             </ul>
         </li>
         

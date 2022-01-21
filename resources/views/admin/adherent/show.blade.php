@@ -89,10 +89,10 @@
                                             <div class="icon-wrapper-bg bg-primary"></div>
                                             <i class="ti-settings text-primary"></i>
                                         </div>
-                                            <div class="widget-numbers"><span>0</span></div>
+                                            <div class="widget-numbers"><span>{{ $souscripteur->assistances->where('valide',1)->count() }}</span></div>
                                             <div class="widget-subheading">Nombre d'assistances</div>
                                         <div class="widget-description text-success">
-                                            <i class="fa fa-angle-up ">
+                                            <i class="fa fa-angle-up">
                 
                                             </i>
                                             {{-- <span class="pl-1"><span>176%</span></span> --}}
@@ -125,7 +125,7 @@
                             </div>
                             <div class="row">
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Numéro d'identification:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5"><a href="{{ route('admin.adherent.formulaire-print',['id'=>$souscripteur->id]) }}">{{ $souscripteur->num_adhesion }}</a> </div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Numéro d'identification:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5"><a href="{{ route('admin.adherent.formulaire-print',['id'=>$souscripteur->id]) }}" {{ $souscripteur->cas == 1 ? 'text-danger' : 'text-success'  }}>{{ $souscripteur->num_adhesion }}</a> </div></div>
                                 </div>
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
@@ -213,7 +213,12 @@
                             <div class="icon-wrapper-bg bg-primary"></div>
                             <i class="ti-money text-primary"></i>
                         </div>
-                            <div class="widget-numbers"><span>50 000 FCFA</span></div>
+                            @if ($souscripteur->versements->count() == 0)
+                                <div class="widget-numbers"><span>0 FCFA</span></div>
+                            @else
+                                <div class="widget-numbers"><span style="font-size: 1.5rem !important;">{{ number_format($souscripteur->versements->where('parcouru',0)->sum('montant'), 0, '', ' ') }} FCFA</span></div>
+                            @endif
+                            
                             <div class="widget-subheading">Solde</div>
                     </div>
                     <a href="{{ route('admin.adherent.formulaire-print',['id'=>$souscripteur->id]) }}">
@@ -229,11 +234,13 @@
                             <li><a href="{{ route('admin.adherent.debloquer',['id' => $souscripteur->id]) }}"><i class="ti-unlock"></i> <span> <span>Activer compte</span>  </span> </a></li>
                             
                         @elseif ($souscripteur->status == 1 && $souscripteur->valide == 1)
-                            <li><a href="#"><i class="ti-money"></i> <span> <span>Versement</span>  </span> </a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#exampleModalCenter"><i class="ti-money"></i> <span> <span>Versement</span>  </span> </a></li>
                             
                             <li><a href="{{ route('admin.adherent.bloquer', ['id' => $souscripteur->id]) }}"><i class="ti-lock"></i> <span> <span>Désactiver compte</span>  </span> </a></li>
-                            <li><a href="{{ route('admin.assistance.create',['id' => $souscripteur->id]) }}"><i class="ti-save"></i> <span> <span>Cas de décès</span> </span> </a></li>
-
+                            <li><a href="{{ route('admin.assistance.create',['id' => $souscripteur->id]) }}"><i class="ti-save"></i> <span> <span>Ajouter une assistance</span> </span> </a></li>
+                            {{-- @if ($souscripteur->assistances->count() != 0) --}}
+                                <li><a href="{{ route('admin.assistance.souscripteur.index',['id' => $souscripteur->id]) }}"><i class="ti-list"></i> <span> <span>Liste des assistances</span> </span> </a></li>  
+                            {{-- @endif --}}
                         @endif
                         
                     </ul>
@@ -286,7 +293,7 @@
                                                 @foreach ($benefs as $benef)
                                                 <tr>
                                                     @if ($souscripteur->num_contrat)
-                                                    <th scope="row"> <a href="#" class="question_content"> {{ $benef->num_adhesion }}</a></th>
+                                                    <th scope="row"> <a href="{{ route('admin.adherent.formulaire-print',['id'=>$benef->id]) }}" class="question_content {{ $benef->cas == 1 ? 'text-danger' : 'text-success'  }}"> {{ $benef->num_adhesion }}</a></th>
                                                     @endif
                                                     
                                                     <td>
@@ -412,8 +419,54 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+@section('modals')
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Insérer un versement</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="{{ route('admin.versement.store') }}" method="post" id="versement_form">
+                @csrf
+                @method('POST')
+                <div class="form-row">
+                    <div class="col-12 mt_15 mb_15">
+                        <h4 class="m-0 txt-color1 txt-upper txt-bold">Montant</h4>
+                    </div>
+        
+                    <div class="form-group col-lg-12">
+                        <label for="montant">Montant du versement <code class="highlighter-rouge">*</code></label>
+                        <input type="text"  name="montant" class="form-control @error('montant') is-invalid @enderror" placeholder="Ex: 50000" required>
+                        <input type="text" value="{{ $souscripteur->id }}" name="id_adherent" hidden required>
+                        @error('montant')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          <button type="button" id="verser" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+</div>
 @endsection
 
 @section('js')
-
+    <script>
+        $( "#verser" ).click(function() {
+            $( "#versement_form" ).submit();
+        });
+    </script>
 @endsection

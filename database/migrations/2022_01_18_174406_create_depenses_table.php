@@ -18,12 +18,12 @@ class CreateDepensesTable extends Migration
             $table->string('lib');
             $table->string('montant');
             $table->dateTime('date_depense');
-            $table->string('observation');
-            $table->integer('parcouru');
-            $table->integer('id_admin');
+            $table->string('observation')->nullable();
+            $table->integer('parcouru')->default(0);
+            $table->integer('id_admin')->nullable();
             $table->integer('id_ordonnateur');
-            $table->integer('status');
-            $table->integer('id_adherent');
+            $table->integer('status')->default(1);
+            $table->integer('id_adherent')->nullable();
             $table->timestamps();
         });
     }

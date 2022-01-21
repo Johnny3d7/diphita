@@ -36,7 +36,7 @@
                                 @method('POST')
                                 <div class="form-row">
                                     <div class="col-12 mt_30 mb_15">
-                                        <h4 class="m-0 txt-color1 txt-upper txt-bold">Souscripteur</h4>
+                                        <h4 class="m-0 txt-color1 txt-upper txt-bold"> <a href="{{ route('admin.adhesion.show',['id' => $adherent->id]) }}" style="color: inherit; text-decoration: inherit;">Souscripteur</a></h4>
                                     </div>
                         
                                     <div class="form-group col-lg-4">

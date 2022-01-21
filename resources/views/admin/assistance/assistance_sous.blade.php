@@ -5,28 +5,28 @@
 @endsection
 
 @section('title')
-    Historique des dépenses
+    Liste des assistances
 @endsection
 
 @section('subtitle')
-    Historique des dépenses
+    Liste des assistances
 @endsection
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-lg-9">
+    <div class="col-lg-12">
         <div class="white_card card_height_100 mb_30">
             <div class="white_card_header">
                 <div class="box_header m-0">
                     <div class="main-title">
-                        <h3 class="m-0">Tableau</h3>
+                        <h3 class="m-0"><a style="color: inherit; text-decoration: inherit;" class="unstyled-a" href="">Tableau</a></h3>
                     </div>
                 </div>
             </div>
             <div class="white_card_body">
                 <div class="QA_section">
                     <div class="white_box_tittle list_header">
-                        <h4>Liste des dépenses</h4>
+                        <h4>Assistances</h4>
                         <div class="box_right d-flex lms_block">
                             <div class="serach_field_2">
                                 <div class="search_inner">
@@ -44,34 +44,38 @@
                         <table class="table table_diphita ">
                             <thead>
                                 <tr>
-                                    <th scope="col">Désignation</th>
-                                    <th scope="col">Montant</th>
-                                    <th scope="col">Date dépense</th>
-                                    <th scope="col">Ordonnateur</th>
-                                    <th scope="col">Observation</th>
+                                    <th scope="col">Nom & Prénom(s)</th>
+                                    <th scope="col">Date de décès</th>
+                                    <th scope="col">Souscripteur</th>
+                                    <th scope="col">Contact Souscripteur</th>
+                                    <th scope="col">Assisté</th>
+                                    <th scope="col">Statut</th>
+                                   
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($depenses as $depense)
+                                @foreach ($assistances as $assistance)
                                 <tr>
-                                    <td>{{ $depense->lib }}</td>
-                                    <td>{{ number_format($depense->montant, 0, '', ' ') }}</td>
-                                    <td>{{ ucwords((new Carbon\Carbon($depense->date_depense))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
+                                    <td>{{ $assistance->beneficiaire->nom.' '.$assistance->beneficiaire->pnom }}</td>
+                                    <td>{{ ucwords((new Carbon\Carbon($assistance->date_deces))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
+                                    
                                     <td>
-                                        @if ($depense->id_ordonnateur == 1)
-                                            M. Gallaty KOUASSI BI
-                                        @elseif($depense->id_ordonnateur == 2)
-                                            Mme Judith N'GUESSAN
-                                        @elseif($depense->id_ordonnateur == 3)
-                                            M. Fabrice TCHOMAN
-                                        @endif
+                                        <a href="{{ route('admin.adhesion.show',['id'=>$souscripteur->id]) }}">{{ $assistance->souscripteur->nom.' '.$assistance->souscripteur->pnom }}</a>
                                     </td>
                                     <td>
-                                        @if ($depense->observation == null)
-                                            Aucune observation
-                                        @else
-                                            {{ $depense->observation }}
+                                        {{ $assistance->souscripteur->contact }}
+                                    </td>
+                                    <td>
+                                        {{ $assistance->assiste == 1 ? 'Oui': 'Non' }}
+                                    </td>
+                                    <td>
+                                        @if ($assistance->valide == 0)
+                                            <a href="#" class="status_btn" style="background-color: #101038">En cours de validation</a>
+                                        @elseif ($assistance->valide == 1)
+                                            <a href="#" class="status_btn">Validée</a>
+                                        @elseif ($assistance->valide == 2)
+                                            <a href="#" class="status_btn" style="background-color: red">Rejetée</a>
                                         @endif
                                     </td>
                                     <td>
@@ -81,15 +85,15 @@
                                                   <i class="ti-more-alt"></i>
                                                 </span>
                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="{{ route('admin.depense.edit',['id' => $depense->id]) }}"> <i class="ti-pencil"></i> Modifier</a>
-                                                    <a class="dropdown-item" href="{{ route('admin.depense.destroy', ['id' => $depense->id]) }}"> <i class="ti-trash"></i> Supprimer</a>
-                                                    {{-- <a class="dropdown-item" href="{{ route('admin.adhesion.valider', ['id' => $souscripteur->id]) }}"> <i class="fas fa-edit"></i> Valider</a>
+                                                    <a class="dropdown-item" href="{{ route('admin.assistance.show',['id' => $assistance->id]) }}"> <i class="fas fa-eye"></i> Voir</a>
+                                                    <a class="dropdown-item" href="{{ route('admin.assistance.edit',['id' => $assistance->id]) }}"> <i class="ti-pencil"></i> Modifier</a>
+                                                    {{-- <a class="dropdown-item" href="{{ route('admin.depense.destroy', ['id' => $assistance->id]) }}"> <i class="ti-trash"></i> Supprimer</a> --}}
                                                     
-                                                  <a class="dropdown-item" href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"> <i class="ti-trash"></i> Rejeter</a> --}}
+                                                  {{-- <a class="dropdown-item" href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"> <i class="ti-trash"></i> Rejeter</a> --}}
                                                 </div>
                                               </div>
                                         </div>
-                                    </td>
+                                    </td> 
                                 </tr>
                                 @endforeach
                                 

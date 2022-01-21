@@ -42,8 +42,13 @@ class Assistance extends Model
             ->saveSlugsTo('slug');
     }*/
 
-    public function adherent()
+    public function souscripteur()
     {
         return $this->belongsTo(Adherents::class, 'id_souscripteur');
+    }
+
+    public function beneficiaire()
+    {
+        return $this->belongsTo(Adherents::class, 'id_benef');
     }
 }

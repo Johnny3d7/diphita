@@ -94,18 +94,34 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     Route::get('/depenses', 'DepenseController@index')->name('depense.index');
     Route::get('/depense/create', 'DepenseController@create')->name('depense.create');
     Route::post('/depense/store', 'DepenseController@store')->name('depense.store');
+    Route::get('/depense/edit/{id}', 'DepenseController@edit')->name('depense.edit');
+    Route::any('/depense/update/{id}', 'DepenseController@update')->name('depense.update');
+    Route::get('/depense/destroy/{id}', 'DepenseController@destroy')->name('depense.destroy');
 
     //Cas assisté
     Route::get('/assistances', 'AssistanceController@index')->name('assistance.index');
+    Route::get('/assistances/{id}', 'AssistanceController@assistance_sous')->name('assistance.souscripteur.index');
     Route::get('/assistance/{id}/create', 'AssistanceController@create')->name('assistance.create');
+    Route::get('/assistance/{id}/edit', 'AssistanceController@edit')->name('assistance.edit');
+    Route::get('/assistance/{id}/show', 'AssistanceController@show')->name('assistance.show');
     Route::post('/assistance/store', 'AssistanceController@store')->name('assistance.store');
+    Route::get('/assistance/{id}/valider', 'AssistanceController@valider')->name('assistance.valider');
+    Route::get('/assistance/{id}/rejeter', 'AssistanceController@rejeter')->name('assistance.rejeter');
+    Route::get('/assistance/{id}/assister', 'AssistanceController@assister')->name('assistance.assister');
+    Route::get('/assistance/{id}/destroy', 'AssistanceController@destroy')->name('assistance.destroy');
+    
+
     Route::get('/assistance/importation', 'AssistanceController@importation')->name('assistance.importation');
     Route::post('/assistance/importation', 'AssistanceController@importationPost')->name('assistance.importationPost');
+
 
     //Demande adhésion en ligne
     Route::get('/demandes-a-traiter', 'DemandeController@index')->name('demande.index');
     Route::get('/demandes/valider', 'DemandeController@valider')->name('demande.valider');
     Route::get('/demandes/refuser', 'DemandeController@refuser')->name('demande.refuser');
+
+    //Versement
+    Route::post('/versement/store', 'VersementController@store')->name('versement.store');
 
 
     //Configuration
