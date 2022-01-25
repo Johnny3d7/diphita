@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,6 +33,27 @@ class Assistance extends Model
         'valide'      
     ];
 
+    public static function boot() {
+	    parent::boot();
+
+        static::created(function($item) {
+	        // Log::info('Item Created Event:'.$item);
+	    });
+
+	    static::creating(function($item) {
+	        // Log::info('Item Creating Event:'.$item);
+            $date_assistance = $item->date_assistance;
+            
+            $date_assistance = $date_assistance->isoFormat('D') < 26 ? $date_assistance->addMonths(2) : $date_assistance->addMonths(3);
+            $date_assistance = Carbon::create($date_assistance->isoFormat('YYYY'), $date_assistance->isoFormat('MM'), 05, 0, 0, 0);
+            
+            $existCotisation = Cotisation::whereDateButoire($date_assistance)->first() ?? Cotisation::create(['date_butoire' => $date_assistance]);
+            $item->code_deces = $existCotisation->code_deces;
+	    });
+
+	}
+
+
 
     /**
      * Get the options for generating the slug.
@@ -42,13 +65,18 @@ class Assistance extends Model
             ->saveSlugsTo('slug');
     }*/
 
-    public function souscripteur()
+    public function adherent()
     {
         return $this->belongsTo(Adherents::class, 'id_souscripteur');
     }
-
+    
     public function beneficiaire()
     {
         return $this->belongsTo(Adherents::class, 'id_benef');
+    }
+    
+    public function cotisation()
+    {
+        return $this->belongsTo(Cotisation::class, 'code_deces', 'code_deces');
     }
 }

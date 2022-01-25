@@ -23,5 +23,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(AyantsDroitTableSeeder::class);
         $this->command->info('AyantsDroit table seeded!');
+
+        $this->call(CotisationTableSeeder::class);
+        $this->command->info('Cotisation table seeded!');
     }
 }

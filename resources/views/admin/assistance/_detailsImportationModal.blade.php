@@ -40,7 +40,7 @@
                                     @foreach($results['data'] as $data)
                                         <tr>
                                             {{-- <td>{{ $data->role }}</td> --}}
-                                            <td>{{ $data->id_benef }}</td>
+                                            <td>{{ $data->beneficiaire->num_adhesion }}</td>
                                             <td>{{ date_format(date_create($data->date_deces), 'd/m/Y') }}</td>
                                             <td>{{ $data->lieu_deces }}</td>
                                             <td>{{ date_format(date_create($data->date_obseques), 'd/m/Y') }}</td>

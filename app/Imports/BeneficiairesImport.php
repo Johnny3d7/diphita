@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Helpers\Functions;
 use App\Models\Adherents;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -34,13 +35,13 @@ class BeneficiairesImport implements ToCollection, WithHeadingRow
                 $request2 = new Request([
                     'role' => 2, // Bénéficiaire
                     'valide' => 1, // Valider d'office
-                    'num_adhesion' => $row['idbeneficiaire'] ?? null,
+                    'num_adhesion' => $row['idbeneficiaire'] ? Functions::trimInsideString($row['idbeneficiaire']) : null,
                     'civilite' => $row['civilite'] ?? null,
                     'nom' => $row['nomprenom'] ? trim(explode(' ', $row['nomprenom'])[0]) : null,
                     'pnom' => $row['nomprenom'] ? trim(substr($row['nomprenom'], strlen(explode(' ', $row['nomprenom'])[0]))) : null,
                     'email' => $row['email'] ?? null,
                     'num_cni' => $row['cni'] ?? null,
-                    'date_naiss' => isset($row['datenaissance']) ? Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['datenaissance'])) : null,
+                    'date_naiss' => isset($row['datenaissance']) ? Functions::dateFromExcel($row['datenaissance']) : null,
                     'lieu_naiss' => $row['lieunaissance'] ?? null,
                     'lieu_hab' => $row['lieuhabitation'] ?? null,
                     'contact' => $row['contact'] ?? null,

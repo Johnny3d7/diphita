@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Helpers\Functions;
 use App\Models\Adherents;
 use App\Models\Assistance;
 use Carbon\Carbon;
@@ -34,11 +35,11 @@ class AssistancesImport implements ToCollection, WithHeadingRow
                 // Création d'une Request en vue de la validation des informations renseignées dans chaque ligne
                 $request2 = new Request([
                     // 'valide' => 1, // Valider d'office
-                    'benef' => $row['idbeneficiaire'] ?? null,
-                    'date_deces' => isset($row['date_de_deces']) ? Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['date_de_deces'])) : null,
+                    'benef' => $row['idbeneficiaire'] ? Functions::trimInsideString($row['idbeneficiaire']) : null,
+                    'date_deces' => isset($row['date_de_deces']) ? Functions::dateFromExcel($row['date_de_deces']) : null,
                     'lieu_deces' => $row['lieu_de_deces'] ?? null,
-                    'date_obseques' => isset($row['date_des_obseques']) ? Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['date_des_obseques'])) : null,
-                    'date_assistance' => isset($row['date_dassistance']) ? Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['date_dassistance'])) : null,
+                    'date_obseques' => isset($row['date_des_obseques']) ? Functions::dateFromExcel($row['date_des_obseques']) : null,
+                    'date_assistance' => isset($row['date_dassistance']) ? Functions::dateFromExcel($row['date_dassistance']) : null,
                     'moyen_assistance' => $row['moyen_dassistance'] ?? null
                 ]);
 
@@ -50,13 +51,13 @@ class AssistancesImport implements ToCollection, WithHeadingRow
                     'date_obseques' => 'required',
                 ],[
                     "benef.required" => "Veuillez entrer l'ID bénéficiaire",
-                    "id_benef.exists" => "Aucun bénéficiaire ne possède cet id",
+                    "benef.exists" => "Aucun bénéficiaire ne possède cet id",
                     "date_deces.required" => "Veuillez entrer la date de décès",
                     "lieu_deces.required" => "Veuillez entrer le lieu de décès",
                     "date_obseques.required" => "Veuillez entrer la date des obsèques",
                 ]);
                 if($singleValidator->fails()){ // Si la validation échoue ou retourne une erreur
-                    dd($singleValidator->fails(), $request2->all());
+                    // dd($singleValidator->fails(), $request2->all());
                     array_push($results["errs"], [
                         "title" => "Erreur à la ligne ".($key+1),
                         "msg" => $singleValidator->errors()->all(),
@@ -64,16 +65,24 @@ class AssistancesImport implements ToCollection, WithHeadingRow
                     $nb_error ++;
                 } else { // S'il n'y a aucune erreur de validation
                     try { // Essayer d'enregistrer et relever les éventuelles erreurs
-                        $beneficiaire = Adherents::whereNumAdhesion($request2->id_benef)->first();
+                        $beneficiaire = Adherents::whereNumAdhesion($request2->benef)->first();
                         if($beneficiaire){
-                            $beneficiaire->update(["cas" => 1]);
-                            $request2->merge([
-                                "id_benef" => $beneficiaire->id,
-                                "id_souscripteur" => $beneficiaire->isBeneficiaire() ? $beneficiaire->souscripteur()->id : $beneficiaire->id,
-                            ]);
-                            $cas = Assistance::create($request2->all());
-                            array_push($results["data"], $cas);
-                            $nb_success ++;
+                            if($cas = Assistance::whereIdBenef($beneficiaire->id)->first()){
+                                array_push($results["warns"], [
+                                    "title" => "Avertissement à la ligne ".($key+1),
+                                    "msg" => ["Cas déjà assisté pour le bénéficiaire ".$beneficiaire->num_adhesion],
+                                ]);
+                                $nb_warning ++; 
+                            } else {
+                                $beneficiaire->update(["cas" => 1]);
+                                $request2->merge([
+                                    "id_benef" => $beneficiaire->id,
+                                    "id_souscripteur" => $beneficiaire->isBeneficiaire() ? $beneficiaire->souscripteur()->id : $beneficiaire->id,
+                                ]);
+                                $cas = Assistance::create($request2->all());
+                                array_push($results["data"], $cas);
+                                $nb_success ++;
+                            }
                         }
                     } catch (\Throwable $th) { // En cas d'une quelconque erreur
                         array_push($results["errs"], [
