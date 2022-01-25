@@ -1,7 +1,8 @@
 <nav class="sidebar">
     <div class="logo d-flex justify-content-between">
-        <a class="large_logo" href="index-2.html"><img src="{{ url('img/logo1.png') }}" style="" alt=""></a>
-        <a class="small_logo" href="index-2.html"><img src="{{ url('img/mini_logo.png') }}" alt=""></a>
+        <a class="large_logo" href="{{ url('login') }}"><img src="{{ url('img/logo1.png') }}" style="" alt=""></a>
+        {{-- <a class="small_logo" href="{{ url('login') }}"><img src="{{ url('img/mini_logo.png') }}" alt=""></a> --}}
+        <a class="small_logo" href="{{ url('login') }}"><img src="{{ url('img/logo1.png') }}" alt=""></a>
         <div class="sidebar_close_icon d-lg-none">
             <i class="ti-close"></i>
         </div>
@@ -45,8 +46,8 @@
             <ul>
               <li><a href="{{ route('admin.adherent.index') }}">Les souscripteurs</a></li>
               <li><a href="{{ route('admin.beneficiaires.index') }}">Tous les bénéficiaires</a></li>
-              <li><a href="editor.html">Les souscripteurs Oumé</a></li>
-              <li><a href="mail_box.html">Les souscripteurs Ouéllé</a></li>
+              <li><a href="javascript:void(0);">Les souscripteurs Oumé</a></li>
+              <li><a href="javascript:void(0);">Les souscripteurs Ouéllé</a></li>
             </ul>
         </li>
         <li class="">
@@ -59,8 +60,8 @@
             </div>
             </a>
             <ul>
-              <li><a href="admin_list.html">Annuelles</a></li>
-              <li><a href="add_new_admin.html">Exceptionnelles</a></li>
+              <li><a href="{{ route('admin.cotisations.index') }}">Annuelles</a></li>
+              <li><a href="{{ route('admin.cotisations.index') }}">Exceptionnelles</a></li>
             </ul>
         </li>
         {{-- <li class="">
@@ -114,8 +115,8 @@
             </div>
             </a>
             <ul>
-              <li><a href="module_setting.html">Email</a></li>
-              <li><a href="role_permissions.html">Sms</a></li>
+              <li><a href="javascript:void(0);">Email</a></li>
+              <li><a href="javascript:void(0);">Sms</a></li>
             </ul>
         </li>
         
@@ -146,8 +147,8 @@
               </div>
             </a>
             <ul>
-              <li><a href="light_sidebar.html">Ajout</a></li>
-              <li><a href="dark_sidebar.html">Liste</a></li>
+              <li><a href="javascript:void(0);">Ajout</a></li>
+              <li><a href="javascript:void(0);">Liste</a></li>
             </ul>
         </li>
         <li class="">
@@ -160,8 +161,8 @@
               </div>
             </a>
             <ul>
-              <li><a href="Minimized_Aside.html">Mes informations</a></li>
-              <li><a href="empty_page.html">Modifier mon mot de passe</a></li>
+              <li><a href="javascript:void(0);">Mes informations</a></li>
+              <li><a href="javascript:void(0);">Modifier mon mot de passe</a></li>
             </ul>
         </li>
         <li class="">

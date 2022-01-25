@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Helpers\Functions;
 use App\Models\Adherents;
 use Carbon\Carbon;
 use DateTime;
@@ -46,21 +47,21 @@ class SouscripteursImport implements ToCollection, WithHeadingRow
                 $request2 = new Request([
                     'role' => 1, // Souscripteur
                     'valide' => 1, // Valider d'office
-                    'num_adhesion' => $row['idsouscripteur'],
+                    'num_adhesion' => $row['idsouscripteur'] ? Functions::trimInsideString($row['idsouscripteur']) : null,
                     'civilite' => $row['civilite'] ?? null,
                     'nom' => $row['nomprenom'] ? trim(explode(' ', $row['nomprenom'])[0]) : null,
                     'pnom' => $row['nomprenom'] ? trim(substr($row['nomprenom'], strlen(explode(' ', $row['nomprenom'])[0]))) : null,
                     'email' => $row['email'] ?? null,
                     'num_cni' => $row['cni'] ?? null,
-                    'date_naiss' => isset($row['datenaissance']) ? Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['datenaissance'])) : null,
+                    'date_naiss' => isset($row['datenaissance']) ? Functions::dateFromExcel($row['datenaissance']) : null,
                     'lieu_naiss' => $row['lieunaissance'] ?? null,
                     'lieu_hab' => $row['lieuhabitation'] ?? null,
                     'contact' => $row['contact'] ?? null,
                     'cas' => (isset($row['cas']) && $row['cas'] == "Oui") ? 1 : 0,
-                    'beneficiaire1' => $row['beneficiaire1'] ?? null,
-                    'beneficiaire2' => $row['beneficiaire2'] ?? null,
-                    'beneficiaire3' => $row['beneficiaire3'] ?? null,
-                    'beneficiaire4' => $row['beneficiaire4'] ?? null,
+                    'beneficiaire1' => $row['beneficiaire1'] ? Functions::trimInsideString($row['beneficiaire1']) : null,
+                    'beneficiaire2' => $row['beneficiaire2'] ? Functions::trimInsideString($row['beneficiaire2']) : null,
+                    'beneficiaire3' => $row['beneficiaire3'] ? Functions::trimInsideString($row['beneficiaire3']) : null,
+                    'beneficiaire4' => $row['beneficiaire4'] ? Functions::trimInsideString($row['beneficiaire4']) : null,
                 ]);
 
                 // Validation des données de $request2

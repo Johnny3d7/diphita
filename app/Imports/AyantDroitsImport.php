@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Helpers\Functions;
 use App\Models\Adherents;
 use App\Models\AyantDroit;
 use Carbon\Carbon;
@@ -38,12 +39,12 @@ class AyantDroitsImport implements ToCollection, WithHeadingRow
                     'pnom' => $row['nomprenom'] ? trim(substr($row['nomprenom'], strlen(explode(' ', $row['nomprenom'])[0]))) : null,
                     'email' => $row['email'] ?? null,
                     'num_cni' => $row['cni'] ?? null,
-                    'date_naiss' => isset($row['datenaissance']) ? Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['datenaissance'])) : null,
+                    'date_naiss' => isset($row['datenaissance']) ? Functions::dateFromExcel($row['datenaissance']) : null,
                     'lieu_naiss' => $row['lieunaissance'] ?? null,
                     'lieu_hab' => $row['lieuhabitation'] ?? null,
                     'contact' => $row['contact'] ?? null,
                     'cas' => (isset($row['cas']) && $row['cas'] == "Oui") ? 1 : 0,
-                    'adherent' => $row['idsouscripteur'] ?? null,
+                    'adherent' => $row['idsouscripteur'] ? Functions::trimInsideString($row['adherent']) : null,
                 ]);
 
                 // Validation des données de $request2

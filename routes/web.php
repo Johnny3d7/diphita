@@ -98,6 +98,10 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     Route::any('/depense/update/{id}', 'DepenseController@update')->name('depense.update');
     Route::get('/depense/destroy/{id}', 'DepenseController@destroy')->name('depense.destroy');
 
+    /* Cotisations */
+    // Cotisations Exceptionnelles
+    Route::resource('cotisations', CotisationController::class);
+
     //Cas assisté
     Route::get('/assistances', 'AssistanceController@index')->name('assistance.index');
     Route::get('/assistances/{id}', 'AssistanceController@assistance_sous')->name('assistance.souscripteur.index');
