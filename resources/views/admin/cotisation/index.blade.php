@@ -68,7 +68,7 @@
                     <div class="row">
                         @for ($j = 1; $j <= 12; $j++)
                             @php $index ++; @endphp
-                            <div class="col-lg-2 col-md-3">
+                            <div class="col-lg-3 col-md-3">
                                 <div class="white_card position-relative mb_20 ">
                                     <div class="card-body p-0">
                                         <div class="ribbon1 rib1-primary"><span class="text-white text-center rib1-primary">{{ ucwords((new Carbon\Carbon(date_create("05-$j-$i")))->addMonths(2)->locale('fr')->isoFormat('DD MMM')) }}</span></div>

@@ -19,7 +19,7 @@ class CreateCotisationsTable extends Migration
             $table->string('code_deces', 191);
             $table->dateTime('date_annonce');
             $table->dateTime('date_butoire');
-            $table->text('image')->nullable()->default("/img/Femme stressé.webp");
+            $table->longText('image')->default("/img/Femme stressé.webp");
             
             $table->timestamps();
         });
