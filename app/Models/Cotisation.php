@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,19 +29,19 @@ class Cotisation extends Model
     }
 
     public static function selectAll(){
-        $tabYear = $result = [];
+        $tabYear = [];
+        $result = new Collection();
         $all = static::all();
 
         foreach ($all as $value) {
             $year = substr($value->date_butoire, 0, 4);
             if(!in_array($year, $tabYear)){
                 $tabYear []= $year;
-                $result[$year] = [];
+                $result->add(new Collection(["year" => $year, "cotisations" => new Collection()]));
             }
-            $result[$year] []= $value;
+            ($result->where("year",$year)->first()['cotisations'])->add($value);
         }
-
-        return $result;
+        return $result->sort();
     }
 
 

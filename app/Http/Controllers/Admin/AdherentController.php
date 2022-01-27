@@ -212,6 +212,16 @@ class AdherentController extends Controller
     {
         //Le souscripteur
         $souscripteur = Adherents::find($id);
+        if($souscripteur && $souscripteur->isBeneficiaire()){
+            if($souscripteur->cas == 1){
+                $beneficiaire = $souscripteur;
+                return view('admin.adherent.cas',compact('beneficiaire'));
+            } else {
+                return redirect()->back();
+            }
+
+            dd('Ceci est un bénéficiaire');
+        }
 
         //Les bénéficiaires
         $benefs = Adherents::where(['status'=>1,'role'=>2,'parent'=>$id])->orderBy('created_at', 'DESC')->get();

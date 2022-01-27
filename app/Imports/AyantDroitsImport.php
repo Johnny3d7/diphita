@@ -44,7 +44,7 @@ class AyantDroitsImport implements ToCollection, WithHeadingRow
                     'lieu_hab' => $row['lieuhabitation'] ?? null,
                     'contact' => $row['contact'] ?? null,
                     'cas' => (isset($row['cas']) && $row['cas'] == "Oui") ? 1 : 0,
-                    'adherent' => $row['idsouscripteur'] ? Functions::trimInsideString($row['adherent']) : null,
+                    'adherent' => $row['idsouscripteur'] ? Functions::trimInsideString($row['idsouscripteur']) : null,
                 ]);
 
                 // Validation des données de $request2
@@ -105,7 +105,6 @@ class AyantDroitsImport implements ToCollection, WithHeadingRow
                 ]);
                 $nb_error ++;
             }
-            
         }
         
         // Stocker toutes les informations dans la variable de resultat
