@@ -20,7 +20,7 @@ class CotisationTableSeeder extends Seeder
         for ($i=2018; $i <= Carbon::now()->isoFormat('YYYY'); $i++) {
             for ($j=1; $j <= 12; $j++) { 
                 $date_assistance = Carbon::create($i, $j, 05, 0, 0, 0);
-                if(!($i == 2018 && $j == 2)) Cotisation::create(['date_butoire' => $date_assistance]);
+                if(!($i == 2018 && ($j < 4 || $j == 5 )) && $date_assistance < Carbon::now()->addMonths(2)) Cotisation::create(['date_butoire' => $date_assistance]);
             }
         }
     }

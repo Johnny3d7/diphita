@@ -20,7 +20,8 @@ class AssistanceController extends Controller
     public function index()
     {
         //
-        return view('admin.assistance.index');
+        $souscripteurs = Adherents::whereCas(1)->get();
+        return view('admin.assistance.index', compact('souscripteurs'));
     }
 
         /**

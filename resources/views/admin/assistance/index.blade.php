@@ -5,11 +5,11 @@
 @endsection
 
 @section('title')
-    Liste des souscripteurs
+    Liste des cas assistés
 @endsection
 
 @section('subtitle')
-    Liste des souscripteurs
+    Liste des cas assistés
 @endsection
 
 @section('content')
