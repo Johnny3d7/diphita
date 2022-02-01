@@ -29,7 +29,8 @@ class AdherentController extends Controller
     public function index()
     {
         //+
-        $souscripteurs = Adherents::where(['valide'=>1,'status'=>1,'role'=>1])->orderBy('created_at', 'DESC')->get();
+        // $souscripteurs = Adherents::selectAll(true)->orderBy('created_at', 'DESC')->get();
+        $souscripteurs = Adherents::selectAll(true)->sortByDesc('created_at');
 
         return view('admin.adherent.index',compact('souscripteurs'));
     }
@@ -42,7 +43,8 @@ class AdherentController extends Controller
     public function beneficiaires()
     {
         //
-        $beneficiaires = Adherents::where(['valide'=>1,'status'=>1])->orderBy('created_at', 'DESC')->get();
+        // $beneficiaires = Adherents::selectAll()->orderBy('created_at', 'DESC')->get();
+        $beneficiaires = Adherents::selectAll()->sortByDesc('created_at');
 
         return view('admin.adherent.beneficiaires',compact('beneficiaires'));
     }
@@ -80,7 +82,6 @@ class AdherentController extends Controller
         ]);
 
         if($fileValidator->fails()){
-            dd($fileValidator->errors()->all());
             return redirect()->back()->withErrors($fileValidator);
         } else {
             try {

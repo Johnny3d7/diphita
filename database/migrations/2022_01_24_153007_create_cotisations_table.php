@@ -16,10 +16,15 @@ class CreateCotisationsTable extends Migration
         Schema::create('cotisations', function (Blueprint $table) {
             $table->id();
             
-            $table->string('code_deces', 191);
-            $table->dateTime('date_annonce');
-            $table->dateTime('date_butoire');
+            $table->string('code_deces', 191)->nullable();
+            $table->dateTime('date_annonce')->nullable();
+            $table->dateTime('date_butoire')->nullable();
             $table->longText('image')->default("/img/Femme stressé.webp");
+            $table->enum('type',['annuelle', 'exceptionnelle']);
+            $table->dateTime('date_cotis')->nullable();
+            $table->integer('annee_cotis')->nullable();
+            $table->integer('montant')->nullable();
+            // $table->boolean('parcouru')->default(false);
             
             $table->timestamps();
         });

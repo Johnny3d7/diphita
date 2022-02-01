@@ -53,19 +53,16 @@ class BeneficiairesImport implements ToCollection, WithHeadingRow
                     'num_adhesion' => 'required|unique:adherents',
                     'civilite' => 'required',
                     'nom' => 'required',
-                    'email' => 'unique:adherents',
                     'num_cni' => 'required|unique:adherents',
-                    'contact' => 'required|unique:adherents',
+                    'contact' => 'required',
                 ],[
                     "num_adhesion.required" => "Veuillez entrer l'ID bénéficiaire",
                     "num_adhesion.unique" => "Un bénéficiaire possède déjà cet id",
                     "civilite.required" => "Veuillez entrer la civilité",
                     "nom.required"  => "Veuillez entrer le nom et le(s) prénom(s)",
-                    "email.unique"  => "Un bénéficiaire possède déjà cet email",
                     "num_cni.required"  => "Veuillez entrer le numero cni",
                     "num_cni.unique"  => "Un bénéficiaire possède déjà ce numero cni",
                     "contact.required"  => "Veuillez entrer le contact",
-                    "contact.unique"  => "Un bénéficiaire possède déjà ce contact",
                 ]);
 
                 if($singleValidator->fails()){ // Si la validation échoue ou retourne une erreur

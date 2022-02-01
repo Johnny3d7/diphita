@@ -39,7 +39,7 @@ Route::middleware(['guest'])->group(function(){
 Route::get('/adhesion-liste', 'App\Http\Controllers\Client\AdherentController@index')->name('client.adhesion.liste')->middleware('auth');
 
 //Route::get('/index', 'HomeController@index')->name('index');
-Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')->middleware('auth')->group( function(){
+Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')->middleware(['auth','route-stack'])->group( function(){
 
     //Dashboard
     Route::get('/home', 'HomeController@index')->name('index');
@@ -100,8 +100,12 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
 
     /* Cotisations */
     // Cotisations Exceptionnelles
-    Route::resource('cotisations', CotisationController::class);
-
+    Route::prefix('/cotisations')->name('cotisations.')->group( function() {
+        Route::resource('exceptionnelles', CotisationExceptController::class);
+        
+        // Cotisations Annuelles
+        Route::resource('annuelles', CotisationAnnuController::class);
+    });
     //Cas assisté
     Route::get('/assistances', 'AssistanceController@index')->name('assistance.index');
     Route::get('/assistances/{id}', 'AssistanceController@assistance_sous')->name('assistance.souscripteur.index');
@@ -162,7 +166,13 @@ Route::get('/demande/create', 'App\Http\Controllers\Admin\DemandeController@crea
 Route::post('/demande/store', 'App\Http\Controllers\Admin\DemandeController@store')->name('demande.store');
 
 
-
+Route::get('back', function () {
+    $array = $tab = session('routeStack');
+    $routeName = array_pop($array);
+    $routeName = array_pop($array);
+    session(['routeStack' => $array]);
+    return redirect()->route($routeName == "" ? 'admin.index' : $routeName);
+})->name('backStack');
 
 
 Auth::routes();

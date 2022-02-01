@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cotisation;
 use Illuminate\Http\Request;
 
-class CotisationController extends Controller
+class CotisationAnnuController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class CotisationController extends Controller
      */
     public function index()
     {
-        $cotisations = Cotisation::selectAll();
-        return view("admin.cotisation.index", compact('cotisations'));
+        $cotisations = Cotisation::selectAll('annuelles')->sortByDesc('annee_cotis');
+        return view("admin.cotisation.annuelles.index", compact('cotisations'));
     }
 
     /**

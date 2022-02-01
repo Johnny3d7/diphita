@@ -37,6 +37,7 @@ class CreateAdherentsTable extends Migration
             $table->integer('cas')->default(0);
             $table->integer('status')->default(1);
             $table->integer('admin_id')->nullable();
+            $table->integer('solde')->nullable();
             $table->timestamps();
         });
     }
