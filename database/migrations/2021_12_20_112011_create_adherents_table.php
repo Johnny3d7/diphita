@@ -26,8 +26,8 @@ class CreateAdherentsTable extends Migration
             $table->string('num_cni')->unique()->nullable();
             $table->string('lieu_naiss')->nullable();
             $table->string('lieu_hab')->nullable();
-            $table->string('contact')->unique()->nullable();
-            $table->string('contact_format')->unique()->nullable();
+            $table->string('contact')->nullable();
+            $table->string('contact_format')->nullable();
             $table->integer('role');
             $table->dateTime('date_adhesion')->nullable();
             $table->dateTime('date_fincarence')->nullable();

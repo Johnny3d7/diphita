@@ -134,6 +134,8 @@ class AdherentController extends Controller
             "contact.required" => "Name is required",*/
         ]);
 
+        dd($request->all());
+
         //dd($request->all());
         // Traiter le champ contact prévu pour les sms
         $contact = explode("-", substr($request->souscript_contact, 7, 14));
@@ -239,9 +241,11 @@ class AdherentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($sous)
     {
         //
+        $souscripteur = Adherents::find($sous);
+        return view('admin.adherent.edit', compact('souscripteur'));
     }
 
     /**
@@ -254,6 +258,49 @@ class AdherentController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = Validator::make($request->all(),[
+            
+            'civilite' => 'required' ,
+            'nom'=> 'required',
+            'pnom' => 'required',
+            'date_naiss' => 'required',
+            'lieu_naiss' => 'required',
+            'num_cni' => 'required',
+            'contact' => 'required',
+            'email' => 'email',
+            'lieu_hab'=> 'required'
+        ], [
+            'civilite.required' => 'La civilité est un champ obligatoire.',
+            'nom.required' => 'Le nom est un champ obligatoire.' ,
+            'pnom.required' => 'Le prénom est un champ obligatoire.',
+            'date_naiss.required' => 'La date de naissance doit être renseigné.',
+            'lieu_naiss.required' => 'Le lieu de naissance est un champ obligatoire.',
+            'num_cni.required' => 'Le numéro de CNI est un champ obligatoire.',
+            'contact.required' => 'Le contact est un champ obligatoire.',
+            'email.email' => 'L\'adresse email n\'est pas correct.',
+            'lieu_hab' => 'Le lieu de résidence est obligatoire.'
+        ]);
+
+        if ($validatedData->fails()) {
+            return redirect()->back()->withErrors($validatedData)->withInput()->with('message', 'Une erreur est survenue veuillez reéssayer s\'il vous plaît !')->with('type', 'bg-danger');
+        }
+        else{
+            $souscripteur = Adherents::find($id);
+
+            $souscripteur->update([
+                'civilite' => $request->civilite ,
+                'nom'=> $request->nom,
+                'pnom' => $request->pnom,
+                'date_naiss' => $this->formatDate($request->date_naiss),
+                'lieu_naiss' => $request->lieu_naiss,
+                'num_cni' => $request->num_cni,
+                'contact' => $request->contact,
+                'email' => $request->email,
+                'lieu_hab' => $request->lieu_hab
+            ]);
+
+            return redirect()->back()->with('message', 'Les informations ont été mises à jour avec succèss !')->with('type', 'bg-success');
+        }
     }
 
     /**
@@ -610,5 +657,210 @@ class AdherentController extends Controller
         $date_format = $benef_dnaiss[2].$benef_dnaiss[1].$benef_dnaiss[0];
         return $date_format;
     }
+
+    public function create_beneficiaire(Request $request, $sous){
+
+        return view('admin.adherent.beneficiaire.create',compact('sous'));
+
+    }
+
+    public function store_beneficiaire(Request $request, $sous){
+        
+        $sous_parent = Adherents::find($sous);
+
+        $validatedData = Validator::make($request->all(),[
+            
+            'civilite' => 'required' ,
+            'nom'=> 'required',
+            'pnom' => 'required',
+            'date_naiss' => 'required',
+            'lieu_naiss' => 'required',
+            'num_cni' => 'required',
+            'contact' => 'required',
+            'email' => 'email',
+            'lieu_hab' => 'required'
+        ], [
+            'civilite.required' => 'La civilité est un champ obligatoire.',
+            'nom.required' => 'Le nom est un champ obligatoire.' ,
+            'pnom.required' => 'Le prénom est un champ obligatoire.',
+            'date_naiss.required' => 'La date de naissance doit être renseigné.',
+            'lieu_naiss.required' => 'Le lieu de naissance est un champ obligatoire.',
+            'num_cni.required' => 'Le numéro de CNI est un champ obligatoire.',
+            'contact.required' => 'Le contact est un champ obligatoire.',
+            'email.email' => 'L\'adresse email n\'est pas correct.',
+            'lieu_hab' => 'Le lieu de résidence est obligatoire.'
+        ]);
+
+        if ($validatedData->fails()) {
+            return redirect()->back()->withErrors($validatedData)->withInput()->with('message', 'Une erreur est survenue veuillez reéssayer s\'il vous plaît !')->with('type', 'bg-danger');
+        }
+        else{
+
+            $no = $this->generate_order(Adherents::where('valide',1)->count());
+            $suffix= "DIP";
+            $date = (new \DateTime())->format("dmy");
+
+            $souscripteur = Adherents::create([
+                'civilite' => $request->civilite ,
+                'nom'=> $request->nom,
+                'pnom' => $request->pnom,
+                'date_naiss' => $this->formatDate($request->date_naiss),
+                'lieu_naiss' => $request->lieu_naiss,
+                'num_cni' => $request->num_cni,
+                'num_adhesion'=> $suffix.$date.'B'.$no,
+                'num_contrat' => $sous_parent->num_contrat, 
+                'contact' => $request->contact,
+                'email' =>  $request->email,
+                'lieu_hab' =>  $request->lieu_hab,
+                'parent' => $sous,
+                'date_adhesion' => Carbon::now(),
+                'role' => 2,
+                'valide' => 1,
+                'status' => 1,
+            ]);
+
+
+        }
+
+        return redirect()->route('admin.adhesion.show',['id'=>$sous])->with('message', 'Un bénéficiaire vient d\'être ajouté')->with('type', 'bg-success');
+    }
+
+    public function edit_beneficiaire($benef){
+        //
+        $beneficiaire = Adherents::find($benef);
+        return view('admin.adherent.beneficiaire.edit', compact('beneficiaire'));
+    }
+
+    public function update_beneficiaire(Request $request, $benef){
+
+        $beneficiaire = Adherents::find($benef);
+
+        $validatedData = Validator::make($request->all(),[
+            
+            'civilite' => 'required' ,
+            'nom'=> 'required',
+            'pnom' => 'required',
+            'date_naiss' => 'required',
+            'lieu_naiss' => 'required',
+            'num_cni' => 'required',
+            'contact' => 'required',
+            'email' => 'email',
+            'lieu_hab' => 'required'
+        ], [
+            'civilite.required' => 'La civilité est un champ obligatoire.',
+            'nom.required' => 'Le nom est un champ obligatoire.' ,
+            'pnom.required' => 'Le prénom est un champ obligatoire.',
+            'date_naiss.required' => 'La date de naissance doit être renseigné.',
+            'lieu_naiss.required' => 'Le lieu de naissance est un champ obligatoire.',
+            'num_cni.required' => 'Le numéro de CNI est un champ obligatoire.',
+            'contact.required' => 'Le contact est un champ obligatoire.',
+            'email.email' => 'L\'adresse email n\'est pas correct.',
+            'lieu_hab' => 'Le lieu de résidence est obligatoire.'
+        ]);
+
+        if ($validatedData->fails()) {
+            return redirect()->back()->withErrors($validatedData)->withInput()->with('message', 'Une erreur est survenue veuillez reéssayer s\'il vous plaît !')->with('type', 'bg-danger');
+        }
+        else{
+
+            $beneficiaire->update([
+                'civilite' => $request->civilite ,
+                'nom'=> $request->nom,
+                'pnom' => $request->pnom,
+                'date_naiss' => $this->formatDate($request->date_naiss),
+                'lieu_naiss' => $request->lieu_naiss,
+                'num_cni' => $request->num_cni,
+                'contact' => $request->contact,
+                'email' => $request->email,
+                'lieu_hab' => $request->lieu_hab
+            ]);
+        }
+
+        return redirect()->route('admin.adhesion.show',['id'=>$beneficiaire->parent])->with('message', 'Le bénéficiaire vient d\'être mis à jour')->with('type', 'bg-success');
+    }
+
+    public function create_ayantdroit(Request $request, $sous){
+
+        return view('admin.adherent.ayantdroit.create',compact('sous'));
+    }
+
+    public function store_ayantdroit(Request $request, $sous){
+
+        $souscripteur = Adherents::find($sous);
+        
+        $validatedData = Validator::make($request->all(),[
+            
+            'civilite' => 'required' ,
+            'nom'=> 'required',
+            'pnom' => 'required',
+            'contact' => 'required'
+        ], [
+            'civilite.required' => 'La civilité est un champ obligatoire.',
+            'nom.required' => 'Le nom est un champ obligatoire.' ,
+            'pnom.required' => 'Le prénom est un champ obligatoire.',
+            'contact.required' => 'Le contact est un champ obligatoire.',
+        ]);
+
+        if ($validatedData->fails()) {
+            return redirect()->back()->withErrors($validatedData)->withInput()->with('message', 'Une erreur est survenue veuillez reéssayer s\'il vous plaît !')->with('type', 'bg-danger');
+        }
+        else{
+
+            $ayantdroit = AyantDroit::create([
+                'civilite' => $request->civilite ,
+                'nom'=> $request->nom,
+                'pnom' => $request->pnom,
+                'contact' => $request->contact,
+                'priorite' => $souscripteur->total_ayant_droit() + 1,
+                'id_adherent'=> $sous
+            ]);
+        }
+
+        return redirect()->route('admin.adhesion.show',['id'=>$sous])->with('message', 'Un ayant-droit vient d\'être ajouté avec succès')->with('type', 'bg-success');
+    }
+
+    public function edit_ayantdroit($ayant){
+        //
+        $ayant = AyantDroit::find($ayant);
+
+        return view('admin.adherent.ayantdroit.edit', compact('ayant'));
+    }
+
+    public function update_ayantdroit(Request $request, $ayant){
+
+        $ayant = AyantDroit::find($ayant);
+
+        $validatedData = Validator::make($request->all(),[
+            
+            'civilite' => 'required' ,
+            'nom'=> 'required',
+            'pnom' => 'required',
+            'contact' => 'required'
+        ], [
+            'civilite.required' => 'La civilité est un champ obligatoire.',
+            'nom.required' => 'Le nom est un champ obligatoire.' ,
+            'pnom.required' => 'Le prénom est un champ obligatoire.',
+            'contact.required' => 'Le contact est un champ obligatoire.',
+        ]);
+
+        if ($validatedData->fails()) {
+            return redirect()->back()->withErrors($validatedData)->withInput()->with('message', 'Une erreur est survenue veuillez reéssayer s\'il vous plaît !')->with('type', 'bg-danger');
+        }
+        else{
+            $ayant->update([
+                'civilite' => $request->civilite ,
+                'nom'=> $request->nom,
+                'pnom' => $request->pnom,
+                'contact' => $request->contact,
+            ]);
+        }
+
+        return redirect()->route('admin.adhesion.show',['id'=>$ayant->id_adherent])->with('message', 'L\'ayant-droit vient d\'être mis à jour')->with('type', 'bg-success');
+    }
+
+    
+
+   
+
     
 }

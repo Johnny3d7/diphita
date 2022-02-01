@@ -78,6 +78,10 @@ class Adherents extends Model
         return $this->role == 2 ? true : false;
     }
 
+    public function isSouscripteur(){
+        return $this->role == 1 ? true : false;
+    }
+
     public function beneficiaires(){
         return $this->isBeneficiaire() ? null : self::where(['status'=>1,'role'=>2,'parent'=>$this->id])->orderBy('created_at', 'DESC')->get();
     }
@@ -96,6 +100,7 @@ class Adherents extends Model
         return $this->hasOne(Assistance::class, 'id_benef');
     }
 
+<<<<<<< HEAD
     public function transactions(){
         // $reglements = Versement::whereIdAdherent($this->id)->get();
         $transactions = $this->versements;
@@ -114,4 +119,37 @@ class Adherents extends Model
         });
         return $cotisations->get();
     }
+=======
+    public function total_benef_life(){
+        return $this->isSouscripteur() ? self::where(['status'=>1,'valide'=>1,'parent'=>$this->id,'cas'=> 0])->whereNotIn('id',[$this->id])->count() : null;
+    }
+
+    public function add_benef_is_possible(){
+        return $this->total_benef_life() < 4 ? true : false;
+    }
+
+    public function total_ayant_droit(){
+        return $this->isSouscripteur() ? AyantDroit::where(['status'=>1,'id_adherent'=>$this->id])->count() : null;
+    }
+
+    public function add_ayant_droit_is_possible(){
+        return $this->total_ayant_droit() < 3 ? true : false;
+    }
+
+    public function nom_pnom(){
+        return $this->nom.' '.$this->pnom;
+    }
+
+    public function is_not_cas(){
+        return $this->cas == 0 ? true : false;
+    }
+
+    public function is_not_in_assistance(){
+        return Assistance::where(['id_benef'=>$this->id,'valide'=>0])->count() == 0 ? true : false ;
+    }
+
+
+
+
+>>>>>>> 31f988c72513f5d96aef34bd771b30c4e037534d
 }
