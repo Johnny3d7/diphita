@@ -196,6 +196,11 @@
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Date de début de cotisation:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ ucwords((new Carbon\Carbon($souscripteur->date_debutcotisation))->locale('fr')->isoFormat('Do MMMM YYYY')) }}</div></div>
                                 </div>
                             </div>
+                            <div class="row mt_30 justify-content-center">
+                                <a href="{{ route('admin.souscripteur.edit',['id'=>$souscripteur->id]) }}">
+                                    <button type="button" class="btn mb-3 btn-primary"><i class="ti-pencil f_s_14 mr-2"></i>Modifier infos souscripteur</button>
+                                </a>
+                            </div>
                             @endif
                                                    
                         </div>
@@ -264,8 +269,16 @@
                         <div class="card-body">
                             
                             <div class="row">
-                                <div class="col-12 mb_30">
+                                <div class="col-9 mb_30">
                                     <h4 class="m-0 txt-color1 txt-upper txt-bold">Bénéficiaires</h4>
+                                </div>
+                                <div class="col-3 mb_15">
+                                    @if ($souscripteur->add_benef_is_possible())
+                                        <a href="{{ route('admin.beneficiaire.create',['sous'=>$souscripteur->id]) }}">
+                                            <button type="button" class="btn mb-3 btn-primary fr"><i class="ti-plus f_s_14 mr-2"></i>Ajouter un bénéficiaire</button>
+                                        </a>
+                                    @endif
+                                    
                                 </div>
                             </div>
                             <div class="row">
@@ -320,6 +333,7 @@
                                                                 </span>
                                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                                                     <a class="dropdown-item" href="{{ route('admin.adherent.formulaire-print',['id'=>$benef->id]) }}"> <i class="ti-eye"></i> Voir fiche</a>
+                                                                    <a class="dropdown-item" href="{{ route('admin.beneficiaire.edit',['benef'=>$benef->id]) }}"> <i class="ti-pencil"></i> Modifier bénéficiaire</a>
                                                                 </div>
                                                               </div>
                                                         </div>
@@ -352,8 +366,16 @@
                         <div class="card-body">
                             
                             <div class="row">
-                                <div class="col-12 mb_15">
+                                <div class="col-9 mb_15">
                                     <h4 class="m-0 txt-color1 txt-upper txt-bold">Ayants-droit</h4>
+                                </div>
+                                <div class="col-3 mb_15">
+                                    @if ($souscripteur->add_ayant_droit_is_possible())
+                                        <a href="{{ route('admin.ayantdroit.create',['sous'=>$souscripteur->id]) }}">
+                                            <button type="button" class="btn mb-3 btn-primary fr"><i class="ti-plus f_s_14 mr-2"></i>Ajouter un ayant-droit</button>
+                                        </a>
+                                    @endif
+                                    
                                 </div>
                             </div>
                             <div class="row">
@@ -368,9 +390,8 @@
                                                     <th scope="col">Civilité</th>
                                                     <th scope="col">Nom</th>
                                                     <th scope="col">Prénom</th>
-                                                    <th scope="col">Date naissance</th>
                                                     <th scope="col">Contact</th>
-                                                    <th scope="col">statut</th>
+                                                    <th scope="col">Action</th>
                                                     
                                                 </tr>
                                             </thead>
@@ -389,9 +410,21 @@
                                                     </td>
                                                     <td>{{ $ayant->nom }}</td>
                                                     <td>{{ $ayant->pnom }}</td>
-                                                    <td>{{ ucwords((new Carbon\Carbon($ayant->date_naiss))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                                                     <td>{{ $ayant->contact }}</td>
-                                                    <td><a href="#" class="status_btn">Actif</a></td>
+                                                    <td>
+                                                        <div class="header_more_tool">
+                                                            <div class="dropdown">
+                                                                <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
+                                                                  <i class="ti-more-alt"></i>
+                                                                </span>
+                                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                                        
+                                                                    <a class="dropdown-item" href="{{ route('admin.ayantdroit.edit',['ayant'=>$ayant->id]) }}"> <i class="ti-pencil"></i>Modifier ayant-droit</a>
+                                                                </div>
+                                                              </div>
+                                                        </div>
+
+                                                    </td>
                                                     {{-- <td>
                                                         <div class="header_more_tool">
                                                             <div class="dropdown">

@@ -72,12 +72,19 @@
                                         <h4 class="m-0 txt-color1 txt-upper txt-bold">Bénéficiaires</h4>
                                     </div>
                                     <div class="form-group col-lg-4">
+                                     
                                         <label for="benef_num">Numéro d'identification <code class="highlighter-rouge">*</code></label>
                                         <select id="id_beneficiaire" class="form-control @error('benef_num') is-invalid @enderror" name="benef_num" required>
                                             <option selected value="0" disabled>--- Sélectionnez un bénéficiaire ---</option>
-                                            <option value="{{$adherent->num_adhesion}}">{{$adherent->num_adhesion}} </option>
+                                            @if ($adherent->is_not_cas() && $adherent->is_not_in_assistance())
+                                                <option value="{{$adherent->num_adhesion}}">{{$adherent->num_adhesion}} </option>
+                                            @endif
+                                            
                                             @forelse ($adherent->beneficiaires() as $benef)
-                                                <option value="{{$benef->num_adhesion}}">{{$benef->num_adhesion}} </option>
+
+                                                @if ($benef->is_not_cas() && $benef->is_not_in_assistance())
+                                                    <option value="{{$benef->num_adhesion}}">{{$benef->num_adhesion.' '.$benef->is_not_in_assistance()}}  </option>
+                                                @endif 
                                             @empty
                                                 
                                             @endforelse

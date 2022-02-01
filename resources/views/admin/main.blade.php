@@ -83,7 +83,7 @@
                     <div class="page_title_box d-flex flex-wrap align-items-center justify-content-between">
                         <div class="page_title_left d-flex align-items-center">
                             <h3 class="f_s_25 f_w_700 dark_text mr_30" >@yield('title')</h3>
-                            <ol class="breadcrumb page_<li class="nav-item"><a href="{{ route('commande_fournisseur.recu') }}"><i class="nav-icon i-File-Horizontal-Text"></i><span class="item-name">Liste</span></a></li>bradcam mb-0">
+                            <ol class="breadcrumb page_bradcam mb-0">
                                 <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Accueil</a></li>
                                 <li class="breadcrumb-item active">@yield('subtitle')</li>
                             </ol>
