@@ -186,10 +186,10 @@ Route::post('/demande/store', 'App\Http\Controllers\Admin\DemandeController@stor
 
 Route::get('back', function () {
     $array = $tab = session('routeStack');
-    $routeName = array_pop($array);
-    $routeName = array_pop($array);
+    $route = array_pop($array);
+    $route = array_pop($array);
     session(['routeStack' => $array]);
-    return redirect()->route($routeName == "" ? 'admin.index' : $routeName);
+    return redirect()->route(is_array($route) ? $route['name'] : 'admin.index', is_array($route) ? $route['params'] : null);
 })->name('backStack');
 
 
