@@ -1,4 +1,4 @@
-<div class="modal fade" id="cotisationsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
+<div class="modal fade" id="cotisationsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -29,7 +29,7 @@
                                         <li class="list-group-item">
                                             {{ $cotisation->code_deces ?? $cotisation->annee_cotis  }} : {{ $cotisation->montant() }} francs
                                             <span class="float-right">
-                                                <button class="btn btn-sm btn-outline-success"><i class="ti-money"></i> Payer</button>
+                                                <button class="btn btn-sm btn-outline-success"><i class="fa fa-money-bill"></i> Payer</button>
                                             </span>
                                         </li>
                                     @endforeach 

@@ -19,6 +19,7 @@ class RouteStack
     {
         $array = session('routeStack');
         if(Route::currentRouteName() == 'admin.index'){
+            // dd(Route::getCurrentRoute()->uri(), route::getRoutes(), Route::getCurrentRoute());
             session(['routeStack' => []]);
         } else {
             if(count($array) == 0 || $array[array_unshift($array)-1] != Route::currentRouteName()){

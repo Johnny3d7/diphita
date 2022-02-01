@@ -239,7 +239,7 @@
                             <li><a href="{{ route('admin.adherent.debloquer',['id' => $souscripteur->id]) }}"><i class="ti-unlock"></i> <span> <span>Activer compte</span>  </span> </a></li>
                             
                         @elseif ($souscripteur->status == 1 && $souscripteur->valide == 1)
-                            <li><a href="#" data-toggle="modal" data-target="#exampleModalCenter"><i class="ti-money"></i> <span> <span>Ajouter versement</span>  </span> </a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-money-bill"></i> <span> <span>Ajouter versement</span>  </span> </a></li>
                             <li><a href="#" data-toggle="modal" data-target="#cotisationsModal"><i class="ti-new-window"></i> <span> <span>Cotisations impayées</span>  </span> </a></li>
                             <li><a href="#" data-toggle="modal" data-target="#transactionsModal"><i class="ti-new-window"></i> <span> <span>Historique des transactions</span>  </span> </a></li>
                             
