@@ -134,17 +134,11 @@ class AdherentController extends Controller
             "contact.required" => "Name is required",*/
         ]);
 
-        dd($request->all());
-
-        //dd($request->all());
+        
         // Traiter le champ contact prévu pour les sms
         $contact = explode("-", substr($request->souscript_contact, 7, 14));
         $contact_format = "225".$contact[0].$contact[1].$contact[2].$contact[3].$contact[4];
         
-        //dd(Adheregenerate_order(Adherents::count()));
-        //store souscripteur
-
-
         $souscript_dnaiss = explode('-',$request->souscript_dnaiss);
 
         $sous_dnaiss = $souscript_dnaiss[2].$souscript_dnaiss[1].$souscript_dnaiss[0];
