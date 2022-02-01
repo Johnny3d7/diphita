@@ -83,7 +83,7 @@
                                             @forelse ($adherent->beneficiaires() as $benef)
 
                                                 @if ($benef->is_not_cas() && $benef->is_not_in_assistance())
-                                                    <option value="{{$benef->num_adhesion}}">{{$benef->num_adhesion.' '.$benef->is_not_in_assistance()}}  </option>
+                                                    <option value="{{$benef->num_adhesion}}">{{$benef->num_adhesion}}  </option>
                                                 @endif 
                                             @empty
                                                 
