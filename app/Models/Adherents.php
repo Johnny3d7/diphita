@@ -106,8 +106,12 @@ class Adherents extends Model
 
     public function cotisations(String $type = null){
         // $cotisations = new Collection();
-        $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($this->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($this->date_adhesion));
-        if($type) $cotisations = $cotisations->whereType($type);
+        $cotisations = Cotisation::whereNotNull('type');
+        if($type) $cotisations = Cotisation::whereType($type);
+        $cotisations = $cotisations->where(function ($q) { 
+            $q->where('annee_cotis', '>=', Carbon::create($this->date_adhesion)->year)
+                ->orWhere('date_annonce', '>=', Carbon::create($this->date_adhesion));
+        });
         return $cotisations->get();
     }
 }
