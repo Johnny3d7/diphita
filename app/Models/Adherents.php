@@ -100,7 +100,6 @@ class Adherents extends Model
         return $this->hasOne(Assistance::class, 'id_benef');
     }
 
-<<<<<<< HEAD
     public function transactions(){
         // $reglements = Versement::whereIdAdherent($this->id)->get();
         $transactions = $this->versements;
@@ -119,7 +118,6 @@ class Adherents extends Model
         });
         return $cotisations->get();
     }
-=======
     public function total_benef_life(){
         return $this->isSouscripteur() ? self::where(['status'=>1,'valide'=>1,'parent'=>$this->id,'cas'=> 0])->whereNotIn('id',[$this->id])->count() : null;
     }
@@ -148,8 +146,4 @@ class Adherents extends Model
         return Assistance::where(['id_benef'=>$this->id,'valide'=>0])->count() == 0 ? true : false ;
     }
 
-
-
-
->>>>>>> 31f988c72513f5d96aef34bd771b30c4e037534d
 }
