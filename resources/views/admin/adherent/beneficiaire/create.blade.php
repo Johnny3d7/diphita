@@ -99,7 +99,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-lg-4">
+                                    {{-- <div class="form-group col-lg-4">
                                         <label for="lieu_hab">Lieu de résidence <code class="highlighter-rouge">*</code></label>
                                         <input type="text" name="lieu_hab" class="form-control @error('lieu_hab') is-invalid @enderror" placeholder="Saisir le lieu de résidence svp" required>
                                         @error('lieu_hab')
@@ -125,7 +125,7 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 
                                 <div class="col-lg-4  offset-lg-5">
