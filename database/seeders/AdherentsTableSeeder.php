@@ -22,24 +22,24 @@ class AdherentsTableSeeder extends Seeder
 
         // Souscripteurs
 
-        for ($i=0; $i < 3; $i++) { 
-            Adherents::create([
-                'nom' => $faker->lastName(),
-                'pnom' => $faker->firstName(),
-                'civilite' => $faker->title(),
-                'email' => $faker->email(),
-                'date_naiss' => $faker->dateTimeThisCentury->format('Y-m-d'),
-                'num_cni' => $faker->swiftBicNumber(),
-                'lieu_naiss' => $faker->city().'-'.$faker->country,
-                'lieu_hab' => $faker->city().'-'.$faker->country,
-                'contact' => $faker->e164PhoneNumber,
-                'date_adhesion' => date("Y-m-d", strtotime("-5 Months")),
-                'date_fincarence' => date("Y-m-d", strtotime("-1 Months")),
-                'role' => 1,
-                'valide' => 1,
-                'status' => 1,
-            ]);
-        }
+        // for ($i=0; $i < 3; $i++) { 
+        //     Adherents::create([
+        //         'nom' => $faker->lastName(),
+        //         'pnom' => $faker->firstName(),
+        //         'civilite' => $faker->title(),
+        //         'email' => $faker->email(),
+        //         'date_naiss' => $faker->dateTimeThisCentury->format('Y-m-d'),
+        //         'num_cni' => $faker->swiftBicNumber(),
+        //         'lieu_naiss' => $faker->city().'-'.$faker->country,
+        //         'lieu_hab' => $faker->city().'-'.$faker->country,
+        //         'contact' => $faker->e164PhoneNumber,
+        //         'date_adhesion' => date("Y-m-d", strtotime("-5 Months")),
+        //         'date_fincarence' => date("Y-m-d", strtotime("-1 Months")),
+        //         'role' => 1,
+        //         'valide' => 1,
+        //         'status' => 1,
+        //     ]);
+        // }
 
         //Bénéficiaires
 

@@ -51,6 +51,9 @@
     <link rel="stylesheet" href="{{ url('css/style.css') }}" />
     <link rel="stylesheet" href="{{ url('css/colors/default.css') }}" id="colorSkinCSS">
     <style>
+        table th, table td{
+            text-align: center;
+        }
         /*.main_content .main_content_iner{
             background: linear-gradient(rgba(246,247,251,0.9),
      rgba(246,247,251,0.95)),
@@ -95,7 +98,8 @@
                                 {{ ucwords((new Carbon\Carbon(Now()))->locale('fr')->isoFormat('DD MMMM YYYY')) }}</td>
                             </div>
                         </div>
-                        <a href="{{ url()->previous() }}" class="white_btn3">Retour</a>
+                        {{-- <a href="{{ url()->previous() }}" class="white_btn3">Retour</a> --}}
+                        <a href="{{ route('backStack') }}" class="white_btn3">Retour</a>
                     </div>
                 </div>
             </div>

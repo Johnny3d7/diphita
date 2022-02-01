@@ -51,13 +51,11 @@ class AyantDroitsImport implements ToCollection, WithHeadingRow
                 $singleValidator = Validator::make($request2->all(), [
                     'civilite' => 'required',
                     'nom' => 'required',
-                    'email' => 'unique:ayantdroits',
                     'contact' => 'required|unique:ayantdroits',
                     'adherent' => 'required|exists:adherents,num_adhesion',
                 ],[
                     "civilite.required" => "Veuillez entrer la civilité",
                     "nom.required"  => "Veuillez entrer le nom et le(s) prénom(s)",
-                    "email.unique"  => "Un ayant droit possède déjà cet email",
                     "contact.required"  => "Veuillez entrer le contact",
                     "contact.unique"  => "Un ayant droit possède déjà ce contact",
                     "adherent.required"  => "Veuillez entrer le numero du souscripteur",

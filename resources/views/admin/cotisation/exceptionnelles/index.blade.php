@@ -1,15 +1,19 @@
 @extends('admin.main')
 
 @section('css')
-    
+    <style>
+        /* table th, table td{
+            text-align: center;
+        } */
+    </style>
 @endsection
 
 @section('title')
-    Cotisations
+    Cotisations exceptionnelles
 @endsection
 
 @section('subtitle')
-    Cotisations
+    Cotisations exceptionnelles
 @endsection
 
 @section('content')
@@ -28,13 +32,10 @@
                     <a class="nav-link {{ $year == date_format(date_create(), 'Y') ? 'active' : '' }}" id="pills-{{ $year }}-tab" data-toggle="pill" href="#pills-{{ $year }}" role="tab" aria-controls="pills-{{ $year }}" aria-selected="true">{{ $year }}</a>
                 </li>
             @endforeach
-            <li class="nav-item">
-                <a class="nav-link" id="pills-annuelles-tab" data-toggle="pill" href="#pills-annuelles" role="tab" aria-controls="pills-annuelles" aria-selected="true">Annuelles</a>
-            </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
             @php $nbreCas = [] @endphp
-            @foreach ($cotisations as $key => $cots)
+            @forelse ($cotisations as $key => $cots)
                 @php $year = $cots['year']; $cotis = $cots['cotisations'];@endphp
                 <div class="tab-pane fade {{ $year == date_format(date_create(), 'Y') ? 'show active' : '' }}" id="pills-{{ $year }}" role="tabpanel" aria-labelledby="pills-{{ $year }}-tab">
                     <div class="row">
@@ -44,7 +45,7 @@
                                 <div class="white_card position-relative mb_20 ">
                                     <div class="card-body p-0">
                                         <div class="ribbon1 rib1-primary"><span class="text-white text-center rib1-primary">{{ ucwords(Carbon\Carbon::create($cotisation->date_butoire)->locale('fr')->isoFormat('DD MMM')) }}</span></div>
-                                        <img src="{{ asset('img/Femme stressé.webp') }}" alt="" class="d-block mx-auto my-3 w-100">
+                                        <img src="{{ asset($cotisation->image) }}" alt="" class="d-block mx-auto my-3 w-100">
                                         <div class="p-2">
                                             <h6 class="text-info text-center">Annonce du {{ ucwords(Carbon\Carbon::create($cotisation->date_annonce)->locale('fr')->isoFormat('DD MMM YYYY')) }}</h6>
                                             <div class="row my-4">
@@ -64,7 +65,9 @@
                         @endforeach
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <h5 class="text-center">Aucune cotisation !</h5>
+            @endforelse
             {{-- @php $index = 0; @endphp
             @for ($i = 2018; $i <= date_format(date_create(), 'Y'); $i++)
                 <div class="tab-pane fade {{ $i == date_format(date_create(), 'Y') ? 'show active' : '' }}" id="pills-{{ $i }}" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -96,29 +99,6 @@
                     </div>
                 </div>
             @endfor --}}
-            <div class="tab-pane fade" id="pills-annuelles" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div class="row">
-                    <div class="col-lg-2 col-md-3">
-                        <div class="white_card position-relative mb_20 ">
-                            <div class="card-body p-0">
-                                <div class="ribbon1 rib1-primary"><span class="text-white text-center rib1-primary">{{ '05 Mars' }}</span></div>
-                                <img src="{{ asset('img/Femme stressé.webp') }}" alt="" class="d-block mx-auto my-3 w-100">
-                                <div class="p-2">
-                                    <h6 class="text-info text-center">Annonce du 25/01/{{ $year }}</h6>
-                                    <div class="row my-4">
-                                        <div class="col"><span class="badge_btn_3  mb-1">{{ 'AD-0001' }}</span> <a class="f_w_400 color_text_3 f_s_14 d-block">Code Décès</a></div>
-                                        <div class="col-auto">
-                                            <h4 class="text-dark mt-0">3 <small class="text-muted font-14">Cas</small></h4>
-
-                                        </div>
-                                    </div>
-                                    <button class="btn_2 btn-block">Détails</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
                        
     </div>
@@ -126,8 +106,8 @@
 @endsection
 
 @section('modals')
-    @foreach (App\Models\Cotisation::all() as $cotisation)
-        @include('admin.cotisation._details')
+    @foreach (App\Models\Cotisation::selectAll('false') as $cotisation)
+        @include('admin.cotisation.exceptionnelles._details')
     @endforeach
 @endsection
 

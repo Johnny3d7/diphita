@@ -239,7 +239,9 @@
                             <li><a href="{{ route('admin.adherent.debloquer',['id' => $souscripteur->id]) }}"><i class="ti-unlock"></i> <span> <span>Activer compte</span>  </span> </a></li>
                             
                         @elseif ($souscripteur->status == 1 && $souscripteur->valide == 1)
-                            <li><a href="#" data-toggle="modal" data-target="#exampleModalCenter"><i class="ti-money"></i> <span> <span>Versement</span>  </span> </a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#exampleModalCenter"><i class="ti-money"></i> <span> <span>Ajouter versement</span>  </span> </a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#cotisationsModal"><i class="ti-new-window"></i> <span> <span>Cotisations impayées</span>  </span> </a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#transactionsModal"><i class="ti-new-window"></i> <span> <span>Historique des transactions</span>  </span> </a></li>
                             
                             <li><a href="{{ route('admin.adherent.bloquer', ['id' => $souscripteur->id]) }}"><i class="ti-lock"></i> <span> <span>Désactiver compte</span>  </span> </a></li>
                             <li><a href="{{ route('admin.assistance.create',['id' => $souscripteur->id]) }}"><i class="ti-save"></i> <span> <span>Ajouter une assistance</span> </span> </a></li>
@@ -494,6 +496,9 @@
       </div>
     </div>
 </div>
+
+@include('admin.adherent._transactionsHistory')
+@include('admin.adherent._cotisationsImpayees')
 @endsection
 
 @section('js')

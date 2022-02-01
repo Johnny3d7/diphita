@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
@@ -41,6 +43,12 @@ class Adherents extends Model
         'status',
         'admin_id'
     ];
+
+    public static function selectAll(Bool $souscripteur = false){
+        $valides = static::where(['valide'=>1,'status'=>1]);
+        if($souscripteur) $valides = $valides->whereRole(1);
+        return $valides->get();
+    }
 
     /**
      * Get the options for generating the slug.
@@ -92,6 +100,26 @@ class Adherents extends Model
         return $this->hasOne(Assistance::class, 'id_benef');
     }
 
+<<<<<<< HEAD
+    public function transactions(){
+        // $reglements = Versement::whereIdAdherent($this->id)->get();
+        $transactions = $this->versements;
+        $transactions = $transactions->merge($this->cotisations());
+        // dd($transactions);
+        return $transactions;
+    }
+
+    public function cotisations(String $type = null){
+        // $cotisations = new Collection();
+        $cotisations = Cotisation::whereNotNull('type');
+        if($type) $cotisations = Cotisation::whereType($type);
+        $cotisations = $cotisations->where(function ($q) { 
+            $q->where('annee_cotis', '>=', Carbon::create($this->date_adhesion)->year)
+                ->orWhere('date_annonce', '>=', Carbon::create($this->date_adhesion));
+        });
+        return $cotisations->get();
+    }
+=======
     public function total_benef_life(){
         return $this->isSouscripteur() ? self::where(['status'=>1,'valide'=>1,'parent'=>$this->id,'cas'=> 0])->whereNotIn('id',[$this->id])->count() : null;
     }
@@ -123,4 +151,5 @@ class Adherents extends Model
 
 
 
+>>>>>>> 31f988c72513f5d96aef34bd771b30c4e037534d
 }

@@ -60,8 +60,8 @@
             </div>
             </a>
             <ul>
-              <li><a href="{{ route('admin.cotisations.index') }}">Annuelles</a></li>
-              <li><a href="{{ route('admin.cotisations.index') }}">Exceptionnelles</a></li>
+              <li><a href="{{ route('admin.cotisations.annuelles.index') }}">Annuelles</a></li>
+              <li><a href="{{ route('admin.cotisations.exceptionnelles.index') }}">Exceptionnelles</a></li>
             </ul>
         </li>
         {{-- <li class="">

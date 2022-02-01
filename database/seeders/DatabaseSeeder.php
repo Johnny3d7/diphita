@@ -26,5 +26,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CotisationTableSeeder::class);
         $this->command->info('Cotisation table seeded!');
+       
+        $this->call(CaisseTableSeeder::class);
+        $this->command->info('Caisse table seeded!');
     }
 }
