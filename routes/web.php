@@ -63,7 +63,7 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     Route::get('/adhesions-rejeter-liste', 'AdherentController@adhesion_rejeter_liste')->name('adhesion.rejeter.liste');    
     
 
-    //show
+    //show contrat souscriptzur
     Route::get('/adherent/show/{id}', 'AdherentController@show')->name('adhesion.show');
 
     //Validation
@@ -77,6 +77,22 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     Route::get('/adherents', 'AdherentController@index')->name('adherent.index');
     Route::get('/beneficiaires', 'AdherentController@beneficiaires')->name('beneficiaires.index');
 
+    //Modifier infos souscripteur
+    Route::get('/souscripteur/edit/{id}', 'AdherentController@edit')->name('souscripteur.edit');
+    Route::any('/souscripteur/update/{id}', 'AdherentController@update')->name('souscripteur.update');
+
+    //Ajouter-Modif bénéficiaire
+    Route::get('/beneficiaire/create/{sous}', 'AdherentController@create_beneficiaire')->name('beneficiaire.create');
+    Route::post('/beneficiaire/store/{sous}', 'AdherentController@store_beneficiaire')->name('beneficiaire.store');
+    Route::get('/beneficiaire/edit/{benef}', 'AdherentController@edit_beneficiaire')->name('beneficiaire.edit');
+    Route::any('/beneficiaire/update/{benef}', 'AdherentController@update_beneficiaire')->name('beneficiaire.update');
+
+    //Ajouter-Modif ayant-droit
+    Route::get('/ayant-droit/create/{sous}', 'AdherentController@create_ayantdroit')->name('ayantdroit.create');
+    Route::post('/ayant-droit/store/{sous}', 'AdherentController@store_ayantdroit')->name('ayantdroit.store');
+    Route::get('/ayant-droit/edit/{ayant}', 'AdherentController@edit_ayantdroit')->name('ayantdroit.edit');
+    Route::any('/ayant-droit/update/{ayant}', 'AdherentController@update_ayantdroit')->name('ayantdroit.update');
+    
     //Bloquer ou débloquer le compte
     Route::get('/adherent-bloquer/{id}', 'AdherentController@bloquer')->name('adherent.bloquer');
     Route::get('/adherent-debloquer/{id}', 'AdherentController@debloquer')->name('adherent.debloquer');
@@ -107,6 +123,7 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     Route::get('/assistances/{id}', 'AssistanceController@assistance_sous')->name('assistance.souscripteur.index');
     Route::get('/assistance/{id}/create', 'AssistanceController@create')->name('assistance.create');
     Route::get('/assistance/{id}/edit', 'AssistanceController@edit')->name('assistance.edit');
+    Route::any('/assistance/update/{id}', 'AssistanceController@update')->name('assistance.update');
     Route::get('/assistance/{id}/show', 'AssistanceController@show')->name('assistance.show');
     Route::post('/assistance/store', 'AssistanceController@store')->name('assistance.store');
     Route::get('/assistance/{id}/valider', 'AssistanceController@valider')->name('assistance.valider');

@@ -61,10 +61,11 @@
                                     <td>{{ ucwords((new Carbon\Carbon($assistance->date_deces))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                                     
                                     <td>
-                                        <a href="{{ route('admin.adhesion.show',['id'=>$souscripteur->id]) }}">{{ $assistance->souscripteur->nom.' '.$assistance->souscripteur->pnom }}</a>
+                                       
+                                        <a href="{{ route('admin.adhesion.show',['id'=>$souscripteur->id]) }}">{{ $assistance->adherent->nom.' '.$assistance->adherent->pnom }}</a>
                                     </td>
                                     <td>
-                                        {{ $assistance->souscripteur->contact }}
+                                        {{ $assistance->adherent->contact }}
                                     </td>
                                     <td>
                                         {{ $assistance->assiste == 1 ? 'Oui': 'Non' }}
@@ -86,7 +87,10 @@
                                                 </span>
                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                                     <a class="dropdown-item" href="{{ route('admin.assistance.show',['id' => $assistance->id]) }}"> <i class="fas fa-eye"></i> Voir</a>
-                                                    <a class="dropdown-item" href="{{ route('admin.assistance.edit',['id' => $assistance->id]) }}"> <i class="ti-pencil"></i> Modifier</a>
+                                                    @if ($assistance->beneficiaire->is_not_cas())
+                                                        <a class="dropdown-item" href="{{ route('admin.assistance.edit',['id' => $assistance->id]) }}"> <i class="ti-pencil"></i> Modifier</a>
+                                                    @endif
+                                                    
                                                     {{-- <a class="dropdown-item" href="{{ route('admin.depense.destroy', ['id' => $assistance->id]) }}"> <i class="ti-trash"></i> Supprimer</a> --}}
                                                     
                                                   {{-- <a class="dropdown-item" href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"> <i class="ti-trash"></i> Rejeter</a> --}}

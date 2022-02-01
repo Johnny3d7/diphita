@@ -243,6 +243,14 @@ div#ayant_bloc, div#benef_bloc{
     color: inherit !important; 
     text-decoration: inherit !important;
   }
+
+  .fl{
+      float: left;
+  }
+
+  .fr{
+    float: right;
+}
   
 
   

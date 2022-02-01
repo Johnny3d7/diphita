@@ -7,6 +7,7 @@ use App\Imports\AssistancesImport;
 use App\Models\Adherents;
 use App\Models\Assistance;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -115,15 +116,15 @@ class AssistanceController extends Controller
         //$validatedData = $request->validate();
         if ($validatedData->fails()) {
             //dd($validatedData->errors()->all());
-            return redirect()->back()->withErrors($validatedData)->withInput();
+            return redirect()->back()->withErrors($validatedData)->withInput()->with('message', 'Une erreur est survenue veuillez reéssayer s\'il vous plaît !')->with('type', 'bg-danger');
         }
         else{
             $assistance = Assistance::create([
                 'id_benef' => $request->benef_id,
-                'date_deces'=> $this->formatDate($request->date_deces),
+                'date_deces'=> Carbon::parse($this->formatDate($request->date_deces)),
                 'lieu_deces'=>$request->lieu_deces,
-                'date_obseques'=> $this->formatDate($request->date_obseques),
-                'date_assistance'=> $this->formatDate($request->date_assistance),
+                'date_obseques'=> Carbon::parse($this->formatDate($request->date_obseques)),
+                'date_assistance'=> Carbon::parse($this->formatDate($request->date_assistance)),
                 'moyen_assistance'=> $request->moyen_assistance,
                 'enfant_defunt'=> $request->enfant_defunt,
                 'enfant_contact'=> $request->enfant_contact,
@@ -175,6 +176,49 @@ class AssistanceController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = Validator::make($request->all(),[
+            
+            "souscript_num" => "required",
+            "benef_num" => "required",
+            "date_assistance" => "required|date_format:d-m-Y",
+            "moyen_assistance" => "required",
+            "lieu_deces" => "required",
+            "date_deces" => "required|date_format:d-m-Y",
+            "date_obseques" => "required|date_format:d-m-Y",
+        ], [
+            "souscript_num.required" => "Le numéro d'identification du souscripteur est obligatoire",
+            "benef_num.required" => "Le numéro d'identification du bénéficiaire est obligatoire",
+            "date_assistance.required" => "La date d'assistance est obligatoire",
+            "date_assistance.date_format" => "Format de date d'assistance incorrect",
+            "moyen_assistance.required" => "Moyen d'assistance est obligatoire",
+            "date_deces.date_format" => "Format de date de décès incorrect",
+            "date_deces.required" => "La date de décès est obligatoire",
+            "date_obseques.date_format" => "Format de date des obsèques incorrect",
+            "date_obseques.required" => "La date des obsèques est obligatoire",
+            "lieu_deces.required" => "Le lieu de décès est obligatoire"
+        ]);
+
+        if ($validatedData->fails()) {
+            return redirect()->back()->withErrors($validatedData)->withInput()->with('message', 'Une erreur est survenue veuillez reéssayer s\'il vous plaît !')->with('type', 'bg-danger');
+        }
+        else{
+            $assistance = Assistance::find($id);
+
+            $assistance->update([
+                'id_benef' => $request->benef_id,
+                'date_deces'=> $this->formatDate($request->date_deces),
+                'lieu_deces'=>$request->lieu_deces,
+                'date_obseques'=> $this->formatDate($request->date_obseques),
+                'date_assistance'=> $this->formatDate($request->date_assistance),
+                'moyen_assistance'=> $request->moyen_assistance,
+                'enfant_defunt'=> $request->enfant_defunt,
+                'enfant_contact'=> $request->enfant_contact,
+                'proche_defunt'=> $request->proche_defunt,
+                'proche_contact'=> $request->proche_contact
+            ]);
+
+            return redirect()->back()->with('message', 'Les informations ont été mises à jour avec succèss !')->with('type', 'bg-success');
+        }
     }
 
     /**
