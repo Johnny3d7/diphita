@@ -19,12 +19,11 @@ class CreateCotisationsTable extends Migration
             $table->string('code_deces', 191)->nullable();
             $table->dateTime('date_annonce')->nullable();
             $table->dateTime('date_butoire')->nullable();
-            $table->longText('image')->default("/img/Femme stressé.webp");
+            $table->string('image', 191)->default("/img/Femme stressé.webp");
             $table->enum('type',['annuelle', 'exceptionnelle']);
             $table->dateTime('date_cotis')->nullable();
             $table->integer('annee_cotis')->nullable();
-            $table->integer('montant')->nullable();
-            // $table->boolean('parcouru')->default(false);
+            $table->integer('montant')->default(0);
             
             $table->timestamps();
         });
