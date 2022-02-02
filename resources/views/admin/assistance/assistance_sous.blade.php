@@ -57,7 +57,7 @@
                             <tbody>
                                 @foreach ($assistances as $assistance)
                                 <tr>
-                                    <td>{{ $assistance->beneficiaire->nom.' '.$assistance->beneficiaire->pnom }}</td>
+                                    <td> <a href="{{ route('admin.assistance.edit',['id' => $assistance->id]) }}">{{ $assistance->beneficiaire->nom.' '.$assistance->beneficiaire->pnom }}</a> </td>
                                     <td>{{ ucwords((new Carbon\Carbon($assistance->date_deces))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                                     
                                     <td>

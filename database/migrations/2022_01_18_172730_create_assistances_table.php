@@ -25,6 +25,8 @@ class CreateAssistancesTable extends Migration
             $table->string('enfant_contact')->nullable();
             $table->string('proche_defunt')->nullable();
             $table->string('proche_contact')->nullable();
+            $table->string('num_compte')->nullable();
+            $table->string('num_depot')->nullable();
             $table->string('status')->default(1);
             $table->string('valide')->default(0);
             $table->string('assiste')->default(0);

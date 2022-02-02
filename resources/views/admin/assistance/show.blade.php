@@ -15,96 +15,7 @@
 @section('content')
 <div class="main_content_iner ">
     <div class="container-fluid p-0 sm_padding_15px">
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <div class="white_card card_height_100 mb_30">
-                    <div class="white_card_header">
-                        <div class="box_header m-0">
-                            <div class="main-title">
-                                
-                            </div>
-                        </div>
-                    </div>
-                    <div class="white_card_body">
-                        <div class="card-body">
-                            <div class="row">
-                                {{-- <div class="col">
-                                    <div class="card mb-3 widget-chart">
-                                        <div class="icon-wrapper rounded-circle">
-                                            <div class="icon-wrapper-bg bg-primary"></div>
-                                            <i class="ti-settings text-primary"></i>
-                                        </div>
-                                            @if ($souscripteur->num_contrat==null || $souscripteur->status==0)
-                                                <div class="widget-numbers"><span>INACTIF</span></div>
-                                                
-                                            @else
-                                            <div class="widget-numbers"><span>{{ $souscripteur->num_contrat }}</span></div>
-                                            @endif
-                                            
-                                            <div class="widget-subheading">Numéro du contrat</div>
-                                        <div class="widget-description text-success">
-                                            <i class="fa fa-angle-up ">
-                
-                                            </i>
-                                           
-                                        </div>
-                                    </div>
-                                </div> --}}
-                                {{-- <div class="col">
-                                    <div class="card mb-3 widget-chart">
-                                        <div class="icon-wrapper rounded-circle">
-                                            <div class="icon-wrapper-bg bg-primary"></div>
-                                            <i class="ti-settings text-primary"></i>
-                                        </div>
-                                            
-                                            <div class="widget-numbers"><span>{{ Adherents::where(['status'=>1,'role'=>2,'parent'=>$souscripteur->id])->orderBy('created_at', 'DESC')->count() + 1;  }}</span></div>
-                                            <div class="widget-subheading">Nombre de bénéficiaires</div>
-                                        <div class="widget-description text-success">
-                                            <i class="fa fa-angle-up ">
-                
-                                            </i>
-                                         
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="card mb-3 widget-chart">
-                                        <div class="icon-wrapper rounded-circle">
-                                            <div class="icon-wrapper-bg bg-primary"></div>
-                                            <i class="ti-settings text-primary"></i>
-                                        </div>
-                                            <div class="widget-numbers"><span>{{ AyantDroit::where(['status'=>1,'id_adherent'=>$souscripteur->id])->orderBy('created_at', 'DESC')->count() }}</span></div>
-                                            <div class="widget-subheading">Nombre d'ayants-droit</div>
-                                        <div class="widget-description text-success">
-                                            <i class="fa fa-angle-up ">
-                
-                                            </i>
-                                           
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="card mb-3 widget-chart">
-                                        <div class="icon-wrapper rounded-circle">
-                                            <div class="icon-wrapper-bg bg-primary"></div>
-                                            <i class="ti-settings text-primary"></i>
-                                        </div>
-                                            <div class="widget-numbers"><span>{{ $souscripteur->assistances->where('valide',1)->count() }}</span></div>
-                                            <div class="widget-subheading">Nombre d'assistances</div>
-                                        <div class="widget-description text-success">
-                                            <i class="fa fa-angle-up">
-                
-                                            </i>
-                                            
-                                        </div>
-                                    </div>
-                                </div> --}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
         <div class="row">
             <div class="col-lg-9">
                 <div class="white_card card_height_100 mb_30">
@@ -125,17 +36,17 @@
                             </div>
                             <div class="row">
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Numéro d'identification:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5"><a href="{{ route('admin.adhesion.show',['id'=>$assistance->souscripteur->id]) }}">{{ $assistance->souscripteur->num_adhesion }}</a> </div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Numéro d'identification:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5"><a href="{{ route('admin.adhesion.show',['id'=>$assistance->adherent->id]) }}">{{ $assistance->adherent->num_adhesion }}</a> </div></div>
                                 </div>
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Civilité:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">
-                                                        @if ($assistance->souscripteur->civilite == 1)
-                                                            Monsieur
-                                                        @elseif($assistance->souscripteur->civilite == 2)
-                                                            Madame
-                                                        @elseif($assistance->souscripteur->civilite == 3)
-                                                            Mademoiselle
+                                                        @if ($assistance->adherent->civilite == 1)
+                                                            M.
+                                                        @elseif($assistance->adherent->civilite == 2)
+                                                            Mme
+                                                        @elseif($assistance->adherent->civilite == 3)
+                                                            Mlle
                                                         @endif
                                     </div>
                                 </div>
@@ -144,19 +55,19 @@
                             <div class="row">
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Nom:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->souscripteur->nom }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Nom:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->adherent->nom }}</div></div>
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Prénom(s):&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->souscripteur->pnom }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Prénom(s):&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->adherent->pnom }}</div></div>
                                 </div>
                             </div>
                             <div class="row">
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Téléphone:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->souscripteur->contact != null ? $assistance->souscripteur->contact : 'Indisponible'}}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Téléphone:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->adherent->contact != null ? $assistance->adherent->contact : 'Indisponible'}}</div></div>
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Email:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->souscripteur->email != null ? $assistance->souscripteur->email : 'Indisponible' }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Email:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->adherent->email != null ? $assistance->adherent->email : 'Indisponible' }}</div></div>
                                 </div>
                             </div>
 
@@ -168,7 +79,7 @@
 
                             <div class="row">
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Numéro d'identification:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5"><a href="{{ route('admin.adhesion.show',['id'=>$assistance->souscripteur->id]) }}">{{ $assistance->beneficiaire->num_adhesion }}</a> </div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Numéro d'identification:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5"><a href="{{ route('admin.adhesion.show',['id'=>$assistance->adherent->id]) }}">{{ $assistance->beneficiaire->num_adhesion }}</a> </div></div>
                                 </div>
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
@@ -242,7 +153,7 @@
                         <li><a href="{{ route('admin.assistance.rejeter', ['id' => $assistance->id]) }}"><i class="ti-trash"></i> <span> <span>Rejeter</span>  </span> </a></li>
                         @endif
 
-                        @if ($assistance->souscripteur->status == 0 && $souscripteur->valide == 1)
+                        @if ($assistance->adherent->status == 0 && $souscripteur->valide == 1)
                             <li><a href="{{ route('admin.adherent.debloquer',['id' => $souscripteur->id]) }}"><i class="ti-unlock"></i> <span> <span>Activer compte</span>  </span> </a></li>
                             
                         @elseif ($assistance->valide == 1)
