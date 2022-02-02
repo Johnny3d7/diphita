@@ -118,8 +118,9 @@ class Adherents extends Model
         });
         return $cotisations->get();
     }
+
     public function total_benef_life(){
-        return $this->isSouscripteur() ? self::where(['status'=>1,'valide'=>1,'parent'=>$this->id,'cas'=> 0])->whereNotIn('id',[$this->id])->count() : null;
+        return $this->isSouscripteur() ? self::where(['status'=>1,'parent'=>$this->id,'cas'=> 0])->whereNotIn('id',[$this->id])->count() : null;
     }
 
     public function add_benef_is_possible(){
@@ -143,7 +144,13 @@ class Adherents extends Model
     }
 
     public function is_not_in_assistance(){
-        return Assistance::where(['id_benef'=>$this->id,'valide'=>0])->count() == 0 ? true : false ;
+        return Assistance::where(['id_benef'=>$this->id,'valide'=>0])->exists()? false : true;
     }
+
+    // public function cas_(){
+    //     return Assistance::where(['id_benef'=>$this->id,'valide'=>0])->exists()? false : true;
+    // }
+
+    
 
 }

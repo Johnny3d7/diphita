@@ -192,10 +192,19 @@
                                                 </span>
                                             @enderror
                                         </div>
-                                        <div class="form-group col-lg-3" id="benef-ncni-0">
+                                        <div class="form-group col-lg-4" id="benef-ncni-0">
                                             <label for="benef_ncni[]">Numéro CNI <code class="highlighter-rouge">*</code></label>
                                             <input type="text" name="benef_ncni[]" class="form-control @error('benef_ncni[]') is-invalid @enderror" placeholder="Numéro CNI du souscripteur" required>
                                             @error('benef_ncni[]')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group col-lg-4" id="benef-lieuhab-0">
+                                            <label for="benef_lieu_hab[]">Lieu de résidence <code class="highlighter-rouge">*</code></label>
+                                            <input type="text" name="benef_lieu_hab[]" class="form-control @error('benef_lieu_hab[]') is-invalid @enderror" placeholder="Saisir le lieu de résidence du bénéficiaire" required>
+                                            @error('benef_lieu_hab[]')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -368,10 +377,19 @@
                                                 </span>
                                             @enderror
                                         </div>
-                                        <div class="form-group col-lg-3" id="benef-ncni-${$i}">
+                                        <div class="form-group col-lg-4" id="benef-ncni-${$i}">
                                             <label for="benef_ncni[]">Numéro CNI <code class="highlighter-rouge">*</code></label>
                                             <input type="text" name="benef_ncni[]" class="form-control @error('benef_ncni[]') is-invalid @enderror" placeholder="Numéro CNI du souscripteur">
                                             @error('benef_ncni[]')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group col-lg-4" id="benef-lieuhab-${$i}">
+                                            <label for="benef_lieu_hab[]">Lieu de résidence <code class="highlighter-rouge">*</code></label>
+                                            <input type="text" name="benef_lieu_hab[]" class="form-control @error('benef_lieu_hab[]') is-invalid @enderror" placeholder="Saisir le lieu de résidence du bénéficiaire" required>
+                                            @error('benef_lieu_hab[]')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -490,6 +508,7 @@ $("#ayant_btn").click(function (e) {
    $('#benef-lnaiss-'+id).remove();
    $('#benef-dnaiss-'+id).remove();
    $('#benef-ncni-'+id).remove();
+   $('#benef-lieuhab-'+id).remove();
    $('#benef-supbloc-'+id).remove();
    $('#benef-space-'+id).remove();
  

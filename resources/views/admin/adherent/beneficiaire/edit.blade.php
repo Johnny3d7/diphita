@@ -99,7 +99,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    {{-- <div class="form-group col-lg-4">
+                                     <div class="form-group col-lg-4">
                                         <label for="lieu_hab">Lieu de résidence <code class="highlighter-rouge">*</code></label>
                                         <input type="text" value="{{ $beneficiaire->lieu_hab }}" name="lieu_hab" class="form-control @error('lieu_hab') is-invalid @enderror" placeholder="Saisir le lieu de résidence svp" required>
                                         @error('lieu_hab')
@@ -108,24 +108,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-lg-4">
-                                        <label for="contact">Contact <code class="highlighter-rouge">*</code></label>
-                                        <input type="text" value="{{ $beneficiaire->contact }}" name="contact" class="form-control @error('contact') is-invalid @enderror" placeholder="Saisir le numéro de téléphone" data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask required>
-                                        @error('contact')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-lg-4 mb_30">
-                                        <label for="email">Email</label>
-                                        <input type="text" value="{{ $beneficiaire->email }}" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Saisir l'adresse Email">
-                                        @error('email')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div> --}}
+                                    
                                 </div>
                                 
                                 <div class="col-lg-4  offset-lg-5">

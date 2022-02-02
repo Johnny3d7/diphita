@@ -101,6 +101,7 @@ class AssistanceController extends Controller
             "lieu_deces" => "required",
             "date_deces" => "required|date_format:d-m-Y",
             "date_obseques" => "required|date_format:d-m-Y",
+        
         ], [
             "souscript_num.required" => "Le numéro d'identification du souscripteur est obligatoire",
             "benef_num.required" => "Le numéro d'identification du bénéficiaire est obligatoire",
@@ -130,7 +131,9 @@ class AssistanceController extends Controller
                 'enfant_contact'=> $request->enfant_contact,
                 'proche_defunt'=> $request->proche_defunt,
                 'proche_contact'=> $request->proche_contact,
-                'id_souscripteur'=> $request->souscript_id
+                'id_souscripteur'=> $request->souscript_id,
+                'num_compte' => $request->num_compte,
+                'num_depot' => $request->num_depot,
             ]);
         }
 
