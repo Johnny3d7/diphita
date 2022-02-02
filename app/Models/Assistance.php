@@ -28,6 +28,8 @@ class Assistance extends Model
         'enfant_contact',
         'proche_defunt',
         'proche_contact',
+        'num_compte',
+        'num_depot',
         'id_souscripteur',
         'status',
         'valide'      

@@ -62,7 +62,7 @@
                             <tbody>
                                 @foreach ($souscripteurs as $souscripteur)
                                 <tr>
-                                    <th scope="row"> <a href="#" class="question_content"> {{ $souscripteur->nom }}</a></th>
+                                    <th scope="row"> <a href="{{ route('admin.adhesion.show', ['id' => $souscripteur->id]) }}" class="question_content"> {{ $souscripteur->nom }}</a></th>
                                     <td>{{ $souscripteur->pnom }}</td>
                                     <td>{{ $souscripteur->email }}</td>
                                     <td>{{ $souscripteur->contact }}</td>

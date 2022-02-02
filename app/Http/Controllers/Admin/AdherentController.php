@@ -120,6 +120,7 @@ class AdherentController extends Controller
             "benef_lnaiss.*" => "required",
             "benef_dnaiss.*" => "required",
             "benef_ncni.*" => "required|unique:adherents,num_cni",
+            "benef_lieu_hab.*" => "required",
             "ayant_civilite.*" => "required",
             "ayant_nom.*" => "required",
             "ayant_pnom.*" => "required",
@@ -174,6 +175,7 @@ class AdherentController extends Controller
                 'date_naiss' => $ben_dnaiss,
                 'num_cni' => $request->benef_ncni[$i],
                 'lieu_naiss' => $request->benef_lnaiss[$i],
+                'lieu_hab' => $request->benef_lieu_hab[$i],
                 'parent' => $souscripteur->id,
                 'role' => 2,
                 'valide' => 0,
@@ -259,7 +261,7 @@ class AdherentController extends Controller
             'pnom' => 'required',
             'date_naiss' => 'required',
             'lieu_naiss' => 'required',
-            'num_cni' => 'required',
+            'num_cni' => 'required|unique:adherents,num_cni,'.$id,
             'contact' => 'required',
             'email' => 'email',
             'lieu_hab'=> 'required'
@@ -270,6 +272,7 @@ class AdherentController extends Controller
             'date_naiss.required' => 'La date de naissance doit être renseigné.',
             'lieu_naiss.required' => 'Le lieu de naissance est un champ obligatoire.',
             'num_cni.required' => 'Le numéro de CNI est un champ obligatoire.',
+            'num_cni.unique'=> 'Un adhérent possède déjà ce numéro de CNI.',
             'contact.required' => 'Le contact est un champ obligatoire.',
             'email.email' => 'L\'adresse email n\'est pas correct.',
             'lieu_hab' => 'Le lieu de résidence est obligatoire.'
@@ -669,10 +672,8 @@ class AdherentController extends Controller
             'pnom' => 'required',
             'date_naiss' => 'required',
             'lieu_naiss' => 'required',
-            'num_cni' => 'required',
-            // 'contact' => 'required',
-            // 'email' => 'email',
-            // 'lieu_hab' => 'required'
+            'num_cni' => 'required|unique:adherents,num_cni',
+            'lieu_hab' => 'required'
         ], [
             'civilite.required' => 'La civilité est un champ obligatoire.',
             'nom.required' => 'Le nom est un champ obligatoire.' ,
@@ -680,9 +681,8 @@ class AdherentController extends Controller
             'date_naiss.required' => 'La date de naissance doit être renseigné.',
             'lieu_naiss.required' => 'Le lieu de naissance est un champ obligatoire.',
             'num_cni.required' => 'Le numéro de CNI est un champ obligatoire.',
-            // 'contact.required' => 'Le contact est un champ obligatoire.',
-            // 'email.email' => 'L\'adresse email n\'est pas correct.',
-            // 'lieu_hab' => 'Le lieu de résidence est obligatoire.'
+            'num_cni.unique' => 'Un adhérent possède déjà ce numéro de CNI.',
+            'lieu_hab' => 'Le lieu de résidence est obligatoire.'
         ]);
 
         if ($validatedData->fails()) {
@@ -703,9 +703,7 @@ class AdherentController extends Controller
                 'num_cni' => $request->num_cni,
                 'num_adhesion'=> $suffix.$date.'B'.$no,
                 'num_contrat' => $sous_parent->num_contrat, 
-                // 'contact' => $request->contact,
-                // 'email' =>  $request->email,
-                // 'lieu_hab' =>  $request->lieu_hab,
+                'lieu_hab' =>  $request->lieu_hab,
                 'parent' => $sous,
                 'date_adhesion' => Carbon::now(),
                 'role' => 2,
@@ -736,10 +734,8 @@ class AdherentController extends Controller
             'pnom' => 'required',
             'date_naiss' => 'required',
             'lieu_naiss' => 'required',
-            'num_cni' => 'required',
-            // 'contact' => 'required',
-            // 'email' => 'email',
-            // 'lieu_hab' => 'required'
+            'num_cni' => 'required|unique:adherents,num_cni,'.$benef,
+            'lieu_hab' => 'required'
         ], [
             'civilite.required' => 'La civilité est un champ obligatoire.',
             'nom.required' => 'Le nom est un champ obligatoire.' ,
@@ -747,9 +743,8 @@ class AdherentController extends Controller
             'date_naiss.required' => 'La date de naissance doit être renseigné.',
             'lieu_naiss.required' => 'Le lieu de naissance est un champ obligatoire.',
             'num_cni.required' => 'Le numéro de CNI est un champ obligatoire.',
-            // 'contact.required' => 'Le contact est un champ obligatoire.',
-            // 'email.email' => 'L\'adresse email n\'est pas correct.',
-            // 'lieu_hab' => 'Le lieu de résidence est obligatoire.'
+            'num_cni.unique' => 'Un adhérent possède déjà ce numéro de CNI.',
+            'lieu_hab' => 'Le lieu de résidence est obligatoire.'
         ]);
 
         if ($validatedData->fails()) {
@@ -764,9 +759,7 @@ class AdherentController extends Controller
                 'date_naiss' => $this->formatDate($request->date_naiss),
                 'lieu_naiss' => $request->lieu_naiss,
                 'num_cni' => $request->num_cni,
-                // 'contact' => $request->contact,
-                // 'email' => $request->email,
-                // 'lieu_hab' => $request->lieu_hab
+                'lieu_hab' => $request->lieu_hab
             ]);
         }
 

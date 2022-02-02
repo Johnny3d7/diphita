@@ -20,7 +20,9 @@
         background-size: 25%;
         background-image:url({{ url('images/totem_obp.png') }}) ;
     }
-        
+        table th, table td {
+            text-align: left !important;
+        }
     </style>
 @endsection
 
@@ -151,7 +153,7 @@
                                                 <td>{{ ucwords((new Carbon\Carbon($adherent->date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                                               </tr>
                                               <tr>
-                                                <th scope="row" rowspan="3" class="v-align-mid">Somme à payée: <span style=" border:1.5px solid #2F5597; padding:5px 10px 5px 10px">10000 Fcfa</span></th>
+                                                <th scope="row" rowspan="3" class="v-align-mid">Somme à payer: <span style=" border:1.5px solid #2F5597; padding:5px 10px 5px 10px">10000 Fcfa</span></th>
                                                 <td>
                                                     <div class="row">
                                                         <div class="col-md-7">Droit d'inscription:</div>
