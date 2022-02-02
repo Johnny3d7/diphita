@@ -1,4 +1,4 @@
-<div class="modal fade" id="cotisationsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
+<div class="modal fade" id="cotisationsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -24,16 +24,7 @@
                     <div class="tab-content" style="overflow-x: auto;">
                         <div class="tab-pane fade show active" id="pills-success-cotisation" role="tabpanel" aria-labelledby="success-tab">
                             @if (count($souscripteur->cotisations()) > 0)
-                                <ul class="list-group">
-                                    @foreach($souscripteur->cotisations()->sortByDesc('created_at') as $cotisation)
-                                        <li class="list-group-item">
-                                            {{ $cotisation->code_deces ?? $cotisation->annee_cotis  }} : {{ $cotisation->montant() }} francs
-                                            <span class="float-right">
-                                                <button class="btn btn-sm btn-outline-success"><i class="ti-money"></i> Payer</button>
-                                            </span>
-                                        </li>
-                                    @endforeach 
-                                </ul>
+                                @include('admin.adherent._payementLine', ['cotisations' => $souscripteur->cotisations()])
                             @else
                                 <h6 class="text-center">Aucune cotisation</h6>
                             @endif
@@ -41,26 +32,14 @@
                         </div>
                         <div class="tab-pane fade" id="pills-warning-cotisation" role="tabpanel" aria-labelledby="warning-tab">
                             @if (count($souscripteur->cotisations('exceptionnelle')) > 0)
-                                <ul class="list-group">
-                                    @foreach($souscripteur->cotisations('exceptionnelle')->sortByDesc('date_annonce') as $cotisation)
-                                        <li class="list-group-item">
-                                            {{ $cotisation->code_deces ?? $cotisation->annee_cotis  }} : {{ $cotisation->montant() }} francs
-                                        </li>
-                                    @endforeach 
-                                </ul>
+                                @include('admin.adherent._payementLine', ['cotisations' => $souscripteur->cotisations('exceptionnelle')])
                             @else
                                 <h6 class="text-center">Aucune cotisation exceptionnelle</h6>
                             @endif
                         </div>
                         <div class="tab-pane fade" id="pills-errors-cotisation" role="tabpanel" aria-labelledby="errors-tab">
                             @if (count($souscripteur->cotisations('annuelle')) > 0)
-                                <ul class="list-group">
-                                    @foreach($souscripteur->cotisations('annuelle')->sortByDesc('created_at') as $cotisation)
-                                        <li class="list-group-item">
-                                            {{ $cotisation->code_deces ?? $cotisation->annee_cotis  }} : {{ $cotisation->montant() }} francs
-                                        </li>
-                                    @endforeach 
-                                </ul>
+                                @include('admin.adherent._payementLine', ['cotisations' => $souscripteur->cotisations('annuelle')])
                             @else
                                 <h6 class="text-center">Aucune cotisation annuelle</h6>
                             @endif

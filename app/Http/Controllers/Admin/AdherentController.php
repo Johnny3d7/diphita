@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Imports\AdhesionsImport;
 use App\Imports\BeneficiairesImport;
 use App\Imports\SouscripteursImport;
+use App\Models\AdherentHasCotisations;
 use App\Models\Adherents;
 use App\Models\AyantDroit;
+use App\Models\Cotisation;
 use App\Models\CotisationAnnuelle;
 use App\Models\DroitInscription;
 use App\Models\DureeFincarences;
@@ -87,6 +89,26 @@ class AdherentController extends Controller
             try {
                 $import = new AdhesionsImport;
                 $collection = Excel::import($import, $request->file('csv'));
+
+                $adherents = session('resultsSousc')['data'];
+                if(count($adherents) > 0){
+                    foreach ($adherents as $adherent) { // Select all souscripteurs created
+                        $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($adherent->date_adhesion)->year)->get();
+                        if($cotisations){
+                            foreach ($cotisations as $cotisation) { // Select all souscripteurs and create items
+                                $ligne = AdherentHasCotisations::whereIdAdherent($adherent->id)->whereIdCotisation($cotisation->id);
+                                if($ligne) {
+                                    $ligne->update([
+                                        'nbre_benef' => $adherent->total_benef_life() + 1,
+                                        'montant' => $cotisation->montant * ($adherent->total_benef_life() + 1),
+                                        'reglé' => true,
+                                        'parcouru' => false,
+                                    ]);
+                                }
+                            }
+                        }
+                    }
+                }
     
                 return redirect()->back();
             } catch (\Throwable $th) {

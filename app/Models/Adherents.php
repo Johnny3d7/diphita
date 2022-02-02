@@ -44,6 +44,33 @@ class Adherents extends Model
         'admin_id'
     ];
 
+    public static function boot(){
+        parent::boot();
+
+        static::created(function($item) {
+            // Creating cotisation items for each cotisation  based on $this->date_debutcotisation
+            if($item->isSouscripteur()){
+                // $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($item->date_debutcotisation))->get();
+                // $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->get();
+
+                $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->get();
+                if($cotisations){
+                    // dd($cotisations);
+                    foreach ($cotisations as $cotisation) { // Select all souscripteurs and create items
+                        AdherentHasCotisations::create([
+                            'id_cotisation' => $cotisation->id,
+                            'id_adherent' => $item->id,
+                            'nbre_benef' => $item->total_benef_life(),
+                            'montant' => $cotisation->montant * $item->total_benef_life(),
+                            'reglé' => false,
+                            'parcouru' => false,
+                        ]);
+                    }
+                }
+            }
+        });
+    }
+
     public static function selectAll(Bool $souscripteur = false){
         $valides = static::where(['valide'=>1,'status'=>1]);
         if($souscripteur) $valides = $valides->whereRole(1);

@@ -18,11 +18,15 @@ class RouteStack
     public function handle(Request $request, Closure $next)
     {
         $array = session('routeStack');
+        // dd(Route::getCurrentRoute()->uri(), Route::currentRouteName(), Route::getCurrentRoute()->parameters(), Route::getCurrentRoute(), $array);
         if(Route::currentRouteName() == 'admin.index'){
             session(['routeStack' => []]);
         } else {
-            if(count($array) == 0 || $array[array_unshift($array)-1] != Route::currentRouteName()){
-                array_push($array, Route::currentRouteName());
+            if(count($array) == 0 || $array[array_unshift($array)-1]["name"] != Route::currentRouteName()){
+                array_push($array, [
+                    'name' => Route::currentRouteName(),
+                    'params' => Route::getCurrentRoute()->parameters()
+                ]);
                 session(['routeStack' => $array]);
             }
         }

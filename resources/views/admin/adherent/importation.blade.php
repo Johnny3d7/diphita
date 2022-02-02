@@ -4,6 +4,10 @@
         'Souscripteurs' => session('resultsSousc'),
         'AyantDroits' => session('resultsAyant'),
     ];
+
+    // $results = session('resultsSousc');
+    // dd($results['errs']);
+
 @endphp
 
 @extends('admin.main')

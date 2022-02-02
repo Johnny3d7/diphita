@@ -29,6 +29,20 @@ class Cotisation extends Model
                 $item->type = 'exceptionnelle';
             }
         });
+
+        static::created(function($item) {
+            // Creating cotisation items for each adherent based on $this
+            foreach (Adherents::selectAll(true) as $adherent) { // Select all souscripteurs and create items
+                AdherentHasCotisations::create([
+                    'id_cotisation' => $item->id,
+                    'id_adherent' => $adherent->id,
+                    'nbre_benef' => $adherent->total_benef_life,
+                    'montant' => $item->montant * $adherent->total_benef_life,
+                    'reglé' => false,
+                    'parcouru' => false,
+                ]);
+            }
+        });
     }
 
     public static function selectAllExceptionnelle() {

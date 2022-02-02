@@ -1,4 +1,4 @@
-<div class="modal fade" id="importation{{ $key }}Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
+<div class="modal fade" id="importation{{ $key }}Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -86,14 +86,18 @@
                             @if (count($results['errs']) > 0)
                                 <ul class="list-group">
                                     @foreach($results['errs'] as $err)
-                                        <li class="list-group-item">
-                                            {{ $err['title'] }}
-                                            <ul class="m-2 ml-3">
+                                    <li class="list-group-item">
+                                        {{ $err['title'] }}
+                                        <ul class="m-2 ml-3">
+                                            @if (is_array($err['msg']))
                                                 @foreach($err['msg'] as $error)
                                                     <li class="text-muted"><i class="fa fa-angle-right"></i> {{ $error }}</li>
                                                 @endforeach
-                                            </ul>
-                                        </li>
+                                            @else
+                                            <li class="text-muted"><i class="fa fa-angle-right"></i> {{ $err['msg'] }}</li>
+                                            @endif
+                                        </ul>
+                                    </li>
                                     @endforeach 
                                 </ul>
                             @else
