@@ -33,7 +33,6 @@ class CreateAssistancesTable extends Migration
             $table->string('code_deces');
             $table->timestamps();
             
-
             //Foreign_key
             $table->integer('id_souscripteur')->unsigned();
         });

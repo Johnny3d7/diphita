@@ -77,7 +77,7 @@
                                                     <h3 class="font-cambria mt_10 mb_10">Nom : {{ $adherent->nom }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Prénom(s) : {{ $adherent->pnom }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Numéro CNI : {{ $adherent->num_cni }}</h3>
-                                                    <h3 class="font-cambria mt_10 mb_10">Tél. : {{ $adherent->contact }} E-mail : {{ $adherent->email }}</h3>
+                                                    <h3 class="font-cambria mt_10 mb_10">Tél. : {{ $adherent->contact }} / E-mail : {{ $adherent->email }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Résidence : {{ $adherent->lieu_hab }}</h3>
                                                 </div>
                                                 <div class="col-md-3">

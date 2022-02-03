@@ -151,7 +151,7 @@
                                         <h4 class="m-0 txt-color1 txt-upper txt-bold">Informations générales</h4>
                                     </div>
                                    
-                                    <div class="form-group col-lg-6">
+                                    <div class="form-group col-lg-4">
                                         <label for="date_assistance">Date d'assistance </label>
                                         <div class="common_date_picker">
                                             <input value="{{ ucwords((new Carbon\Carbon($assistance->date_assistance ))->locale('fr')->isoFormat('DD-MM-YYYY')) }}" class="datepicker-here digits this-bc @error('date_assistance') is-invalid @enderror" type="text" data-language="en" placeholder="Date d'assistance *" name="date_assistance">
@@ -162,9 +162,9 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-lg-6">
+                                    <div class="form-group col-lg-4">
                                         <label for="moyen_assistance">Moyen d'assistance</label>
-                                        <select class="form-control @error('moyen_assistance') is-invalid @enderror" name="moyen_assistance" >
+                                        <select id="moyen_paie" class="form-control @error('moyen_assistance') is-invalid @enderror" name="moyen_assistance" >
                                             <option  value="0" disabled>--- Sélectionnez un moyen de paiement ---</option>
                                             <option {{ $assistance->moyen_assistance == 1 ? 'selected' : '' }} value="1">Espèces </option>
                                             <option {{ $assistance->moyen_assistance == 2 ? 'selected' : '' }} value="2">Chèque</option>
@@ -176,6 +176,9 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                    </div>
+                                    <div id="bloc_insert" class="form-group col-lg-4">
+
                                     </div>
                                     <div class="form-group col-lg-3">
                                         <label for="enfant_defunt">Nom d'un enfant du défunt </label>
@@ -238,12 +241,58 @@
     $('#id_beneficiaire').on('change', function() {
 
         get_nom_pnom($(this).val());
+        
 
     });
 
     $( document ).ready(function() {
 
         get_nom_pnom($('#id_beneficiaire').val());
+
+
+        switch($("#moyen_paie").val()) {
+
+        case '2':
+            $('#bloc_insert').empty();
+            $('#bloc_insert').append(`
+                                        <label for="num_compte">Numéro de compte </label>
+                                        <input type="text" name="num_compte" value="{{ $assistance->num_compte }}" class="form-control @error('num_compte') is-invalid @enderror" placeholder="Saisir le numéro de compte" >
+                                        @error('num_compte')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+            `);
+            break;
+        case '3':
+            $('#bloc_insert').empty();
+            $('#bloc_insert').append(`
+                                        <label for="num_compte">Numéro de compte </label>
+                                        <input type="text" name="num_compte" value="{{ $assistance->num_compte }}" class="form-control @error('num_compte') is-invalid @enderror" placeholder="Saisir le numéro de compte" >
+                                        @error('num_compte')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+            `);
+            break;
+        case '4':
+            $('#bloc_insert').empty();
+            $('#bloc_insert').append(`
+                                        <label for="num_depot">Numéro de téléphone du dépôt</label>
+                                        <input type="text" name="num_depot" value="{{ $assistance->num_depot }}" class="form-control @error('num_depot') is-invalid @enderror" placeholder="Saisir le numéro de téléphone " data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask>
+                                        @error('num_depot')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+            `);
+            $('[data-mask]').inputmask();
+            break;
+        default:
+            $('#bloc_insert').empty();
+            
+        }
         
     });
         
@@ -266,6 +315,56 @@
                 }
             });
     }
+
+
+    $('#moyen_paie').on('change', function() {
+      
+      console.log('bonjour');
+      switch($(this).val()) {
+
+      case '2':
+          $('#bloc_insert').empty();
+          $('#bloc_insert').append(`
+                                      <label for="num_compte">Numéro de compte </label>
+                                      <input type="text" name="num_compte" class="form-control @error('num_compte') is-invalid @enderror" placeholder="Saisir le numéro de compte" >
+                                      @error('num_compte')
+                                          <span class="invalid-feedback" role="alert">
+                                              <strong>{{ $message }}</strong>
+                                          </span>
+                                      @enderror
+          `);
+          break;
+      case '3':
+          $('#bloc_insert').empty();
+          $('#bloc_insert').append(`
+                                      <label for="num_compte">Numéro de compte </label>
+                                      <input type="text" name="num_compte" class="form-control @error('num_compte') is-invalid @enderror" placeholder="Saisir le numéro de compte" >
+                                      @error('num_compte')
+                                          <span class="invalid-feedback" role="alert">
+                                              <strong>{{ $message }}</strong>
+                                          </span>
+                                      @enderror
+          `);
+          break;
+      case '4':
+          $('#bloc_insert').empty();
+          $('#bloc_insert').append(`
+                                      <label for="num_depot">Numéro de téléphone du dépôt</label>
+                                      <input type="text" name="num_depot" class="form-control @error('num_depot') is-invalid @enderror" placeholder="Saisir le numéro de téléphone " data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask>
+                                      @error('num_depot')
+                                          <span class="invalid-feedback" role="alert">
+                                              <strong>{{ $message }}</strong>
+                                          </span>
+                                      @enderror
+          `);
+          $('[data-mask]').inputmask();
+          break;
+      default:
+          $('#bloc_insert').empty();
+          
+}
+      
+  });
 
 </script>
 @endsection

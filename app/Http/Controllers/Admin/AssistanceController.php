@@ -21,8 +21,9 @@ class AssistanceController extends Controller
     public function index()
     {
         //
-        $souscripteurs = Adherents::whereCas(1)->get();
-        return view('admin.assistance.index', compact('souscripteurs'));
+        $assistances = Assistance::where(['valide'=>1])->get();
+
+        return view('admin.assistance.index', compact('assistances'));
     }
 
         /**
@@ -65,11 +66,16 @@ class AssistanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create($id, $benef = null)
     {
         //
         $adherent = Adherents::where('id',$id)->first();
 
+        if ($benef != null) {
+            $beneficiaire = Adherents::where('id',$benef)->first();
+
+            return view('admin.assistance.create',compact('adherent','beneficiaire'));
+        }
         return view('admin.assistance.create',compact('adherent'));
     }
     
@@ -217,7 +223,9 @@ class AssistanceController extends Controller
                 'enfant_defunt'=> $request->enfant_defunt,
                 'enfant_contact'=> $request->enfant_contact,
                 'proche_defunt'=> $request->proche_defunt,
-                'proche_contact'=> $request->proche_contact
+                'proche_contact'=> $request->proche_contact,
+                'num_compte' => $request->num_compte,
+                'num_depot' => $request->num_depot,
             ]);
 
             return redirect()->back()->with('message', 'Les informations ont été mises à jour avec succèss !')->with('type', 'bg-success');
@@ -285,5 +293,12 @@ class AssistanceController extends Controller
         $assistances = Assistance::where(['status'=> 1,'id_souscripteur' => $id])->get();
 
         return view('admin.assistance.assistance_sous',compact('assistances','souscripteur'));
+    }
+
+    public function assistante_attente(){
+
+        $assistances = Assistance::where(['valide'=>0])->get();
+
+        return view('admin.assistance.en_attente',compact('assistances'));
     }
 }

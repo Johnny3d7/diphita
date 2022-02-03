@@ -337,8 +337,10 @@
                                                                     @if ($souscripteur->valide == 1)
                                                                         <a class="dropdown-item" href="{{ route('admin.adherent.formulaire-print',['id'=>$benef->id]) }}"> <i class="ti-eye"></i> Voir fiche</a>
                                                                         @if ($benef->is_not_cas() && $benef->is_not_in_assistance())
-                                                                        <a class="dropdown-item" href=""> <i class="ti-face-sad"></i> Déclarer décédé</a>
+                                                                        <a class="dropdown-item" href="{{ route('admin.assistance.create',['id'=>$souscripteur->id,'benef'=>$benef->id]) }}"> <i class="ti-face-sad"></i> Déclarer décédé</a>
                                                                         @endif
+                                                                        <a class="dropdown-item" href="{{ route('admin.beneficiaire.remove',['benef'=>$benef->id]) }}"> <i class="ti-close"></i>Supprimer bénéficiaire</a>
+
                                                                     @endif
                                                                     
                                                                     <a class="dropdown-item" href="{{ route('admin.beneficiaire.edit',['benef'=>$benef->id]) }}"> <i class="ti-pencil"></i> Modifier bénéficiaire</a>
@@ -429,6 +431,7 @@
                                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                                         
                                                                     <a class="dropdown-item" href="{{ route('admin.ayantdroit.edit',['ayant'=>$ayant->id]) }}"> <i class="ti-pencil"></i>Modifier ayant-droit</a>
+                                                                    <a class="dropdown-item" href="{{ route('admin.ayantdroit.remove',['ayant'=>$ayant->id]) }}"> <i class="ti-close"></i>Supprimer ayant-droit</a>
                                                                 </div>
                                                               </div>
                                                         </div>
