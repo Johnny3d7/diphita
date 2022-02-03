@@ -5,11 +5,11 @@
 @endsection
 
 @section('title')
-    Liste des cas 
+    Liste des cas en attente de validation
 @endsection
 
 @section('subtitle')
-    Liste des cas 
+    Liste des cas assistés
 @endsection
 
 @section('content')
@@ -26,7 +26,7 @@
             <div class="white_card_body">
                 <div class="QA_section">
                     <div class="white_box_tittle list_header">
-                        <h4>Cas</h4>
+                        <h4>Cas en attente</h4>
                         <div class="box_right d-flex lms_block">
                             <div class="serach_field_2">
                                 <div class="search_inner">
@@ -65,10 +65,10 @@
                                     <th scope="row"> <a href="{{ route('admin.adherent.formulaire-print',['id'=>$assistance->beneficiaire->id]) }}" class="question_content"> {{ $assistance->beneficiaire->nom_pnom() }}</a></th>
                                     <td>{{ ucwords((new Carbon\Carbon($assistance->date_deces))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                                     <td>{{ $assistance->lieu_deces }}</td>
-                                    <td>   <a href="{{ route('admin.adhesion.show',['id'=>$assistance->adherent->id]) }}">{{ $assistance->adherent->nom_pnom() }}</a></td>
+                                    <td>{{ $assistance->adherent->nom_pnom() }}</td>
                                     <td>{{ $assistance->adherent->contact }}</td>
                         
-                                    <td><a href="#" class="status_btn" style="{{ $assistance->assiste == 0 ? 'background-color:orangered' : '' }}" >{{ $assistance->assiste == 0 ? 'Non assisté' : 'Assisté' }}</a></td>
+                                    <td><a href="#" class="status_btn" style="{{ $assistance->valide == 0 ? 'background-color:orangered' : '' }}" >{{ $assistance->valide == 0 ? 'En attente' : '' }}</a></td>
                                     <td>
                                         <div class="header_more_tool">
                                             <div class="dropdown">

@@ -75,22 +75,21 @@
                                      
                                         <label for="benef_num">Numéro d'identification <code class="highlighter-rouge">*</code></label>
                                         <select id="id_beneficiaire" class="form-control @error('benef_num') is-invalid @enderror" name="benef_num" required>
-                                            <option selected value="0" disabled>--- Sélectionnez un bénéficiaire ---</option>
+                                            <option {{ isset($beneficiaire) ? '': 'selected'}}  value="0" disabled>--- Sélectionnez un bénéficiaire ---</option>
                                             @if ($adherent->is_not_cas() && $adherent->is_not_in_assistance())
                                                 <option value="{{$adherent->num_adhesion}}">{{$adherent->num_adhesion}} </option>
                                             @endif
                                             
                                             @forelse ($adherent->beneficiaires() as $benef)
-
                                                 @if ($benef->is_not_cas() && $benef->is_not_in_assistance())
-                                                    <option value="{{$benef->num_adhesion}}">{{$benef->num_adhesion.' '.$benef->is_not_in_assistance()}}  </option>
+                                                    <option {{ isset($beneficiaire) && $beneficiaire->id == $benef->id ? 'selected': '' }} value="{{$benef->num_adhesion}}">{{$benef->num_adhesion}}  </option>
                                                 @endif 
                                             @empty
                                                 
                                             @endforelse
                                
                                         </select>
-                                        <input type="text" readonly name="benef_id" id="benef_id" style="display: none" required>
+                                        <input type="text" readonly value="{{ isset($beneficiaire) ? $beneficiaire->id : '' }}" name="benef_id" id="benef_id" style="display: none" required>
                                         @error('benef_num')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -99,7 +98,7 @@
                                     </div>
                                     <div class="form-group col-lg-4">
                                         <label for="benef_nom">Nom  <code class="highlighter-rouge">*</code></label>
-                                        <input type="text" readonly id="benef_nom" name="benef_nom" class="form-control @error('benef_nom') is-invalid @enderror" placeholder="Nom" required>
+                                        <input type="text" readonly id="benef_nom" value="{{ isset($beneficiaire) ? $beneficiaire->nom : '' }}" name="benef_nom" class="form-control @error('benef_nom') is-invalid @enderror" placeholder="Nom" required>
                                         @error('benef_nom')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -108,7 +107,7 @@
                                     </div>
                                     <div class="form-group col-lg-4">
                                         <label for="benef_pnom">Prénom(s) <code class="highlighter-rouge">*</code></label>
-                                        <input type="text" readonly id="benef_pnom" name="benef_pnom" class="form-control @error('benef_pnom') is-invalid @enderror" placeholder="Prénom(s)" required>
+                                        <input type="text" readonly id="benef_pnom" value="{{ isset($beneficiaire) ? $beneficiaire->pnom : '' }}" name="benef_pnom" class="form-control @error('benef_pnom') is-invalid @enderror" placeholder="Prénom(s)" required>
                                         @error('benef_pnom')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -150,7 +149,7 @@
                                         <h4 class="m-0 txt-color1 txt-upper txt-bold">Informations générales</h4>
                                     </div>
                                    
-                                    <div class="form-group col-lg-6">
+                                    <div class="form-group col-lg-4">
                                         <label for="date_assistance">Date d'assistance </label>
                                         <div class="common_date_picker">
                                             <input class="datepicker-here digits this-bc @error('date_assistance') is-invalid @enderror" type="text" data-language="en" placeholder="Date d'assistance *" name="date_assistance">
@@ -161,10 +160,10 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-lg-6">
+                                    <div class="form-group col-lg-4">
                                         <label for="moyen_assistance">Moyen d'assistance</label>
-                                        <select class="form-control @error('moyen_assistance') is-invalid @enderror" name="moyen_assistance" >
-                                            <option selected value="0" disabled>--- Sélectionnez un moyen de paiement ---</option>
+                                        <select id="moyen_paie" class="form-control @error('moyen_assistance') is-invalid @enderror" name="moyen_assistance" >
+                                            <option selected value="0" disabled>-- Sélectionnez moyen de paiement --</option>
                                             <option value="1">Espèces </option>
                                             <option value="2">Chèque</option>
                                             <option value="3">Virement </option>
@@ -175,6 +174,9 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                    </div>
+                                    <div id="bloc_insert" class="form-group col-lg-4">
+
                                     </div>
                                     <div class="form-group col-lg-3">
                                         <label for="enfant_defunt">Nom d'un enfant du défunt </label>
@@ -257,5 +259,55 @@
                 }
             });
     });
+
+    $('#moyen_paie').on('change', function() {
+      
+        console.log('bonjour');
+        switch($(this).val()) {
+
+        case '2':
+            $('#bloc_insert').empty();
+            $('#bloc_insert').append(`
+                                        <label for="num_compte">Numéro de compte </label>
+                                        <input type="text" name="num_compte" class="form-control @error('num_compte') is-invalid @enderror" placeholder="Saisir le numéro de compte" >
+                                        @error('num_compte')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+            `);
+            break;
+        case '3':
+            $('#bloc_insert').empty();
+            $('#bloc_insert').append(`
+                                        <label for="num_compte">Numéro de compte </label>
+                                        <input type="text" name="num_compte" class="form-control @error('num_compte') is-invalid @enderror" placeholder="Saisir le numéro de compte" >
+                                        @error('num_compte')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+            `);
+            break;
+        case '4':
+            $('#bloc_insert').empty();
+            $('#bloc_insert').append(`
+                                        <label for="num_depot">Numéro de téléphone du dépôt</label>
+                                        <input type="text" name="num_depot" class="form-control @error('num_depot') is-invalid @enderror" placeholder="Saisir le numéro de téléphone " data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask>
+                                        @error('num_depot')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+            `);
+            $('[data-mask]').inputmask();
+            break;
+        default:
+            $('#bloc_insert').empty();
+            
+}
+        
+    });
+    
 </script>
 @endsection

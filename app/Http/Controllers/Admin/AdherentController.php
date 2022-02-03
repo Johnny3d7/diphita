@@ -142,6 +142,7 @@ class AdherentController extends Controller
             "benef_lnaiss.*" => "required",
             "benef_dnaiss.*" => "required",
             "benef_ncni.*" => "required|unique:adherents,num_cni",
+            "benef_lieu_hab.*" => "required",
             "ayant_civilite.*" => "required",
             "ayant_nom.*" => "required",
             "ayant_pnom.*" => "required",
@@ -156,17 +157,11 @@ class AdherentController extends Controller
             "contact.required" => "Name is required",*/
         ]);
 
-        dd($request->all());
-
-        //dd($request->all());
+        
         // Traiter le champ contact prévu pour les sms
         $contact = explode("-", substr($request->souscript_contact, 7, 14));
         $contact_format = "225".$contact[0].$contact[1].$contact[2].$contact[3].$contact[4];
         
-        //dd(Adheregenerate_order(Adherents::count()));
-        //store souscripteur
-
-
         $souscript_dnaiss = explode('-',$request->souscript_dnaiss);
 
         $sous_dnaiss = $souscript_dnaiss[2].$souscript_dnaiss[1].$souscript_dnaiss[0];
@@ -202,6 +197,7 @@ class AdherentController extends Controller
                 'date_naiss' => $ben_dnaiss,
                 'num_cni' => $request->benef_ncni[$i],
                 'lieu_naiss' => $request->benef_lnaiss[$i],
+                'lieu_hab' => $request->benef_lieu_hab[$i],
                 'parent' => $souscripteur->id,
                 'role' => 2,
                 'valide' => 0,
@@ -287,7 +283,7 @@ class AdherentController extends Controller
             'pnom' => 'required',
             'date_naiss' => 'required',
             'lieu_naiss' => 'required',
-            'num_cni' => 'required',
+            'num_cni' => 'required|unique:adherents,num_cni,'.$id,
             'contact' => 'required',
             'email' => 'email',
             'lieu_hab'=> 'required'
@@ -298,6 +294,7 @@ class AdherentController extends Controller
             'date_naiss.required' => 'La date de naissance doit être renseigné.',
             'lieu_naiss.required' => 'Le lieu de naissance est un champ obligatoire.',
             'num_cni.required' => 'Le numéro de CNI est un champ obligatoire.',
+            'num_cni.unique'=> 'Un adhérent possède déjà ce numéro de CNI.',
             'contact.required' => 'Le contact est un champ obligatoire.',
             'email.email' => 'L\'adresse email n\'est pas correct.',
             'lieu_hab' => 'Le lieu de résidence est obligatoire.'
@@ -416,6 +413,7 @@ class AdherentController extends Controller
             $benef->num_contrat = $num_contrat;
             $benef->date_adhesion = Carbon::now();
             $benef->date_fincarence = Carbon::now()->addMonths(DureeFincarences::where('status',1)->first()->duree);
+            $benef->date_debutcotisation = $adhesion->date_debutcotisation;
             $benef->save();
         }
 
@@ -686,6 +684,79 @@ class AdherentController extends Controller
 
     }
 
+    public function sms_add_new_benef(Adherents $benef){
+        $curl1 = curl_init();
+        $datas= [
+        'step' => NULL,
+        'sender' => 'DIPHITA',
+        'name' => 'Rajout d\'un bénéficiaire',
+        'campaignType' => 'SIMPLE',
+        'recipientSource' => 'CUSTOM',
+        'groupId' => NULL,
+        'filename' => NULL,
+        'saveAsModel' => false,
+        'destination' => 'NAT',
+        'message' => "Cher souscripteur, votre rajout de bénéficiaire ".$benef->nom_pnom()." s'est effectué avec succès. ID: ".$benef->num_adhesion." Fin de carence: ".ucwords((new Carbon($benef->date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY'))." Début de cotisation: ".ucwords((new Carbon($benef->date_debutcotisation))->locale('fr')->isoFormat('DD/MM/YYYY')),
+        'emailText' => NULL,
+        'recipients' => 
+        [
+            [
+            'phone' => $benef->souscripteur()->contact_format,
+            ],
+        ],
+        'sendAt' => [],
+        'dlrUrl' => 'http://dlr.my.domain.com',
+        'responseUrl' => 'http://res.my.domain.com',
+        ];
+
+        curl_setopt_array($curl1, array(
+        CURLOPT_URL => 'https://api.letexto.com/v1/campaigns',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS =>json_encode($datas),
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer 7e8f4b3245f7d88054771d58a4739a',
+            'Content-Type: application/json'
+        ),
+        CURLOPT_SSL_VERIFYHOST =>  false,
+        CURLOPT_SSL_VERIFYPEER => false
+        ));
+
+        $response = curl_exec($curl1);
+        $error = curl_error($curl1);
+        curl_close($curl1);
+     
+        $campagne = json_decode($response);
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://api.letexto.com/v1/campaigns/'.$campagne->id.'/schedules',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer 7e8f4b3245f7d88054771d58a4739a'
+        ),
+        CURLOPT_SSL_VERIFYHOST =>  false,
+        CURLOPT_SSL_VERIFYPEER => false
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
+    }
+
     public function store_beneficiaire(Request $request, $sous){
         
         $sous_parent = Adherents::find($sous);
@@ -697,9 +768,7 @@ class AdherentController extends Controller
             'pnom' => 'required',
             'date_naiss' => 'required',
             'lieu_naiss' => 'required',
-            'num_cni' => 'required',
-            'contact' => 'required',
-            'email' => 'email',
+            'num_cni' => 'required|unique:adherents,num_cni',
             'lieu_hab' => 'required'
         ], [
             'civilite.required' => 'La civilité est un champ obligatoire.',
@@ -708,8 +777,7 @@ class AdherentController extends Controller
             'date_naiss.required' => 'La date de naissance doit être renseigné.',
             'lieu_naiss.required' => 'Le lieu de naissance est un champ obligatoire.',
             'num_cni.required' => 'Le numéro de CNI est un champ obligatoire.',
-            'contact.required' => 'Le contact est un champ obligatoire.',
-            'email.email' => 'L\'adresse email n\'est pas correct.',
+            'num_cni.unique' => 'Un adhérent possède déjà ce numéro de CNI.',
             'lieu_hab' => 'Le lieu de résidence est obligatoire.'
         ]);
 
@@ -722,6 +790,22 @@ class AdherentController extends Controller
             $suffix= "DIP";
             $date = (new \DateTime())->format("dmy");
 
+             //Récupère le mois et l'année actuel
+            $current_month_year = Carbon::now()->format('Y-m');
+
+            //Récupère la date du premier jour du mois en cours
+            $first_day_month = Carbon::createFromFormat('Y-m-d', $current_month_year.'-01');
+
+            //Récupère la date du 5ième jour du mois en cours
+            $fifth_day_month = Carbon::createFromFormat('Y-m-d', $current_month_year.'-05');
+            
+            //Vérifie si la date d'aujourd'hui est entre le 1er et le 5 du mois en cours
+            if (Carbon::now()->between($first_day_month, $fifth_day_month)) {
+                $date_debutcotisation = Carbon::createFromFormat('Y-m-d', $current_month_year.'-25');
+            } else {
+                $date_debutcotisation = Carbon::createFromFormat('Y-m-d', $current_month_year.'-25')->addMonth();
+            }
+
             $souscripteur = Adherents::create([
                 'civilite' => $request->civilite ,
                 'nom'=> $request->nom,
@@ -731,15 +815,17 @@ class AdherentController extends Controller
                 'num_cni' => $request->num_cni,
                 'num_adhesion'=> $suffix.$date.'B'.$no,
                 'num_contrat' => $sous_parent->num_contrat, 
-                'contact' => $request->contact,
-                'email' =>  $request->email,
                 'lieu_hab' =>  $request->lieu_hab,
                 'parent' => $sous,
                 'date_adhesion' => Carbon::now(),
+                'date_fincarence' => Carbon::now()->addMonths(DureeFincarences::where('status',1)->first()->duree),
+                'date_debutcotisation'=> $date_debutcotisation,
                 'role' => 2,
                 'valide' => 1,
                 'status' => 1,
             ]);
+
+            $this->sms_add_new_benef($souscripteur);
 
 
         }
@@ -764,9 +850,7 @@ class AdherentController extends Controller
             'pnom' => 'required',
             'date_naiss' => 'required',
             'lieu_naiss' => 'required',
-            'num_cni' => 'required',
-            'contact' => 'required',
-            'email' => 'email',
+            'num_cni' => 'required|unique:adherents,num_cni,'.$benef,
             'lieu_hab' => 'required'
         ], [
             'civilite.required' => 'La civilité est un champ obligatoire.',
@@ -775,8 +859,7 @@ class AdherentController extends Controller
             'date_naiss.required' => 'La date de naissance doit être renseigné.',
             'lieu_naiss.required' => 'Le lieu de naissance est un champ obligatoire.',
             'num_cni.required' => 'Le numéro de CNI est un champ obligatoire.',
-            'contact.required' => 'Le contact est un champ obligatoire.',
-            'email.email' => 'L\'adresse email n\'est pas correct.',
+            'num_cni.unique' => 'Un adhérent possède déjà ce numéro de CNI.',
             'lieu_hab' => 'Le lieu de résidence est obligatoire.'
         ]);
 
@@ -792,8 +875,6 @@ class AdherentController extends Controller
                 'date_naiss' => $this->formatDate($request->date_naiss),
                 'lieu_naiss' => $request->lieu_naiss,
                 'num_cni' => $request->num_cni,
-                'contact' => $request->contact,
-                'email' => $request->email,
                 'lieu_hab' => $request->lieu_hab
             ]);
         }
@@ -878,6 +959,28 @@ class AdherentController extends Controller
         }
 
         return redirect()->route('admin.adhesion.show',['id'=>$ayant->id_adherent])->with('message', 'L\'ayant-droit vient d\'être mis à jour')->with('type', 'bg-success');
+    }
+
+    public function remove_ayantdroit($ayant){
+
+        $ayant = AyantDroit::find($ayant);
+
+        $ayant->update([
+            'status'=> 0
+        ]);
+
+        return redirect()->back()->with('message', 'Vous avez supprimé un ayant-droit')->with('type', 'bg-success');
+    }
+
+    public function remove_beneficiaire($benef){
+
+        $adherent = Adherents::find($benef);
+
+        $adherent->update([
+            'status'=> 0
+        ]);
+
+        return redirect()->back()->with('message', 'Vous avez supprimé un bénéficiaire')->with('type', 'bg-success');
     }
 
     

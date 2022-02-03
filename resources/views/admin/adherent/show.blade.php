@@ -57,7 +57,7 @@
                                             <i class="ti-settings text-primary"></i>
                                         </div>
                                             
-                                            <div class="widget-numbers"><span>{{ Adherents::where(['status'=>1,'role'=>2,'parent'=>$souscripteur->id])->orderBy('created_at', 'DESC')->count() + 1;  }}</span></div>
+                                            <div class="widget-numbers"><span>{{ $souscripteur->total_benef_life() + 1;  }}</span></div>
                                             <div class="widget-subheading">Nombre de bénéficiaires</div>
                                         <div class="widget-description text-success">
                                             <i class="fa fa-angle-up ">
@@ -131,11 +131,11 @@
                                 <div class="col mb_15" style="font-size:16px !important">
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Civilité:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">
                                                         @if ($souscripteur->civilite == 1)
-                                                            Monsieur
+                                                            M.
                                                         @elseif($souscripteur->civilite == 2)
-                                                            Madame
+                                                            Mme
                                                         @elseif($souscripteur->civilite == 3)
-                                                            Mademoiselle
+                                                            Mlle
                                                         @endif
                                     </div>
                                 </div>
@@ -308,9 +308,8 @@
                                                 @foreach ($benefs as $benef)
                                                 <tr>
                                                     @if ($souscripteur->num_contrat)
-                                                    <th scope="row"> <a href="{{ route('admin.adherent.formulaire-print',['id'=>$benef->id]) }}" class="question_content {{ $benef->cas == 1 ? 'text-danger' : 'text-success'  }}"> {{ $benef->num_adhesion }}</a></th>
+                                                        <th scope="row"> <a href="{{ route('admin.adherent.formulaire-print',['id'=>$benef->id]) }}" class="question_content {{ $benef->is_not_cas() ? 'text-success' : 'text-danger'  }}"> {{ $benef->num_adhesion }}</a></th>
                                                     @endif
-                                                    
                                                     <td>
                                                         @if ($benef->civilite == 1)
                                                             Monsieur
@@ -324,7 +323,8 @@
                                                     <td>{{ $benef->pnom }}</td>
                                                     <td>{{ ucwords((new Carbon\Carbon($benef->date_naiss))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                                                     @if ($souscripteur->valide == 1 && $souscripteur->status == 1)
-                                                    <td><a href="#" class="status_btn">Actif</a></td>
+                                                    
+                                                    <td><a href="#" class="status_btn" style="{{ $benef->is_not_cas() ? '' : 'background-color:red'  }}">{{ $benef->is_not_cas() ? 'Actif' : 'Décédé'  }}</a></td>
                                                     @endif
                                                     
                                                     <td>
@@ -334,8 +334,17 @@
                                                                   <i class="ti-more-alt"></i>
                                                                 </span>
                                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                                    <a class="dropdown-item" href="{{ route('admin.adherent.formulaire-print',['id'=>$benef->id]) }}"> <i class="ti-eye"></i> Voir fiche</a>
+                                                                    @if ($souscripteur->valide == 1)
+                                                                        <a class="dropdown-item" href="{{ route('admin.adherent.formulaire-print',['id'=>$benef->id]) }}"> <i class="ti-eye"></i> Voir fiche</a>
+                                                                        @if ($benef->is_not_cas() && $benef->is_not_in_assistance())
+                                                                        <a class="dropdown-item" href="{{ route('admin.assistance.create',['id'=>$souscripteur->id,'benef'=>$benef->id]) }}"> <i class="ti-face-sad"></i> Déclarer décédé</a>
+                                                                        @endif
+                                                                        <a class="dropdown-item" href="{{ route('admin.beneficiaire.remove',['benef'=>$benef->id]) }}"> <i class="ti-close"></i>Supprimer bénéficiaire</a>
+
+                                                                    @endif
+                                                                    
                                                                     <a class="dropdown-item" href="{{ route('admin.beneficiaire.edit',['benef'=>$benef->id]) }}"> <i class="ti-pencil"></i> Modifier bénéficiaire</a>
+                                                                    
                                                                 </div>
                                                               </div>
                                                         </div>
@@ -422,6 +431,7 @@
                                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                                         
                                                                     <a class="dropdown-item" href="{{ route('admin.ayantdroit.edit',['ayant'=>$ayant->id]) }}"> <i class="ti-pencil"></i>Modifier ayant-droit</a>
+                                                                    <a class="dropdown-item" href="{{ route('admin.ayantdroit.remove',['ayant'=>$ayant->id]) }}"> <i class="ti-close"></i>Supprimer ayant-droit</a>
                                                                 </div>
                                                               </div>
                                                         </div>

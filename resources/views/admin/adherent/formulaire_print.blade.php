@@ -20,7 +20,9 @@
         background-size: 25%;
         background-image:url({{ url('images/totem_obp.png') }}) ;
     }
-        
+        table th, table td {
+            text-align: left !important;
+        }
     </style>
 @endsection
 
@@ -75,7 +77,7 @@
                                                     <h3 class="font-cambria mt_10 mb_10">Nom : {{ $adherent->nom }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Prénom(s) : {{ $adherent->pnom }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Numéro CNI : {{ $adherent->num_cni }}</h3>
-                                                    <h3 class="font-cambria mt_10 mb_10">Tél. : {{ $adherent->contact }} E-mail : {{ $adherent->email }}</h3>
+                                                    <h3 class="font-cambria mt_10 mb_10">Tél. : {{ $adherent->contact }} / E-mail : {{ $adherent->email }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Résidence : {{ $adherent->lieu_hab }}</h3>
                                                 </div>
                                                 <div class="col-md-3">
@@ -151,7 +153,7 @@
                                                 <td>{{ ucwords((new Carbon\Carbon($adherent->date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                                               </tr>
                                               <tr>
-                                                <th scope="row" rowspan="3" class="v-align-mid">Somme à payée: <span style=" border:1.5px solid #2F5597; padding:5px 10px 5px 10px">10000 Fcfa</span></th>
+                                                <th scope="row" rowspan="3" class="v-align-mid">Somme à payer: <span style=" border:1.5px solid #2F5597; padding:5px 10px 5px 10px">10000 Fcfa</span></th>
                                                 <td>
                                                     <div class="row">
                                                         <div class="col-md-7">Droit d'inscription:</div>
