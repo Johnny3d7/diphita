@@ -113,6 +113,7 @@
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Email:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->beneficiaire->email != null ? $assistance->beneficiaire->email : 'Indisponible' }}</div></div>
                                 </div>
                             </div>
+                            
 
                                                    
                         </div>
@@ -243,6 +244,18 @@
                                 <div class="col mb_15" style="font-size:16px !important">
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Téléphone:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->proche_contact}}</div></div>
                                 </div>
+                            </div>
+                            <div class="row">
+                                
+                                <div class="col mb_15" style="font-size:16px !important">
+                                    @if ($assistance->num_compte)
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Numéro de compte:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->num_compte}}</div></div>
+                                    @elseif($assistance->num_depot)
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Numéro de dépôt:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->num_depot}}</div></div>
+                                    @endif
+                                    
+                                </div>
+                                
                             </div>
                         </div>
                     </div>

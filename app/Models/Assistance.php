@@ -32,6 +32,7 @@ class Assistance extends Model
         'num_depot',
         'id_souscripteur',
         'status',
+        'assiste',
         'valide'      
     ];
 

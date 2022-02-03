@@ -36,7 +36,7 @@ class Cotisation extends Model
                 AdherentHasCotisations::create([
                     'id_cotisation' => $item->id,
                     'id_adherent' => $adherent->id,
-                    'nbre_benef' => $adherent->total_benef_life,
+                    'nbre_benef' => $adherent->total_benef_life(),
                     'montant' => $item->montant * $adherent->total_benef_life,
                     'reglé' => false,
                     'parcouru' => false,

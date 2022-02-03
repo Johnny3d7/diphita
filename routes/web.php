@@ -86,12 +86,15 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         Route::post('/beneficiaire/store/{sous}', 'AdherentController@store_beneficiaire')->name('beneficiaire.store');
         Route::get('/beneficiaire/edit/{benef}', 'AdherentController@edit_beneficiaire')->name('beneficiaire.edit');
         Route::any('/beneficiaire/update/{benef}', 'AdherentController@update_beneficiaire')->name('beneficiaire.update');
+        Route::get('/beneficiaire/remove/{benef}', 'AdherentController@remove_beneficiaire')->name('beneficiaire.remove');
+
     
         //Ajouter-Modif ayant-droit
         Route::get('/ayant-droit/create/{sous}', 'AdherentController@create_ayantdroit')->name('ayantdroit.create');
         Route::post('/ayant-droit/store/{sous}', 'AdherentController@store_ayantdroit')->name('ayantdroit.store');
         Route::get('/ayant-droit/edit/{ayant}', 'AdherentController@edit_ayantdroit')->name('ayantdroit.edit');
         Route::any('/ayant-droit/update/{ayant}', 'AdherentController@update_ayantdroit')->name('ayantdroit.update');
+        Route::get('/ayant-droit/remove/{ayant}', 'AdherentController@remove_ayantdroit')->name('ayantdroit.remove');
         
         //Bloquer ou débloquer le compte
         Route::get('/adherent-bloquer/{id}', 'AdherentController@bloquer')->name('adherent.bloquer');
@@ -124,8 +127,9 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         });
         //Cas assisté
         Route::get('/assistances', 'AssistanceController@index')->name('assistance.index');
+        Route::get('/assistances/en-attente', 'AssistanceController@assistante_attente')->name('assistance.attente');
         Route::get('/assistances/{id}', 'AssistanceController@assistance_sous')->name('assistance.souscripteur.index');
-        Route::get('/assistance/{id}/create', 'AssistanceController@create')->name('assistance.create');
+        Route::get('/assistance/{id}/create/{benef?}', 'AssistanceController@create')->name('assistance.create');
         Route::get('/assistance/{id}/edit', 'AssistanceController@edit')->name('assistance.edit');
         Route::any('/assistance/update/{id}', 'AssistanceController@update')->name('assistance.update');
         Route::get('/assistance/{id}/show', 'AssistanceController@show')->name('assistance.show');
@@ -134,6 +138,7 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         Route::get('/assistance/{id}/rejeter', 'AssistanceController@rejeter')->name('assistance.rejeter');
         Route::get('/assistance/{id}/assister', 'AssistanceController@assister')->name('assistance.assister');
         Route::get('/assistance/{id}/destroy', 'AssistanceController@destroy')->name('assistance.destroy');
+  
         
     
         Route::get('/assistance/importation', 'AssistanceController@importation')->name('assistance.importation');
