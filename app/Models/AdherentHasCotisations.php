@@ -11,4 +11,12 @@ class AdherentHasCotisations extends Model
 
     protected $guarded = ['id'];
 
+    public function souscripteur(){
+        return $this->belongsTo(Adherents::class, 'id_adherent');
+    }
+   
+    public function cotisation(){
+        return $this->belongsTo(Cotisation::class, 'id_cotisation');
+    }
+
 }
