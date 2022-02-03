@@ -32,13 +32,21 @@ class Cotisation extends Model
 
         static::created(function($item) {
             // Creating cotisation items for each adherent based on $this
-            foreach (Adherents::selectAll(true) as $adherent) { // Select all souscripteurs and create items
+            // $adherents = Adherents::whereYe('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($item->date_debutcotisation))->get();
+            // $adherents =  Adherents::whereYear('date_adhesion', '<', $item->annee_cotis)->get();
+            // $adherents = $item->type == "annuelle" ? Adherents::whereYear('date_adhesion', '>=', $item->annee_cotis)->get() : Adherents::whereDate('date_debutcotisation', '>=', 'date_annonce')->get();
+            // $adherents = $item->type == "exceptionnelle" ? [Adherents::selectAll()[0]] : [Adherents::selectAll(true)[0]];
+            // $adherents = $item->type == "exceptionnelle" ? Adherents::whereDate('date_adhesion', '<=', $item->date_annonce)->get() : [];
+            
+            $adherents = $item->type == "exceptionnelle" ? Adherents::whereDate('date_debutcotisation', '<=', $item->date_annonce)->get() : Adherents::whereYear('date_adhesion', '<=', $item->annee_cotis)->get();
+
+            foreach ($adherents as $adherent) { // Select all souscripteurs and create items
                 AdherentHasCotisations::create([
                     'id_cotisation' => $item->id,
                     'id_adherent' => $adherent->id,
                     'nbre_benef' => $adherent->total_benef_life(),
-                    'montant' => $item->montant * $adherent->total_benef_life,
-                    'reglé' => false,
+                    'montant' => $item->montant() * $adherent->total_benef_life(),
+                    'reglee' => false,
                     'parcouru' => false,
                 ]);
             }

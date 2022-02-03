@@ -93,7 +93,7 @@ class AdherentController extends Controller
                 $adherents = session('resultsSousc')['data'];
                 if(count($adherents) > 0){
                     foreach ($adherents as $adherent) { // Select all souscripteurs created
-                        $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($adherent->date_adhesion)->year)->get();
+                        $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($adherent->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($adherent->date_debutcotisation))->get();
                         if($cotisations){
                             foreach ($cotisations as $cotisation) { // Select all souscripteurs and create items
                                 $ligne = AdherentHasCotisations::whereIdAdherent($adherent->id)->whereIdCotisation($cotisation->id);
@@ -101,7 +101,7 @@ class AdherentController extends Controller
                                     $ligne->update([
                                         'nbre_benef' => $adherent->total_benef_life() + 1,
                                         'montant' => $cotisation->montant * ($adherent->total_benef_life() + 1),
-                                        'reglé' => true,
+                                        'reglee' => false,
                                         'parcouru' => false,
                                     ]);
                                 }
