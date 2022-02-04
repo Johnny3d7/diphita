@@ -268,9 +268,9 @@
         case '2':
             $('#bloc_insert').empty();
             $('#bloc_insert').append(`
-                                        <label for="num_compte">Numéro de compte </label>
-                                        <input type="text" name="num_compte" class="form-control @error('num_compte') is-invalid @enderror" placeholder="Saisir le numéro de compte" >
-                                        @error('num_compte')
+                                        <label for="num_cheque">Numéro de chèque </label>
+                                        <input type="text" name="num_cheque" class="form-control @error('num_cheque') is-invalid @enderror" placeholder="Saisir le numéro de chèque" >
+                                        @error('num_cheque')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

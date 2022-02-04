@@ -236,7 +236,7 @@
                                     </div>
                                     <div class="col">
                                         <h3 class="font-cambria mt_15 mb_15 txt-center">VISA DU BUREAU EXECUTIF</h3>
-                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">Lawrence Gallaty Kouassi Bi</div>                                 
+                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">Lawrence Gallaty K.</div>                                 
                                     </div>
                                     
                                 </div>

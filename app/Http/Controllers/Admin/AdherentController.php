@@ -288,7 +288,8 @@ class AdherentController extends Controller
             'num_cni' => 'required|unique:adherents,num_cni,'.$id,
             'contact' => 'required',
             'email' => 'email',
-            'lieu_hab'=> 'required'
+            'lieu_hab'=> 'required',
+            'souscript_conseiller' => 'required',
         ], [
             'civilite.required' => 'La civilité est un champ obligatoire.',
             'nom.required' => 'Le nom est un champ obligatoire.' ,
@@ -299,7 +300,8 @@ class AdherentController extends Controller
             'num_cni.unique'=> 'Un adhérent possède déjà ce numéro de CNI.',
             'contact.required' => 'Le contact est un champ obligatoire.',
             'email.email' => 'L\'adresse email n\'est pas correct.',
-            'lieu_hab' => 'Le lieu de résidence est obligatoire.'
+            'lieu_hab' => 'Le lieu de résidence est obligatoire.',
+            'souscript_conseiller.required' => 'Le nom du conseiller diphita est obligatoire'
         ]);
 
         if ($validatedData->fails()) {
@@ -317,7 +319,8 @@ class AdherentController extends Controller
                 'num_cni' => $request->num_cni,
                 'contact' => $request->contact,
                 'email' => $request->email,
-                'lieu_hab' => $request->lieu_hab
+                'lieu_hab' => $request->lieu_hab,
+                'conseiller_diph' => $request->souscript_conseiller,
             ]);
 
             return redirect()->back()->with('message', 'Les informations ont été mises à jour avec succèss !')->with('type', 'bg-success');
