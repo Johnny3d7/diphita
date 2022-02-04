@@ -74,9 +74,6 @@
                                         @if ($adherent->role == 1)
                                             <div class="row">
                                                 <div class="col-md-9">
-                                                    @php
-                                                        $nom_souscripteur = $adherent->nom_pnom();
-                                                    @endphp
                                                     <h3 class="font-cambria mt_10 mb_10">Nom : {{ $adherent->nom }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Prénom(s) : {{ $adherent->pnom }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Numéro CNI : {{ $adherent->num_cni }}</h3>
@@ -118,12 +115,9 @@
                                             <div class="col-md-6">
                                                 <h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">BÉNÉFICIAIRE</h3>
                                             </div>
-                                            {{-- <div class="col" style="display: flex !important;"><div class="@if($adherent->civilite == 2) dot-orange @else dot-wh @endif  v-align-mid mt_10 mb_10"></div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;Mme</h3></div>
+                                            <div class="col" style="display: flex !important;"><div class="@if($adherent->civilite == 2) dot-orange @else dot-wh @endif  v-align-mid mt_10 mb_10"></div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;Mme</h3></div>
                                             <div class="col" style="display: flex !important;"><div class="@if($adherent->civilite == 3) dot-orange @else dot-wh @endif v-align-mid mt_10 mb_10"></div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;Mlle</h3></div>
-                                            <div class="col" style="display: flex !important;"><div class="@if($adherent->civilite == 1) dot-orange @else dot-wh @endif v-align-mid mt_10 mb_10"></div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;M</h3></div> --}}
-                                            <div class="col d-inline-flex"><div class="@if($adherent->civilite == 2 || $adherent->civilite == "Mme") '' @else dot-wh @endif v-align-mid mt_10 mb_10">{!! $adherent->civilite == 2 || $adherent->civilite == "Mme" ? '<i class="fa fa-2x fa-times-circle text-light"></i>' : '' !!}</div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;Mme</h3></div>
-                                            <div class="col d-inline-flex"><div class="@if($adherent->civilite == 3 || $adherent->civilite == "Mlle") '' @else dot-wh @endif v-align-mid mt_10 mb_10">{!! $adherent->civilite == 3 || $adherent->civilite == "Mlle" ? '<i class="fa fa-2x fa-times-circle text-light"></i>' : '' !!}</div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;Mlle</h3></div>
-                                            <div class="col d-inline-flex"><div class="@if($adherent->civilite == 1 || $adherent->civilite == "M") '' @else dot-wh @endif v-align-mid mt_10 mb_10">{!! $adherent->civilite == 1 || $adherent->civilite == "M" ? '<i class="fa fa-2x fa-times-circle text-light"></i>' : '' !!}</div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;M</h3></div>
+                                            <div class="col" style="display: flex !important;"><div class="@if($adherent->civilite == 1) dot-orange @else dot-wh @endif v-align-mid mt_10 mb_10"></div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;M</h3></div>
                                         </div>
                                     </div>
                                         <table class="table table-bordered">
@@ -158,18 +152,18 @@
                                                 <td>{{ ucwords((new Carbon\Carbon($adherent->date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                                               </tr>
                                               <tr>
-                                                <th scope="row" rowspan="3" class="v-align-mid">Somme à payer: <span style=" border:1.5px solid #2F5597; padding:5px 10px 5px 10px">10000 FCFA</span></th>
+                                                <th scope="row" rowspan="3" class="v-align-mid">Somme à payer: <span style=" border:1.5px solid #2F5597; padding:5px 10px 5px 10px">10000 Fcfa</span></th>
                                                 <td>
                                                     <div class="row">
                                                         <div class="col-md-7">Droit d'inscription:</div>
-                                                        <div class="col-md-5 d-inline-flex"><div class="{{ !$adherent->isValide() ? 'dot ' : '' }}v-align-mid">{!! $adherent->isValide() ? '<i class="far fa-times-circle mr-2"></i>' : '' !!} </div> 7000 frs CFA</td></div>
+                                                        <div class="col-md-5"><div class="dot v-align-mid"></div> 7000 frs CFA</td></div>
                                                     </div>
                                               </tr>
                                               <tr>
                                                 <td>
                                                     <div class="row">
                                                         <div class="col-md-7">Cotisation annuelle:</div>
-                                                        <div class="col-md-5 d-inline-flex"><div class="{{ !$adherent->isValide() ? 'dot ' : '' }}v-align-mid">{!! $adherent->isValide() ? '<i class="far fa-times-circle mr-2"></i>' : '' !!} </div> 2000 frs CFA</td></div>
+                                                        <div class="col-md-5"><div class="dot v-align-mid"></div> 2000 frs CFA</td></div>
                                                     </div>
                                                 </td>
                                               </tr>
@@ -177,7 +171,7 @@
                                                 <td>
                                                     <div class="row">
                                                         <div class="col-md-7">Traitement et kits d'inscription:</div>
-                                                        <div class="col-md-5 d-inline-flex"><div class="{{ !$adherent->isValide() ? 'dot ' : '' }}v-align-mid">{!! $adherent->isValide() ? '<i class="far fa-times-circle mr-2"></i>' : '' !!} </div> 1000 frs CFA</td></div>
+                                                        <div class="col-md-5"><div class="dot v-align-mid"></div> 1000 frs CFA</td></div>
                                                     </div>
                                                 </td>
                                               </tr>
@@ -201,14 +195,9 @@
                                             
                                             <tbody>
                                             @if ($adherent->role == 2)
-                                            <tr>
-                                                <th scope="row" style="width: 5%">{{ '1' }}</th>
-                                                <td style="width: 65%">{{ $adherent->souscripteur()->nom }} {{ $adherent->souscripteur()->pnom }}</td>
-                                                <td style="width: auto">{{ $adherent->souscripteur()->contact }}</td>
-                                            </tr>
                                             @foreach ($sous->ayants as $ayant)
                                                 <tr>
-                                                    <th scope="row" style="width: 5%">{{ $ayant->priorite+1 }}</th>
+                                                    <th scope="row" style="width: 5%">{{ $ayant->priorite }}</th>
                                                     <td style="width: 65%">{{ $ayant->nom }} {{ $ayant->pnom }}</td>
                                                     <td style="width: auto">{{ $ayant->contact }}</td>
                                                 </tr>
@@ -235,11 +224,11 @@
                                 <div class="row justify-content-center">
                                     <div class="col">
                                         <h3 class="font-cambria mt_15 mb_15 txt-center">SIGNATURE DU SOUSCRIPTEUR</h3> 
-                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">{{ $nom_souscripteur }}</div>                                       
+                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">{{ $adherent->role == 1 ? $adherent->nom_pnom() : $adherent->souscripteur()->nom_pnom() }}</div>                                       
                                     </div>
                                     <div class="col">
                                         <h3 class="font-cambria mt_15 mb_15 txt-center">VISA DU BUREAU EXECUTIF</h3>
-                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">Lawrence Gallaty KOUASSI Bi</div>                                 
+                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">Lawrence Gallaty KOUASSI BI</div>                                 
                                     </div>
                                     
                                 </div>
