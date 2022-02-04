@@ -62,13 +62,13 @@
                             <tbody>
                                 @foreach ($adhesions as $adhesion)
                                 <tr>
-                                    <th scope="row"> <a href="#" class="question_content"> {{ $adhesion->nom }}</a></th>
+                                    <th scope="row"> <a href="{{ route('admin.adhesion.show', ['id' => $adhesion->id]) }}" class="question_content"> {{ $adhesion->nom }}</a></th>
                                     <td>{{ $adhesion->pnom }}</td>
                                     <td>{{ $adhesion->email }}</td>
                                     <td>{{ $adhesion->contact }}</td>
                                     <td>{{ ucwords((new Carbon\Carbon($adhesion->date_naiss))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                         
-                                    <td><a href="#" class="status_btn">Valider</a></td>
+                                    <td><a href="#" class="status_btn">Validé</a></td>
                                     <td>
                                         <div class="header_more_tool">
                                             <div class="dropdown">

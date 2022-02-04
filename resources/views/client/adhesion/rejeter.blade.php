@@ -68,7 +68,7 @@
                                     <td>{{ $adhesion->contact }}</td>
                                     <td>{{ ucwords((new Carbon\Carbon($adhesion->date_naiss))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                         
-                                    <td><a href="#" class="status_btn" style="background-color: red">Rejeter</a></td>
+                                    <td><a href="#" class="status_btn" style="background-color: red">Rejeté</a></td>
                                     <td>
                                         <div class="header_more_tool">
                                             <div class="dropdown">
