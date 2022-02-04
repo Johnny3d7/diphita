@@ -224,11 +224,11 @@
                                 <div class="row justify-content-center">
                                     <div class="col">
                                         <h3 class="font-cambria mt_15 mb_15 txt-center">SIGNATURE DU SOUSCRIPTEUR</h3> 
-                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">{{ $adherent->nom_pnom() }}</div>                                       
+                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">{{-- $adherent->souscripteur()->nom --}}</div>                                       
                                     </div>
                                     <div class="col">
                                         <h3 class="font-cambria mt_15 mb_15 txt-center">VISA DU BUREAU EXECUTIF</h3>
-                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">Lawrence Gallaty Kouassi Bi</div>                                 
+                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">Lawrence Gallaty KOUASSI Bi</div>                                 
                                     </div>
                                     
                                 </div>
