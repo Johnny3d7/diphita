@@ -74,6 +74,9 @@
                                         @if ($adherent->role == 1)
                                             <div class="row">
                                                 <div class="col-md-9">
+                                                    @php
+                                                        $nom_souscripteur = $adherent->nom_pnom();
+                                                    @endphp
                                                     <h3 class="font-cambria mt_10 mb_10">Nom : {{ $adherent->nom }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Prénom(s) : {{ $adherent->pnom }}</h3>
                                                     <h3 class="font-cambria mt_10 mb_10">Numéro CNI : {{ $adherent->num_cni }}</h3>
@@ -232,11 +235,11 @@
                                 <div class="row justify-content-center">
                                     <div class="col">
                                         <h3 class="font-cambria mt_15 mb_15 txt-center">SIGNATURE DU SOUSCRIPTEUR</h3> 
-                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">{{ $adherent->nom_pnom() }}</div>                                       
+                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">{{ $nom_souscripteur }}</div>                                       
                                     </div>
                                     <div class="col">
                                         <h3 class="font-cambria mt_15 mb_15 txt-center">VISA DU BUREAU EXECUTIF</h3>
-                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">Lawrence Gallaty Kouassi Bi</div>                                 
+                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">Lawrence Gallaty KOUASSI Bi</div>                                 
                                     </div>
                                     
                                 </div>
