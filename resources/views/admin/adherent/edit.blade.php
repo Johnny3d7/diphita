@@ -126,6 +126,15 @@
                                             </span>
                                         @enderror
                                     </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="souscript_conseiller">Conseiller Diphita Prévoyance <code class="highlighter-rouge">*</code></label>
+                                        <input type="text" name="souscript_conseiller" value="{{ $souscripteur->conseiller_diph }}" class="form-control @error('souscript_conseiller') is-invalid @enderror" placeholder="Saisir le nom du conseiller Diphita" required>
+                                        @error('souscript_conseiller')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 </div>
                                 
                                 <div class="col-lg-4  offset-lg-5">
