@@ -40,6 +40,7 @@ class Adherents extends Model
         'date_debutcotisation',
         'parent',
         'valide',
+        'conseiller_diph',
         'cas',
         'status',
         'admin_id'

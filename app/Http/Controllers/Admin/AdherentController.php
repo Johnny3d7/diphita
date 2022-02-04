@@ -136,6 +136,7 @@ class AdherentController extends Controller
             "souscript_email" => "required|email|unique:adherents,email",
             "souscript_contact" => "required|unique:adherents,contact",
             "souscript_ncni" => "required|unique:adherents,num_cni",
+            "souscript_conseiller" => "required",
             "benef_civilite.*" => "required",
             "benef_nom.*" => "required",
             "benef_pnom.*" => "required",
@@ -177,6 +178,7 @@ class AdherentController extends Controller
             'lieu_hab' => $request->souscript_lhab,
             'contact' => $request->souscript_contact,
             'contact_format' => $contact_format,
+            'conseiller_diph' => $request->souscript_conseiller,
             'role' => 1,
             'valide' => 0,
             'status' => 0,
@@ -696,7 +698,7 @@ class AdherentController extends Controller
         'filename' => NULL,
         'saveAsModel' => false,
         'destination' => 'NAT',
-        'message' => "Cher souscripteur, votre rajout de bénéficiaire ".$benef->nom_pnom()." s'est effectué avec succès. ID: ".$benef->num_adhesion." Fin de carence: ".ucwords((new Carbon($benef->date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY'))." Début de cotisation: ".ucwords((new Carbon($benef->date_debutcotisation))->locale('fr')->isoFormat('DD/MM/YYYY')),
+        'message' => "Cher souscripteur, votre rajout de bénéficiaire ".$benef->nom_pnom()." s'est effectué avec succès. ID: ".$benef->num_adhesion.". Fin de carence: ".ucwords((new Carbon($benef->date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')).". Début de cotisation: ".ucwords((new Carbon($benef->date_debutcotisation))->locale('fr')->isoFormat('DD/MM/YYYY')).".",
         'emailText' => NULL,
         'recipients' => 
         [

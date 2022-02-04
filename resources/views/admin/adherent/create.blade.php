@@ -129,11 +129,20 @@
                                             </span>
                                         @enderror
                                     </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="souscript_conseiller">Conseiller Diphita Prévoyance <code class="highlighter-rouge">*</code></label>
+                                        <input type="text" name="souscript_conseiller" class="form-control @error('souscript_conseiller') is-invalid @enderror" placeholder="Saisir le nom du conseiller Diphita" required>
+                                        @error('souscript_conseiller')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 </div>
                                 
                                 <div class="col-lg-12 mt_30 mb_15 pr_0 pl_0">
                                     <h4 class="m-0 txt-color1 txt-upper txt-bold">Bénéficiaires</h4>
-                                    <span>Vous pouvez inscrire au plus <code class="highlighter-rouge">5 personnes</code> y compris le souscripteur.</span>
+                                    <span>Vous pouvez inscrire au plus 5 personnes y compris le souscripteur.</span>
                                 </div>
                                 <div class="form-row pr_0 pl_0" id="benef_bloc">
                                     
@@ -221,7 +230,7 @@
                                 </div>
                                 <div class="col-12 mt_30 mb_15 pr_0 pl_0">
                                     <h4 class="m-0 txt-color1 txt-upper txt-bold">Ayants-droit</h4>
-                                    <span>Inscrivez <code class="highlighter-rouge">3 noms et contacts</code> d'ayants-droit.</span>
+                                    <span>Inscrivez 3 noms et contacts d'ayants-droit.</span>
                                 </div>
                                 <div class="form-row pr_0 pl_0" id="ayant_bloc">
                                     <div id="ayant-title-0" class="col-lg-12 mb_15">

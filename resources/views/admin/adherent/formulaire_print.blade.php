@@ -122,7 +122,6 @@
                                             <div class="col d-inline-flex"><div class="@if($adherent->civilite == 3 || $adherent->civilite == "Mlle") '' @else dot-wh @endif v-align-mid mt_10 mb_10">{!! $adherent->civilite == 3 || $adherent->civilite == "Mlle" ? '<i class="fa fa-2x fa-times-circle text-light"></i>' : '' !!}</div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;Mlle</h3></div>
                                             <div class="col d-inline-flex"><div class="@if($adherent->civilite == 1 || $adherent->civilite == "M") '' @else dot-wh @endif v-align-mid mt_10 mb_10">{!! $adherent->civilite == 1 || $adherent->civilite == "M" ? '<i class="fa fa-2x fa-times-circle text-light"></i>' : '' !!}</div><h3 class="txt-color-wh my-auto font-cambria mt_10 mb_10">&nbsp;&nbsp;M</h3></div>
                                         </div>
-                                        
                                     </div>
                                         <table class="table table-bordered">
                                             
@@ -227,17 +226,17 @@
                                 <div class="row justify-content-center">
                                     <h3 class="font-cambria mt_15 mb_15 txt-center">NB : La double inscription d’un même bénéficiaire est formellement interdite ; sa découverte annule la plus récente. Toute fausse déclaration annule l’inscription.</h3>
                                 </div>
-                                <div class="row justify-content-center">
-                                    <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:25px;">Conseiller Diphita Prévoyance……………….………. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fait à Abidjan, le {{ ucwords((new Carbon\Carbon($adherent->date_adhesion))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</div>
+                                <div class="row ">
+                                    <div class="font-cambria mt_15 mb_15"  style="font-size:25px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Conseiller: {{ $adherent->conseiller_diph ? $adherent->conseiller_diph : 'Indisponible' }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fait à Abidjan, le {{ ucwords((new Carbon\Carbon($adherent->date_adhesion))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</div>
                                 </div>
                                 <div class="row justify-content-center">
                                     <div class="col">
                                         <h3 class="font-cambria mt_15 mb_15 txt-center">SIGNATURE DU SOUSCRIPTEUR</h3> 
-                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">Précédée des noms et prénom(s)</div>                                       
+                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">{{ $adherent->nom_pnom() }}</div>                                       
                                     </div>
                                     <div class="col">
                                         <h3 class="font-cambria mt_15 mb_15 txt-center">VISA DU BUREAU EXECUTIF</h3>
-                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">Cachet, nom, prénom(s) et contacts</div>                                 
+                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">Lawrence Gallaty Kouassi Bi</div>                                 
                                     </div>
                                     
                                 </div>
