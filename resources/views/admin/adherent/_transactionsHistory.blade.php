@@ -23,9 +23,9 @@
 
                     <div class="tab-content" style="overflow-x: auto;">
                         <div class="tab-pane fade show active" id="pills-success-transaction" role="tabpanel" aria-labelledby="success-tab">
-                            @if (count($souscripteur->transactions()) > 0)
+                            @if (count($souscripteur->transactions(null, true)) > 0)
                                 <ul class="list-group">
-                                    @foreach($souscripteur->transactions()->sortByDesc('created_at') as $transaction)
+                                    @foreach($souscripteur->transactions()->sortByDesc('id') as $transaction)
                                         <li class="list-group-item">
                                             {{ ucwords((new Carbon\Carbon($transaction->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm'))  }} : {{ $transaction->type ? $transaction->montant() : $transaction->montant }} francs
                                         </li>
@@ -39,7 +39,7 @@
                         <div class="tab-pane fade" id="pills-warning-transaction" role="tabpanel" aria-labelledby="warning-tab">
                             @if (count($souscripteur->versements) > 0)
                                 <ul class="list-group">
-                                    @foreach($souscripteur->versements->sortByDesc('created_at') as $versement)
+                                    @foreach($souscripteur->versements->sortByDesc('id') as $versement)
                                         <li class="list-group-item">
                                             {{ ucwords((new Carbon\Carbon($versement->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm'))  }} : {{ $versement->montant }} francs
                                         </li>
@@ -50,9 +50,9 @@
                             @endif
                         </div>
                         <div class="tab-pane fade" id="pills-errors-transaction" role="tabpanel" aria-labelledby="errors-tab">
-                            @if (count($souscripteur->cotisations()) > 0)
+                            @if (count($souscripteur->cotisations(null, true)) > 0)
                                 <ul class="list-group">
-                                    @foreach($souscripteur->cotisations()->sortByDesc('created_at') as $cotisation)
+                                    @foreach($souscripteur->cotisations(null, true)->sortByDesc('id') as $cotisation)
                                         <li class="list-group-item">
                                             {{ $cotisation->code_deces ?? $cotisation->annee_cotis  }} : {{ $cotisation->montant() }} francs
                                         </li>

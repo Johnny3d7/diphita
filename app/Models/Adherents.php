@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Parameters;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,13 +49,21 @@ class Adherents extends Model
     public static function boot(){
         parent::boot();
 
+        static::creating(function($item) {
+            $dateAD = Carbon::create($item->date_adhesion);
+            // Si $day < 5 alors day = 05 mois en cours sinon 05 mois suivant
+            $item->date_debutcotisation = Carbon::create($dateAD->year, $dateAD->month + ($dateAD->day > 5 ?? 0), 5);
+
+            $item->date_fincarence = $dateAD->addMonths(Parameters::dureeFinCarrence() ?? 4);
+        });
+
         static::created(function($item) {
             // Creating cotisation items for each cotisation  based on $this->date_debutcotisation
-            if($item->isSouscripteur()){
+            if($item->isSouscripteur() && $item->isValide()){
                 // $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($item->date_debutcotisation))->get();
                 // $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->get();
 
-                $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->get();
+                $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($item->date_debutcotisation))->get();
                 if($cotisations){
                     // dd($cotisations);
                     foreach ($cotisations as $cotisation) { // Select all souscripteurs and create items
@@ -63,7 +72,7 @@ class Adherents extends Model
                             'id_adherent' => $item->id,
                             'nbre_benef' => $item->total_benef_life(),
                             'montant' => $cotisation->montant * $item->total_benef_life(),
-                            'reglé' => false,
+                            'reglee' => false,
                             'parcouru' => false,
                         ]);
                     }
@@ -110,6 +119,10 @@ class Adherents extends Model
         return $this->role == 1 ? true : false;
     }
 
+    public function isValide(){
+        return $this->valide;
+    }
+
     public function beneficiaires(){
         return $this->isBeneficiaire() ? null : self::where(['status'=>1,'role'=>2,'parent'=>$this->id])->orderBy('created_at', 'DESC')->get();
     }
@@ -128,15 +141,28 @@ class Adherents extends Model
         return $this->hasOne(Assistance::class, 'id_benef');
     }
 
-    public function transactions(){
+    public function transactions(String $type = null, int $reglee = 10){
         // $reglements = Versement::whereIdAdherent($this->id)->get();
         $transactions = $this->versements;
-        $transactions = $transactions->merge($this->cotisations());
+        $transactions = $transactions->merge($this->cotisations($type, $reglee));
         // dd($transactions);
         return $transactions;
     }
 
-    public function cotisations(String $type = null){
+    public function cotisations(String $type = null, int $reglee = 10){
+        $owns = $this->ownCotisations;
+        $cotisations = new Collection();
+        foreach ($owns as $own) {
+            if((!$type || ($type && $own->cotisation->type == $type)) && ($reglee == 10 || $own->reglee == $reglee)) $cotisations->add($own->cotisation);
+        }
+        return $cotisations;
+    }
+
+    public function ownCotisations(){
+        return $this->hasMany(AdherentHasCotisations::class, 'id_adherent');
+    }
+
+    public function cotisationsBAk(String $type = null){
         // $cotisations = new Collection();
         $cotisations = Cotisation::whereNotNull('type');
         if($type) $cotisations = Cotisation::whereType($type);
@@ -148,7 +174,7 @@ class Adherents extends Model
     }
 
     public function total_benef_life(){
-        return $this->isSouscripteur() ? self::where(['status'=>1,'parent'=>$this->id,'cas'=> 0])->whereNotIn('id',[$this->id])->count() : null;
+        return $this->isSouscripteur() ? self::where(['status'=>1,'parent'=>$this->id,'cas'=> 0])->whereNotIn('id',[$this->id])->count() : 0;
     }
 
     public function add_benef_is_possible(){

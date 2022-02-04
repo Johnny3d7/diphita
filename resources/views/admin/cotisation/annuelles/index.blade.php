@@ -40,6 +40,7 @@
 @section('modals')
     @foreach (App\Models\Cotisation::selectAll('annuelles') as $cotisation)
         @include('admin.cotisation.annuelles._details')
+        @include('admin.cotisation.annuelles._configuration')
     @endforeach
 @endsection
 

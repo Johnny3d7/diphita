@@ -23,7 +23,7 @@
 
                     <div class="tab-content" style="overflow-x: auto;">
                         <div class="tab-pane fade show active" id="pills-success-cotisation" role="tabpanel" aria-labelledby="success-tab">
-                            @if (count($souscripteur->cotisations()) > 0)
+                            @if (count($souscripteur->cotisations(null, false)) > 0)
                                 @include('admin.adherent._payementLine', ['cotisations' => $souscripteur->cotisations()])
                             @else
                                 <h6 class="text-center">Aucune cotisation</h6>
@@ -31,14 +31,14 @@
                             
                         </div>
                         <div class="tab-pane fade" id="pills-warning-cotisation" role="tabpanel" aria-labelledby="warning-tab">
-                            @if (count($souscripteur->cotisations('exceptionnelle')) > 0)
+                            @if (count($souscripteur->cotisations('exceptionnelle', false)) > 0)
                                 @include('admin.adherent._payementLine', ['cotisations' => $souscripteur->cotisations('exceptionnelle')])
                             @else
                                 <h6 class="text-center">Aucune cotisation exceptionnelle</h6>
                             @endif
                         </div>
                         <div class="tab-pane fade" id="pills-errors-cotisation" role="tabpanel" aria-labelledby="errors-tab">
-                            @if (count($souscripteur->cotisations('annuelle')) > 0)
+                            @if (count($souscripteur->cotisations('annuelle', false)) > 0)
                                 @include('admin.adherent._payementLine', ['cotisations' => $souscripteur->cotisations('annuelle')])
                             @else
                                 <h6 class="text-center">Aucune cotisation annuelle</h6>
