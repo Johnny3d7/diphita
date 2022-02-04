@@ -28,6 +28,7 @@ class CreateAdherentsTable extends Migration
             $table->string('lieu_hab')->nullable();
             $table->string('contact')->nullable();
             $table->string('contact_format')->nullable();
+            $table->string('conseiller_diph')->nullable();
             $table->integer('role');
             $table->dateTime('date_adhesion')->nullable();
             $table->dateTime('date_fincarence')->nullable();
