@@ -85,6 +85,7 @@
             </a>
             <ul>
               <li><a href="{{ route('admin.assistance.importation') }}">Importation</a></li>
+              <li><a href="{{ route('admin.assistance.index') }}">Ajout</a></li>
               <li><a href="{{ route('admin.assistance.index') }}">Liste des cas</a></li>
               <li><a href="{{ route('admin.assistance.attente') }}">Cas en attente</a></li>
             </ul>

@@ -20,13 +20,15 @@
                                 @php $ref = 2000; @endphp
                                 <h3 class="text-primary mb-1"><small class="text-secondary">Date de cotisation : </small> {{ ucwords(Carbon\Carbon::create($cotisation->date_cotis)->locale('fr')->isoFormat('DD MMMM YYYY')) }}</h3>
                                 {{-- <h3 class="text-primary mb-1"><small class="text-secondary">Date butoire : </small> {{ ucwords(Carbon\Carbon::create($cotisation->date_butoire)->locale('fr')->isoFormat('DD MMMM YYYY')) }}</h3> --}}
-                                <h3 class="text-primary mb-1"><small class="text-secondary">Montant de cotisation : </small> {{ $ref }} francs CFA</h3>
+                                <h3 class="text-primary mb-1"><small class="text-secondary">Montant de cotisation : </small> {{ $cotisation->montant }} francs CFA</h3>
                             </div>
                         </div>
                         <div class="col-lg-2 p-3">
                             {{-- <button class="btn btn-info btn-block">Publier</button>
                             <button class="btn btn-success btn-block">Autre</button> --}}
-                            <button class="btn btn-secondary btn-block"><i class="fa fa-cogs"></i> Configurer</button>
+                            <button class="btn btn-secondary btn-block"data-toggle="modal" data-target="#configuration{{ $cotisation->annee_cotis }}Modal">
+                                <i class="fa fa-cogs"></i> Configurer
+                            </button>
                         </div>
                     </div>
 

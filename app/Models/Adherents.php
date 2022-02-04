@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Parameters;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -52,12 +53,12 @@ class Adherents extends Model
             // Si $day < 5 alors day = 05 mois en cours sinon 05 mois suivant
             $item->date_debutcotisation = Carbon::create($dateAD->year, $dateAD->month + ($dateAD->day > 5 ?? 0), 5);
 
-            $item->date_fincarence = $dateAD->addMonths(DureeFincarences::latest()->first()->duree ?? 4);
+            $item->date_fincarence = $dateAD->addMonths(Parameters::dureeFinCarrence() ?? 4);
         });
 
         static::created(function($item) {
             // Creating cotisation items for each cotisation  based on $this->date_debutcotisation
-            if($item->isSouscripteur()){
+            if($item->isSouscripteur() && $item->isValide()){
                 // $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($item->date_debutcotisation))->get();
                 // $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->get();
 
@@ -115,6 +116,10 @@ class Adherents extends Model
 
     public function isSouscripteur(){
         return $this->role == 1 ? true : false;
+    }
+
+    public function isValide(){
+        return $this->valide;
     }
 
     public function beneficiaires(){
