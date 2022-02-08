@@ -62,7 +62,7 @@
                             <tbody>
                                 @foreach ($adhesions as $adhesion)
                                 <tr>
-                                    <th scope="row"> <a href="#" class="question_content"> {{ $adhesion->nom }}</a></th>
+                                    <th scope="row"> <a href="{{ route('admin.adhesion.show',['id'=> $adhesion->id]) }}" class="question_content"> {{ $adhesion->nom }}</a></th>
                                     <td>{{ $adhesion->pnom }}</td>
                                     <td>{{ $adhesion->email }}</td>
                                     <td>{{ $adhesion->contact }}</td>

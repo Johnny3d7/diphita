@@ -215,9 +215,16 @@ class Adherents extends Model
         return AdherentHasCotisations::whereIdCotisation($cotisation->id)->whereIdAdherent($this->id)->first();
     }
 
+
+    public function list_benef_in_life(){
+        return self::where(['status'=>1,'cas'=> 0])->get();
+    }
+
+
     public function isReglee(Cotisation $cotisation){
         return $this->psCotisation($cotisation) ? $this->psCotisation($cotisation)->reglee : null;
     }
+
     
 
 }
