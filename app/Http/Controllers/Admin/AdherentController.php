@@ -134,8 +134,8 @@ class AdherentController extends Controller
             "souscript_lhab" => "required",
             "souscript_lnaiss" => "required",
             "souscript_dnaiss" => "required",
-            "souscript_email" => "required|email|unique:adherents,email",
-            "souscript_contact" => "required|unique:adherents,contact",
+            "souscript_email" => "required|email",
+            "souscript_contact" => "required",
             "souscript_ncni" => "required|unique:adherents,num_cni",
             "souscript_conseiller" => "required",
             "benef_civilite.*" => "required",
@@ -481,14 +481,14 @@ class AdherentController extends Controller
         $datas= [
         'step' => NULL,
         'sender' => 'DIPHITA',
-        'name' => 'Inscription valider avec succès',
+        'name' => 'Inscription validée avec succès',
         'campaignType' => 'SIMPLE',
         'recipientSource' => 'CUSTOM',
         'groupId' => NULL,
         'filename' => NULL,
         'saveAsModel' => false,
         'destination' => 'NAT',
-        'message' => 'Félicitations '.$titre.' '.$nom.' '.$pnom.' votre adhésion à notre chaine de solidarité Diphita Prévoyance s\'est effetuée avec succès. Votre numéro ID: '.$num_adhe.'. Fin de carence: '.ucwords((new Carbon($date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')).'. Début de cotisation: '.ucwords((new Carbon($date_debutcotisation))->locale('fr')->isoFormat('DD/MM/YYYY')),
+        'message' => 'Félicitations '.$titre.' '.$nom.' '.$pnom.', votre adhésion à notre chaine de solidarité Diphita Prévoyance s\'est effetuée avec succès. Votre numéro ID: '.$num_adhe.'. Fin de carence: '.ucwords((new Carbon($date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')).'. Début de cotisation: '.ucwords((new Carbon($date_debutcotisation))->locale('fr')->isoFormat('DD/MM/YYYY')).'. La Fondation Diphita vous remercie pour la confiance !',
         'emailText' => NULL,
         'recipients' => 
         [
