@@ -63,24 +63,45 @@ class Adherents extends Model
                 // $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($item->date_debutcotisation))->get();
                 // $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->get();
 
-                $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($item->date_debutcotisation))->get();
-                if($cotisations){
-                    // dd($cotisations);
-                    foreach ($cotisations as $cotisation) { // Select all souscripteurs and create items
-                        if(!AdherentHasCotisations::whereIdCotisation($cotisation->id)->whereIdAdherent($item->id)->first()){
-                            AdherentHasCotisations::create([
-                                'id_cotisation' => $cotisation->id,
-                                'id_adherent' => $item->id,
-                                'nbre_benef' => $item->total_benef_life(),
-                                'montant' => $cotisation->montant * $item->total_benef_life(),
-                                'reglee' => false,
-                                'parcouru' => false,
-                            ]);
-                        }
-                    }
-                }
+                // $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($item->date_debutcotisation))->get();
+                // if($cotisations){
+                //     // dd($cotisations);
+                //     foreach ($cotisations as $cotisation) { // Select all souscripteurs and create items
+                //         if(!AdherentHasCotisations::whereIdCotisation($cotisation->id)->whereIdAdherent($item->id)->first()){
+                //             AdherentHasCotisations::create([
+                //                 'id_cotisation' => $cotisation->id,
+                //                 'id_adherent' => $item->id,
+                //                 'nbre_benef' => $item->total_benef_life(),
+                //                 'montant' => $cotisation->montant * $item->total_benef_life(),
+                //                 'reglee' => false,
+                //                 'parcouru' => false,
+                //             ]);
+                //         }
+                //     }
+                // }
+
+                $item->firstCotisations();
             }
         });
+    }
+
+    public function firstCotisations(){
+        $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($this->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($this->date_debutcotisation))->get();
+        if($cotisations){
+            // dd($cotisations);
+            foreach ($cotisations as $cotisation) { // Select all souscripteurs and create thiss
+                if(!AdherentHasCotisations::whereIdCotisation($cotisation->id)->whereIdAdherent($this->id)->first()){
+                    AdherentHasCotisations::create([
+                        'id_cotisation' => $cotisation->id,
+                        'id_adherent' => $this->id,
+                        'nbre_benef' => $this->total_benef_life() + 1,
+                        'montant' => $cotisation->montant * ($this->total_benef_life() + 1),
+                        'reglee' => false,
+                        'parcouru' => false,
+                    ]);
+                }
+            }
+        }
     }
 
     public static function selectAll(Bool $souscripteur = false){
