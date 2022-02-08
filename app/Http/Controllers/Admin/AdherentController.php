@@ -424,6 +424,7 @@ class AdherentController extends Controller
         }
 
         //Insérer cotisation
+        $adhesion->firstCotisations();
 
         // Envoyer un sms au concerné
 
