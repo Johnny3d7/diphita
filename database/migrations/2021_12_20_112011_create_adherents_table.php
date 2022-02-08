@@ -21,7 +21,7 @@ class CreateAdherentsTable extends Migration
             $table->string('nom');
             $table->string('pnom');
             $table->string('civilite');
-            $table->string('email')->unique()->nullable();
+            $table->string('email')->nullable();
             $table->dateTime('date_naiss')->nullable();
             $table->string('num_cni')->unique()->nullable();
             $table->string('lieu_naiss')->nullable();

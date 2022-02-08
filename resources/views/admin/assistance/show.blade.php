@@ -219,7 +219,7 @@
                             <div class="row">
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Valide:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->valide == 1 ? 'Oui': 'Non'}}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Validité:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->valide == 1 ? 'Oui': 'Non'}}</div></div>
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Moyen d'assistance:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">
