@@ -17,7 +17,25 @@ class RouteStack
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->method() == "GET"){
+        $to_ignore = [
+            'admin.adhesion.valider',
+            'admin.adhesion.rejeter',
+            'admin.beneficiaire.remove',
+            'admin.ayantdroit.remove',
+            'admin.adherent.bloquer',
+            'admin.adherent.debloquer',
+            'admin.depense.destroy',
+            'admin.assistance.valider',
+            'admin.assistance.rejeter',
+            'admin.assistance.assister',
+            'admin.assistance.destroy',
+            'admin.assistance.publier',
+            'admin.assistance.publier',
+            'admin.demande.valider',
+            'admin.demande.refuser',
+        ];
+
+        if($request->method() == "GET" && !in_array(Route::currentRouteName(), $to_ignore)){
             $array = session('routeStack');
             // dd(Route::getCurrentRoute()->uri(), Route::currentRouteName(), Route::getCurrentRoute()->parameters(), Route::getCurrentRoute(), $array);
             if(Route::currentRouteName() == 'admin.index'){

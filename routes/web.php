@@ -212,7 +212,7 @@ Route::get('back', function () {
         $route = array_pop($array);
         session(['routeStack' => $array]);
     }
-    dd($array, $tab, $route);
+    // dd($array, $tab, $route);
     return redirect()->route(is_array($route) ? $route['name'] : 'admin.index', is_array($route) ? $route['params'] : null);
 })->name('backStack');
 
