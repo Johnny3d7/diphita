@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Imports\AssistancesImport;
 use App\Models\Adherents;
 use App\Models\Assistance;
+use App\Models\Cotisation;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -304,8 +305,24 @@ class AssistanceController extends Controller
         return view('admin.assistance.en_attente',compact('assistances'));
     }
 
+
     public function assistance_without_sousid_create(){
 
         return view('admin.assistance.assistance_without_sousid');
     }
+
+    public function publier($id)
+    {
+        $assistance = Assistance::find($id);
+
+        $cotisation = Cotisation::whereType('exceptionnelle')->whereParcouru(false)->first();
+        if($cotisation) {
+            $assistance->code_deces = $cotisation->code_deces;
+            $assistance->save();
+        }
+        
+        return redirect()->back()->with('message', 'Cas assisté avec succés. Le montant actuel de la caisse est de .')->with('type', 'bg-success');
+    }
+
+
 }

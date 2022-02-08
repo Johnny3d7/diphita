@@ -141,10 +141,20 @@
                             @endif
                             
                             <div class="widget-subheading">État</div>
+                            
+                            <div class="widget-numbers"><span style="font-size: 1.5rem !important;">{{ $assistance->code_deces ?? "Non défini" }}</span></div>
+                            
+                            <div class="widget-subheading">Code Décès</div>
                     </div>
                     @if ($assistance->assiste == 0)
                     <a href="{{ route('admin.assistance.assister',['id' => $assistance->id]) }}">
                         <button class="btn_1 w-100 mb-2 btn-lg email-gradient gradient-9-hover email__btn waves-effect"><i class="ti-money"></i> Assister le cas</button>
+                    </a>
+                    @endif
+                    
+                    @if (!$assistance->code_deces)
+                    <a href="{{ route('admin.assistance.publier',['id' => $assistance->id]) }}" class="btn_3 w-100 mb-2 btn-lg email-gradient gradient-9-hover email__btn waves-effect">
+                        <i class="ti-money"></i> Attribuer Code Décès
                     </a>
                     @endif
                     

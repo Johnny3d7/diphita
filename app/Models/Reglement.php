@@ -23,6 +23,21 @@ class Reglement extends Model
         'parcouru',
         'id_admin'
     ];
+
+    public static function boot(){
+        parent::boot();
+
+        static::created(function($item) {
+            $cotisation = Cotisation::find($item->id_cotisation);
+            $adherent = Adherents::find($item->id_adherent);
+            $adherentHasCotisation = $adherent ? $adherent->psCotisation($cotisation) : null;
+            if($cotisation && $adherent && ($cotisation->reglements($adherent)->sum('montant') >= $adherentHasCotisation->montant())){
+                $adherentHasCotisation->update(['reglee' => true]);
+            } else {
+                $adherentHasCotisation->update(['reglee' => false]);
+            }
+        });
+    }
     
     public function adherent()
     {

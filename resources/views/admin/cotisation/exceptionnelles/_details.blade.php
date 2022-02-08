@@ -17,12 +17,11 @@
                         </div>
                         <div class="col-lg-7 p-3">
                             <div class="d-block mx-auto">
-                                @php $ref = rand(1,10)*500; $casNbre = $nbreCas[$cotisation->code_deces]; $base = $casNbre*$ref @endphp
                                 <h3 class="text-primary mb-1"><small class="text-secondary">Date d'annonce : </small> {{ ucwords(Carbon\Carbon::create($cotisation->date_annonce)->locale('fr')->isoFormat('DD MMMM YYYY')) }}</h3>
                                 <h3 class="text-primary mb-1"><small class="text-secondary">Date butoire : </small> {{ ucwords(Carbon\Carbon::create($cotisation->date_butoire)->locale('fr')->isoFormat('DD MMMM YYYY')) }}</h3>
-                                <h3 class="text-primary mb-1"><small class="text-secondary">Montant par cas: </small> {{ $ref }} francs CFA</h3>
-                                <h3 class="text-primary mb-1"><small class="text-secondary">Nombre de Cas : </small> {{ $casNbre }}</h3>
-                                <h3 class="text-primary mb-1"><small class="text-secondary">Montant par bénéficiaire : </small> {{ $base }} francs CFA</h3>
+                                <h3 class="text-primary mb-1"><small class="text-secondary">Montant par cas: </small> {{ $cotisation->montant }} francs CFA</h3>
+                                <h3 class="text-primary mb-1"><small class="text-secondary">Nombre de Cas : </small> {{ $cotisation->cas()->count() }}</h3>
+                                <h3 class="text-primary mb-1"><small class="text-secondary">Montant par bénéficiaire : </small> {{ $cotisation->montant * $cotisation->cas()->count() }} francs CFA</h3>
                             </div>
                         </div>
                         <div class="col-lg-2 p-3">

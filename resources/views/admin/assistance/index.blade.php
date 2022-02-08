@@ -54,7 +54,7 @@
                                     <th scope="col">Date de dècès</th>
                                     <th scope="col">Lieu de décès</th>
                                     <th scope="col">Souscripteur</th>
-                                    <th scope="col">Contact</th>
+                                    <th scope="col">Code Décès</th>
                                     <th scope="col">statut</th>
                                     <th scope="col">Actions</th>
                                 </tr>
@@ -66,7 +66,7 @@
                                     <td>{{ ucwords((new Carbon\Carbon($assistance->date_deces))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                                     <td>{{ $assistance->lieu_deces }}</td>
                                     <td>   <a href="{{ route('admin.adhesion.show',['id'=>$assistance->adherent->id]) }}">{{ $assistance->adherent->nom_pnom() }}</a></td>
-                                    <td>{{ $assistance->adherent->contact }}</td>
+                                    <td>{{ $assistance->code_deces ?? "Non défini" }}</td>
                         
                                     <td><a href="#" class="status_btn" style="{{ $assistance->assiste == 0 ? 'background-color:orangered' : '' }}" >{{ $assistance->assiste == 0 ? 'Non assisté' : 'Assisté' }}</a></td>
                                     <td>
@@ -77,6 +77,11 @@
                                                 </span>
                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                                     <a class="dropdown-item" href="{{ route('admin.assistance.show', ['id' => $assistance->id]) }}"> <i class="ti-eye"></i> Voir</a>
+                                                    @if (!$assistance->code_deces)
+                                                    <a class="dropdown-item" href="{{ route('admin.assistance.publier',['id' => $assistance->id]) }}">
+                                                        <i class="ti-money"></i> Attribuer Code Décès
+                                                    </a>
+                                                    @endif
                                                     {{-- <a class="dropdown-item" href="{{ route('admin.adhesion.valider', ['id' => $souscripteur->id]) }}"> <i class="fas fa-edit"></i> Valider</a>
                                                     
                                                   <a class="dropdown-item" href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"> <i class="ti-trash"></i> Rejeter</a> --}}

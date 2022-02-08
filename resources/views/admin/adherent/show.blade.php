@@ -1,3 +1,8 @@
+@php
+// dd($souscripteur->cotisations('exceptionnelle', true));
+// dd($souscripteur->transactions());
+@endphp
+
 @extends('admin.main')
 
 @section('css')
