@@ -19,4 +19,11 @@ class AdherentHasCotisations extends Model
         return $this->belongsTo(Cotisation::class, 'id_cotisation');
     }
 
+    public function montant(){
+        return $this->cotisation->parcouru ? $this->montant : ($this->cotisation->montant * 
+                                                            ($this->cotisation->type == "exceptionnelle" ? $this->cotisation->cas()->count() : 1) * 
+                                                            ($this->souscripteur->total_benef_life() + 1));
+    }
+    
+
 }

@@ -24,13 +24,26 @@
                             <img src="{{ asset($cotisation->image) }}" alt="" class="d-block mx-auto my-3 w-100">
                             <div class="p-2">
                                 <h6 class="text-info text-center">Date de cotisation : {{ ucwords(Carbon\Carbon::create($cotisation->date_cotis)->locale('fr')->isoFormat('DD MMM YYYY')) }}</h6>
-                                <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->annee_cotis }}Modal">Détails</button>
+                                @if($cotisation->parcouru)
+                                    <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->annee_cotis }}Modal">Détails</button>
+                                @else
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->annee_cotis }}Modal">Détails</button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button class="btn_6 btn-block">Publier</button>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
             @empty
+            <div class="container">
                 <h5 class="text-center">Aucune cotisation !</h5>
+            </div>
             @endforelse     
         </div>
     </div>
@@ -41,6 +54,9 @@
     @foreach (App\Models\Cotisation::selectAll('annuelles') as $cotisation)
         @include('admin.cotisation.annuelles._details')
         @include('admin.cotisation.annuelles._configuration')
+        @foreach ($cotisation->souscripteurs() as $souscripteur)
+            @include('admin.cotisation._reglementModal')
+        @endforeach
     @endforeach
 @endsection
 

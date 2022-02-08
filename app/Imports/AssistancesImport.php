@@ -78,6 +78,8 @@ class AssistancesImport implements ToCollection, WithHeadingRow
                                 $request2->merge([
                                     "id_benef" => $beneficiaire->id,
                                     "id_souscripteur" => $beneficiaire->isBeneficiaire() ? $beneficiaire->souscripteur()->id : $beneficiaire->id,
+                                    "valide" => 1,
+                                    "assiste" => $request2->date_assistance ? 1 : 0,
                                 ]);
                                 $cas = Assistance::create($request2->all());
                                 array_push($results["data"], $cas);

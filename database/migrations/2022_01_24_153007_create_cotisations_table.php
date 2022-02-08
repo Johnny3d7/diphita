@@ -24,7 +24,7 @@ class CreateCotisationsTable extends Migration
             $table->dateTime('date_cotis')->nullable();
             $table->integer('annee_cotis')->nullable();
             $table->integer('montant')->default(0);
-
+            $table->boolean('parcouru')->default(false);
 
             $table->timestamps();
         });

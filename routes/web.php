@@ -76,6 +76,9 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         //Adhérents routes
         Route::get('/adherents', 'AdherentController@index')->name('adherent.index');
         Route::get('/beneficiaires', 'AdherentController@beneficiaires')->name('beneficiaires.index');
+
+        // Reglement de cotisation adherent
+        Route::post('/adherents/cotisation/paiement', 'AdherentController@paiementCotisation')->name('adherent.cotisation.paiement');
     
         //Modifier infos souscripteur
         Route::get('/souscripteur/edit/{id}', 'AdherentController@edit')->name('souscripteur.edit');
@@ -138,6 +141,7 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         Route::get('/assistance/{id}/rejeter', 'AssistanceController@rejeter')->name('assistance.rejeter');
         Route::get('/assistance/{id}/assister', 'AssistanceController@assister')->name('assistance.assister');
         Route::get('/assistance/{id}/destroy', 'AssistanceController@destroy')->name('assistance.destroy');
+        Route::get('/assistance/{id}/publier', 'AssistanceController@publier')->name('assistance.publier');
   
         
     
@@ -191,9 +195,12 @@ Route::post('/demande/store', 'App\Http\Controllers\Admin\DemandeController@stor
 
 Route::get('back', function () {
     $array = $tab = session('routeStack');
-    $route = array_pop($array);
-    $route = array_pop($array);
-    session(['routeStack' => $array]);
+    $route = '';
+    if(is_array($array)){
+        $route = array_pop($array);
+        $route = array_pop($array);
+        session(['routeStack' => $array]);
+    }
     return redirect()->route(is_array($route) ? $route['name'] : 'admin.index', is_array($route) ? $route['params'] : null);
 })->name('backStack');
 

@@ -15,15 +15,16 @@
                         <div class="col-lg-3 p-3">
                             <img src="{{ asset($cotisation->image) }}" alt="" class="d-block mx-auto w-100 rounded">
                         </div>
-                        <div class="col-lg-7 p-3">
+                        <div class="col-lg-6 p-3">
                             <div class="d-block mx-auto">
                                 @php $ref = 2000; @endphp
-                                <h3 class="text-primary mb-1"><small class="text-secondary">Date de cotisation : </small> {{ ucwords(Carbon\Carbon::create($cotisation->date_cotis)->locale('fr')->isoFormat('DD MMMM YYYY')) }}</h3>
-                                {{-- <h3 class="text-primary mb-1"><small class="text-secondary">Date butoire : </small> {{ ucwords(Carbon\Carbon::create($cotisation->date_butoire)->locale('fr')->isoFormat('DD MMMM YYYY')) }}</h3> --}}
-                                <h3 class="text-primary mb-1"><small class="text-secondary">Montant de cotisation : </small> {{ $cotisation->montant }} francs CFA</h3>
+                                <h3 class="text-primary mb-1"><small class="text-secondary">Date de cotisation : </small> <span class="float-right">{{ ucwords(Carbon\Carbon::create($cotisation->date_cotis)->locale('fr')->isoFormat('DD MMMM YYYY')) }}</span></h3>
+                                <h3 class="text-primary mb-1"><small class="text-secondary">Date d'annonce : </small> <span class="float-right">{{ ucwords(Carbon\Carbon::create($cotisation->date_annonce)->locale('fr')->isoFormat('DD MMMM YYYY')) }}</span></h3>
+                                <h3 class="text-primary mb-1"><small class="text-secondary">Date butoire : </small> <span class="float-right">{{ ucwords(Carbon\Carbon::create($cotisation->date_butoire)->locale('fr')->isoFormat('DD MMMM YYYY')) }}</span></h3>
+                                <h3 class="text-primary mb-1"><small class="text-secondary">Montant par bénéficiaire : </small> <span class="float-right">{{ $cotisation->montant }} francs CFA</span></h3>
                             </div>
                         </div>
-                        <div class="col-lg-2 p-3">
+                        <div class="col-lg-2 offset-lg-1 p-3">
                             {{-- <button class="btn btn-info btn-block">Publier</button>
                             <button class="btn btn-success btn-block">Autre</button> --}}
                             <button class="btn btn-secondary btn-block"data-toggle="modal" data-target="#configuration{{ $cotisation->annee_cotis }}Modal">

@@ -30,7 +30,7 @@ class CreateAssistancesTable extends Migration
             $table->string('status')->default(1);
             $table->string('valide')->default(0);
             $table->string('assiste')->default(0);
-            $table->string('code_deces');
+            $table->string('code_deces')->nullable();
             $table->timestamps();
             
             //Foreign_key
