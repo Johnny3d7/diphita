@@ -97,7 +97,7 @@
                                                 <h3 class="font-cambria mt_10 mb_10">Nom : {{ $sous->nom }}</h3>
                                                 <h3 class="font-cambria mt_10 mb_10">Prénom(s) : {{ $sous->pnom }}</h3>
                                                 <h3 class="font-cambria mt_10 mb_10">Numéro CNI : {{ $sous->num_cni }}</h3>
-                                                <h3 class="font-cambria mt_10 mb_10">Tél. : {{ $sous->contact }} E-mail : {{ $sous->email }}</h3>
+                                                <h3 class="font-cambria mt_10 mb_10">Tél. : {{ $sous->contact }} / E-mail : {{ $sous->email }}</h3>
                                                 <h3 class="font-cambria mt_10 mb_10">Résidence : {{ $sous->lieu_hab }}</h3>
                                             </div>
                                             <div class="col-md-3">
@@ -227,7 +227,7 @@
                                     <h3 class="font-cambria mt_15 mb_15 txt-center">NB : La double inscription d’un même bénéficiaire est formellement interdite ; sa découverte annule la plus récente. Toute fausse déclaration annule l’inscription.</h3>
                                 </div>
                                 <div class="row ">
-                                    <div class="font-cambria mt_15 mb_15"  style="font-size:25px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Conseiller: {{ $adherent->conseiller_diph ? $adherent->conseiller_diph : 'Indisponible' }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fait à Abidjan, le {{ ucwords((new Carbon\Carbon($adherent->date_adhesion))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</div>
+                                    {{-- <div class="font-cambria mt_15 mb_15"  style="font-size:25px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Conseiller: {{ $adherent->conseiller_diph ? $adherent->conseiller_diph : 'Indisponible' }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fait à Abidjan, le {{ ucwords((new Carbon\Carbon($adherent->date_adhesion))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</div>--}}
                                     <div class="font-cambria mt_15 mb_15"  style="font-size:25px; float:">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Conseiller: {{ $adherent->conseiller_diph ? $adherent->conseiller_diph : 'Indisponible' }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fait à Abidjan, le {{ ucwords((new Carbon\Carbon($adherent->date_adhesion))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</div>
                                 </div>
                                 <div class="row justify-content-center">
