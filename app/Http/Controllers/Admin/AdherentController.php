@@ -13,6 +13,7 @@ use App\Models\Cotisation;
 use App\Models\CotisationAnnuelle;
 use App\Models\DroitInscription;
 use App\Models\DureeFincarences;
+use App\Models\Reglement;
 use App\Models\TraitementKit;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -988,7 +989,23 @@ class AdherentController extends Controller
         return redirect()->back()->with('message', 'Vous avez supprimé un bénéficiaire')->with('type', 'bg-success');
     }
 
-    
+    public function paiementCotisation(Request $request){
+        $request->validate([
+            'montant' => 'required|numeric',
+            'id_adherent' => 'required|exists:adherents,id',
+            'id_cotisation' => 'required|exists:cotisations,id',
+        ]);
+        $cotis = AdherentHasCotisations::whereIdAdherent($request->id_adherent)->whereIdCotisation($request->id_cotisation)->first();
+        if($cotis && !$cotis->reglee){
+            Reglement::create([
+                'id_adherent' => $request->id_adherent,
+                'id_cotisation' => $request->id_cotisation,
+                'montant' => $request->montant,
+            ]);
+        }
+
+        return back();
+    }
 
    
 

@@ -34,13 +34,11 @@
             @endforeach
         </ul>
         <div class="tab-content" id="pills-tabContent">
-            @php $nbreCas = [] @endphp
             @forelse ($cotisations as $key => $cots)
                 @php $year = $cots['year']; $cotis = $cots['cotisations'];@endphp
                 <div class="tab-pane fade {{ $year == date_format(date_create(), 'Y') ? 'show active' : '' }}" id="pills-{{ $year }}" role="tabpanel" aria-labelledby="pills-{{ $year }}-tab">
                     <div class="row">
                         @foreach ($cotis as $cotisation)
-                            @php $nbreCas[$cotisation->code_deces] = rand(0, 20) @endphp
                             <div class="col-lg-3 col-md-4 col-sm-6">
                                 <div class="white_card position-relative mb_20 ">
                                     <div class="card-body p-0">
@@ -54,10 +52,21 @@
                                                     <a class="f_w_400 color_text_3 f_s_14 d-block">Code Décès</a>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <h4 class="text-dark mt-0">{{ $nbreCas[$cotisation->code_deces] }} <small class="text-muted font-14">Cas</small></h4>
+                                                    <h4 class="text-dark mt-0">{{ $cotisation->cas()->count() }} <small class="text-muted font-14">Cas</small></h4>
                                                 </div>
                                             </div>
-                                            <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->code_deces }}Modal">Détails</button>
+                                            @if($cotisation->parcouru)
+                                                <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->code_deces }}Modal">Détails</button>
+                                            @else
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->code_deces }}Modal">Détails</button>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <button class="btn_6 btn-block">Publier</button>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -108,6 +117,9 @@
 @section('modals')
     @foreach (App\Models\Cotisation::selectAll('false') as $cotisation)
         @include('admin.cotisation.exceptionnelles._details')
+        @foreach ($cotisation->souscripteurs() as $souscripteur)
+            @include('admin.cotisation._reglementModal')
+        @endforeach
     @endforeach
 @endsection
 

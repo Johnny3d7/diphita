@@ -44,14 +44,17 @@ class Assistance extends Model
 	    });
 
 	    static::creating(function($item) {
-	        // Log::info('Item Creating Event:'.$item);
-            $date_assistance = $item->date_assistance;
+        /**
+         * Affectation automatique d'un code decès à l'assistance
+         *  */
+        
+            // $date_assistance = $item->date_assistance;
             
-            $date_assistance = $date_assistance->isoFormat('D') < 26 ? $date_assistance->addMonths(2) : $date_assistance->addMonths(3);
-            $date_assistance = Carbon::create($date_assistance->isoFormat('YYYY'), $date_assistance->isoFormat('MM'), 05, 0, 0, 0);
+            // $date_assistance = $date_assistance->isoFormat('D') < 26 ? $date_assistance->addMonths(2) : $date_assistance->addMonths(3);
+            // $date_assistance = Carbon::create($date_assistance->isoFormat('YYYY'), $date_assistance->isoFormat('MM'), 05, 0, 0, 0);
             
-            $existCotisation = Cotisation::whereDateButoire($date_assistance)->first() ?? Cotisation::create(['date_butoire' => $date_assistance]);
-            $item->code_deces = $existCotisation->code_deces;
+            // $existCotisation = Cotisation::whereDateButoire($date_assistance)->first() ?? Cotisation::create(['date_butoire' => $date_assistance]);
+            // $item->code_deces = $existCotisation->code_deces;
 	    });
 
 	}

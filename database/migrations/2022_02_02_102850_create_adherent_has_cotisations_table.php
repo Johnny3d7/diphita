@@ -18,6 +18,7 @@ class CreateAdherentHasCotisationsTable extends Migration
             $table->integer('nbre_benef')->default(1);
             $table->integer('montant')->default(0);
             $table->boolean('reglee')->default(false);
+            $table->dateTime('date_paiement')->nullable();
             $table->boolean('parcouru')->default(false);
 
             $table->integer('id_adherent')->unsigned();

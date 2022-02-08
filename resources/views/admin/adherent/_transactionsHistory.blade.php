@@ -23,7 +23,7 @@
 
                     <div class="tab-content" style="overflow-x: auto;">
                         <div class="tab-pane fade show active" id="pills-success-transaction" role="tabpanel" aria-labelledby="success-tab">
-                            @if (count($souscripteur->transactions(null, true)) > 0)
+                            @if (count($souscripteur->transactions()) > 0)
                                 <ul class="list-group">
                                     @foreach($souscripteur->transactions()->sortByDesc('id') as $transaction)
                                         <li class="list-group-item">
@@ -50,11 +50,11 @@
                             @endif
                         </div>
                         <div class="tab-pane fade" id="pills-errors-transaction" role="tabpanel" aria-labelledby="errors-tab">
-                            @if (count($souscripteur->cotisations(null, true)) > 0)
+                            @if (count($souscripteur->reglements) > 0)
                                 <ul class="list-group">
-                                    @foreach($souscripteur->cotisations(null, true)->sortByDesc('id') as $cotisation)
+                                    @foreach($souscripteur->reglements->sortByDesc('id') as $cotisation)
                                         <li class="list-group-item">
-                                            {{ $cotisation->code_deces ?? $cotisation->annee_cotis  }} : {{ $cotisation->montant() }} francs
+                                            {{ $cotisation->code_deces ?? $cotisation->annee_cotis  }} : {{ $cotisation->montant }} francs
                                         </li>
                                     @endforeach 
                                 </ul>

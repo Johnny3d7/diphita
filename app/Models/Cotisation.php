@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Parameters;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,6 +29,12 @@ class Cotisation extends Model
                 $item->date_butoire->addMonths(2);
                 $item->type = 'exceptionnelle';
             }
+
+            $item->montant = $item->type == "exceptionnelle" ? Parameters::cotisationAnnuelle() : Parameters::cotisationAnnuelle();
+
+            // if this month or this year => parcouru : false
+            if($item->type != "exceptionnelle" && $item->annee_cotis < Carbon::now()->year) $item->parcouru = true;
+            if($item->type == "exceptionnelle" && Carbon::create($item->date_annonce) < Carbon::create(Carbon::now()->year, Carbon::now()->month, 5)) $item->parcouru = true;
         });
 
         static::created(function($item) {
@@ -38,17 +45,20 @@ class Cotisation extends Model
             // $adherents = $item->type == "exceptionnelle" ? [Adherents::selectAll()[0]] : [Adherents::selectAll(true)[0]];
             // $adherents = $item->type == "exceptionnelle" ? Adherents::whereDate('date_adhesion', '<=', $item->date_annonce)->get() : [];
             
+
             $adherents = $item->type == "exceptionnelle" ? Adherents::whereDate('date_debutcotisation', '<=', $item->date_annonce)->get() : Adherents::whereYear('date_adhesion', '<=', $item->annee_cotis)->get();
 
             foreach ($adherents as $adherent) { // Select all souscripteurs and create items
-                AdherentHasCotisations::create([
-                    'id_cotisation' => $item->id,
-                    'id_adherent' => $adherent->id,
-                    'nbre_benef' => $adherent->total_benef_life(),
-                    'montant' => $item->montant() * $adherent->total_benef_life(),
-                    'reglee' => false,
-                    'parcouru' => false,
-                ]);
+                if(!AdherentHasCotisations::whereIdCotisation($item->id)->whereIdAdherent($adherent->id)->first()){
+                    AdherentHasCotisations::create([
+                        'id_cotisation' => $item->id,
+                        'id_adherent' => $adherent->id,
+                        'nbre_benef' => $adherent->total_benef_life(),
+                        'montant' => $item->montant() * $adherent->total_benef_life(),
+                        'reglee' => false,
+                        'parcouru' => false,
+                    ]);
+                }
             }
         });
     }
@@ -75,6 +85,29 @@ class Cotisation extends Model
 
     public function montant(){
         return $this->type == "annuelle" ? 2500 : 800;
+    }
+
+    public function cas (){
+        return $this->type == "exceptionnelle" ? Assistance::whereCodeDeces($this->code_deces)->get() : null;
+    }
+
+    public function souscripteurs(String $filter=null) {
+        $souscripteurs = new Collection();
+        $cotisations = AdherentHasCotisations::whereIdCotisation($this->id);
+        if($filter){
+            $cotisations = $filter=="Regle" ? $cotisations->whereReglee(true) : $cotisations->whereReglee(false);
+        }
+        foreach ($cotisations->get() as $cotisation) {
+            $souscripteurs->add($cotisation->souscripteur);
+        }
+
+        return $souscripteurs;
+    }
+
+    public function reglements(Adherents $adherent=null){
+        $reglements = $this->hasMany(AdherentHasCotisations::class, 'id_cotisation');
+        if($adherent) $reglements = $adherent->reglements($this);
+        return $reglements;
     }
 
 

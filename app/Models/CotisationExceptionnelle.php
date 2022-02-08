@@ -19,4 +19,13 @@ class CotisationExceptionnelle extends Model
         'montant',
         'status',
     ];
+
+    public static function boot(){
+        parent::boot();
+
+        static::created(function($item) {
+            $cotisation = Cotisation::whereType('exceptionnelle')->whereParcouru(false)->latest()->first();
+            if($cotisation) $cotisation->update(['montant' => $item->montant]);
+        });
+    }
 }

@@ -67,14 +67,16 @@ class Adherents extends Model
                 if($cotisations){
                     // dd($cotisations);
                     foreach ($cotisations as $cotisation) { // Select all souscripteurs and create items
-                        AdherentHasCotisations::create([
-                            'id_cotisation' => $cotisation->id,
-                            'id_adherent' => $item->id,
-                            'nbre_benef' => $item->total_benef_life(),
-                            'montant' => $cotisation->montant * $item->total_benef_life(),
-                            'reglee' => false,
-                            'parcouru' => false,
-                        ]);
+                        if(!AdherentHasCotisations::whereIdCotisation($cotisation->id)->whereIdAdherent($item->id)->first()){
+                            AdherentHasCotisations::create([
+                                'id_cotisation' => $cotisation->id,
+                                'id_adherent' => $item->id,
+                                'nbre_benef' => $item->total_benef_life(),
+                                'montant' => $cotisation->montant * $item->total_benef_life(),
+                                'reglee' => false,
+                                'parcouru' => false,
+                            ]);
+                        }
                     }
                 }
             }
@@ -130,6 +132,12 @@ class Adherents extends Model
     public function versements(){
         return $this->hasMany(Versement::class, 'id_adherent');
     }
+    
+    public function reglements(Cotisation $cotisation=null){
+        $reglements = $this->hasMany(Reglement::class, 'id_adherent');
+        if($cotisation) $reglements = $reglements->whereIdCotisation($cotisation->id)->get();
+        return $reglements;
+    }
 
     public function souscripteur(){
         // dd($this->hasOne(Adherents::class, 'parent'));
@@ -141,10 +149,11 @@ class Adherents extends Model
         return $this->hasOne(Assistance::class, 'id_benef');
     }
 
-    public function transactions(String $type = null, int $reglee = 10){
+    public function transactions(){
         // $reglements = Versement::whereIdAdherent($this->id)->get();
         $transactions = $this->versements;
-        $transactions = $transactions->merge($this->cotisations($type, $reglee));
+        // $transactions = $transactions->merge($this->cotisations($type, $reglee));
+        $transactions = $transactions->merge($this->reglements);
         // dd($transactions);
         return $transactions;
     }
@@ -201,10 +210,14 @@ class Adherents extends Model
         return Assistance::where(['id_benef'=>$this->id,'valide'=>0])->exists()? false : true;
     }
 
-    // public function cas_(){
-    //     return Assistance::where(['id_benef'=>$this->id,'valide'=>0])->exists()? false : true;
-    // }
+    public function psCotisation(Cotisation $cotisation){
+        if($this->isBeneficiaire()) return null;
+        return AdherentHasCotisations::whereIdCotisation($cotisation->id)->whereIdAdherent($this->id)->first();
+    }
 
+    public function isReglee(Cotisation $cotisation){
+        return $this->psCotisation($cotisation) ? $this->psCotisation($cotisation)->reglee : null;
+    }
     
 
 }
