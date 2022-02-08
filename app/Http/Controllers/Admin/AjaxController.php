@@ -14,4 +14,19 @@ class AjaxController extends Controller
         //
         echo json_encode(Adherents::where(['num_adhesion' => $num_adhesion])->first());
     }
+
+    public function getBenefNumAdhe($num_adhesion){
+        echo json_encode(Adherents::where(['num_adhesion' => $num_adhesion])->first());
+    }
+
+    public function getSousBenef($num_adhesion){
+        $benef = Adherents::where(['num_adhesion' => $num_adhesion])->first();
+        if ($benef->isSouscripteur()) {
+            echo json_encode($benef);
+        }
+        else{
+            echo json_encode(Adherents::find($benef->parent));
+        }
+        
+    }
 }

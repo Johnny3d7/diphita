@@ -84,6 +84,7 @@
             </div>
             </a>
             <ul>
+              <li><a href="{{ route('admin.assistance.without_sousid.create') }}">Créer un cas</a></li>
               <li><a href="{{ route('admin.assistance.importation') }}">Importation</a></li>
               <li><a href="{{ route('admin.assistance.index') }}">Liste des cas</a></li>
               <li><a href="{{ route('admin.assistance.attente') }}">Cas en attente</a></li>

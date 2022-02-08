@@ -205,6 +205,10 @@ class Adherents extends Model
     //     return Assistance::where(['id_benef'=>$this->id,'valide'=>0])->exists()? false : true;
     // }
 
+    public function list_benef_in_life(){
+        return self::where(['status'=>1,'cas'=> 0])->get();
+    }
+
     
 
 }

@@ -159,7 +159,7 @@
                             
                         @elseif ($assistance->valide == 1)
                             @if ($assistance->assiste == 0)
-                                <li><a href="#"><i class="ti-save"></i> <span> <span>Modifier infos</span> </span> </a></li>
+                                <li><a href="{{ route('admin.assistance.edit',['id'=>$assistance->id]) }}"><i class="ti-save"></i> <span> <span>Modifier infos</span> </span> </a></li>
                             @endif
                             
                             <li><a href="{{ route('admin.assistance.souscripteur.index',['id' => $assistance->id]) }}"><i class="ti-list"></i> <span> <span>Liste des assistances</span> </span> </a></li>  

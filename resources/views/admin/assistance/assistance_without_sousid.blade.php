@@ -5,11 +5,11 @@
 @endsection
 
 @section('title')
-    Modifier le cas {{ $assistance->beneficiaire->nom_pnom() }}
+    Créer un cas à assister
 @endsection
 
 @section('subtitle')
-    Modifier un cas   
+    Créer un cas à assister   
 @endsection
 
 @section('content')
@@ -31,18 +31,18 @@
                     <div class="white_card_body">
                         <div class="card-body">
                             <h6 class="card-subtitle mb-2">Les champs marqués du signe <code class="highlighter-rouge">(*)</code> sont tous obligatoires.</h6>
-                            <form action="{{ route('admin.assistance.update',['id'=>$assistance->id]) }}" method="put">
+                            <form action="{{ route('admin.assistance.store') }}" method="post">
                                 @csrf
-                                @method('PUT')
+                                @method('POST')
                                 <div class="form-row">
                                     <div class="col-12 mt_30 mb_15">
-                                        <h4 class="m-0 txt-color1 txt-upper txt-bold"> <a href="{{ route('admin.adhesion.show',['id' => $assistance->adherent->id]) }}" style="color: inherit; text-decoration: inherit;">Souscripteur</a></h4>
+                                        <h4 class="m-0 txt-color1 txt-upper txt-bold"> <a href="{{-- route('admin.adhesion.show',['id'=>$adherent->id]) --}}" style="color: inherit; text-decoration: inherit;">Souscripteur</a></h4>
                                     </div>
                         
                                     <div class="form-group col-lg-4">
                                         <label for="souscript_num">Numéro d'identification <code class="highlighter-rouge">*</code></label>
-                                        <input type="text" value="{{ $assistance->adherent->num_adhesion }}" readonly name="souscript_num" class="form-control @error('souscript_num') is-invalid @enderror" placeholder="Numéro d'identification" required>
-                                        <input type="text" value="{{ $assistance->adherent->id }}" readonly name="souscript_id" style="display: none"  required>
+                                        <input type="text" readonly name="souscript_num" class="form-control @error('souscript_num') is-invalid @enderror" placeholder="Numéro d'identification" id="souscript_num" required>
+                                        <input type="text" readonly name="souscript_id" id="souscript_id" style="display: none"  required>
                                         @error('souscript_num')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -52,7 +52,7 @@
                                     <div class="form-group col-lg-4">
 
                                         <label for="souscript_nom">Nom & Prénom(s) <code class="highlighter-rouge">*</code></label>
-                                        <input type="text" value="{{ $assistance->adherent->nom.' '.$assistance->adherent->pnom }}" readonly name="souscript_nom" class="form-control @error('souscript_nom') is-invalid @enderror" placeholder="Nom & Prénom(s)" required>
+                                        <input type="text" readonly name="souscript_nom" id="souscript_nom" class="form-control @error('souscript_nom') is-invalid @enderror" placeholder="Nom & Prénom(s)" required>
                                         @error('souscript_nom')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -61,7 +61,7 @@
                                     </div>
                                     <div class="form-group col-lg-4">
                                         <label for="souscript_contact">Contact <code class="highlighter-rouge">*</code></label>
-                                        <input type="text" value="{{$assistance->adherent->contact }}" readonly name="souscript_contact" class="form-control @error('souscript_contact') is-invalid @enderror" placeholder="Contact" required>
+                                        <input type="text" readonly name="souscript_contact" id="souscript_contact" class="form-control @error('souscript_contact') is-invalid @enderror" placeholder="Contact" required>
                                         @error('souscript_contact')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -71,55 +71,37 @@
                                     <div class="col-12 mt_30 mb_15">
                                         <h4 class="m-0 txt-color1 txt-upper txt-bold">Bénéficiaires</h4>
                                     </div>
-                                    <div class="form-group col-lg-4">
-                                        
-                                        <label for="benef_num">Numéro d'identification <code class="highlighter-rouge">*</code></label>
-                                        <select id="id_beneficiaire" class="form-control @error('benef_num') is-invalid @enderror" name="benef_num" required>
-                                            <option selected value="0" disabled>--- Sélectionnez un bénéficiaire ---</option>
-
-                                            @if ($assistance->adherent->is_not_cas())
-                                                <option {{ $assistance->adherent->id == $assistance->id_benef ? 'selected' : '' }} value="{{$assistance->adherent->num_adhesion}}">{{$assistance->adherent->num_adhesion}} </option>
-                                            @endif
+                                    <div class="form-group col-lg-6">
+                                        <label for="benef_num">Numéro d'identification  <code class="highlighter-rouge">*</code></label>
+                                        <input type="text" readonly id="benef_num" name="benef_num" class="form-control @error('benef_num') is-invalid @enderror" placeholder="Numéro d'identification" required>
+                                        @error('benef_num')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                     
+                                        <label for="benef_nom">Nom et Prénom(s)  <code class="highlighter-rouge">*</code></label>
+                                        <select id="id_beneficiaire" class="form-control @error('benef_nom') is-invalid @enderror" name="benef_nom" required>
+                                            <option value="0" selected disabled>--- Sélectionnez un bénéficiaire ---</option>
+                                            @foreach (Adherents::list_benef_in_life() as $item)
+                                                <option value="{{ $item->num_adhesion }}" >{{ $item->nom_pnom() }}</option>
+                                            @endforeach
                                             
-                                            @forelse ($assistance->adherent->beneficiaires() as $benef)
-
-                                                @if ($benef->is_not_cas())
-                                                    <option {{ $benef->id == $assistance->id_benef ? 'selected' : '' }}  value="{{$benef->num_adhesion}}">{{$benef->num_adhesion}}  </option>
-                                                @endif 
-                                            @empty
-                                                
-                                            @endforelse
                                
                                         </select>
-                                        <input type="text" readonly name="benef_id" value="{{ $assistance->beneficiaire->id }}" id="benef_id" style="display: none" required>
-                                        @error('benef_num')
+                                        <input type="text" readonly name="benef_id" id="benef_id" style="display: none" required>
+                                        @error('benef_nom')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
                                     </div>
                                     <div class="form-group col-lg-4">
-                                        <label for="benef_nom">Nom  <code class="highlighter-rouge">*</code></label>
-                                        <input type="text" readonly id="benef_nom" name="benef_nom" class="form-control @error('benef_nom') is-invalid @enderror" placeholder="Nom" required>
-                                        @error('benef_nom')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-lg-4">
-                                        <label for="benef_pnom">Prénom(s) <code class="highlighter-rouge">*</code></label>
-                                        <input type="text" readonly id="benef_pnom" name="benef_pnom" class="form-control @error('benef_pnom') is-invalid @enderror" placeholder="Prénom(s)" required>
-                                        @error('benef_pnom')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-lg-4">
                                         <label for="date_deces">Date de décès <code class="highlighter-rouge">*</code></label>
                                         <div class="common_date_picker">
-                                            <input value="{{ ucwords((new Carbon\Carbon($assistance->date_deces ))->locale('fr')->isoFormat('DD-MM-YYYY')) }}" class="datepicker-here digits this-bc @error('date_deces') is-invalid @enderror" type="text" data-language="en" placeholder="Date de décès *" name="date_deces" required>
+                                            <input class="datepicker-here digits this-bc @error('date_deces') is-invalid @enderror" type="text" data-language="en" placeholder="Date de décès *" name="date_deces" required>
                                         </div>
                                         @error('date_deces')
                                             <span class="invalid-feedback" role="alert">
@@ -129,7 +111,7 @@
                                     </div>
                                     <div class="form-group col-lg-4">
                                         <label for="lieu_deces">Lieu de décès <code class="highlighter-rouge">*</code></label>
-                                        <input type="text" value="{{ $assistance->lieu_deces }}" name="lieu_deces" class="form-control @error('lieu_deces') is-invalid @enderror" placeholder="Lieu de décès" required>
+                                        <input type="text" name="lieu_deces" class="form-control @error('lieu_deces') is-invalid @enderror" placeholder="Lieu de décès" required>
                                         @error('lieu_deces')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -139,7 +121,7 @@
                                     <div class="form-group col-lg-4">
                                         <label for="date_obseques">Date des obsèques <code class="highlighter-rouge">*</code></label>
                                         <div class="common_date_picker">
-                                            <input value="{{ ucwords((new Carbon\Carbon($assistance->date_obseques ))->locale('fr')->isoFormat('DD-MM-YYYY')) }}" class="datepicker-here digits this-bc @error('date_obseques') is-invalid @enderror" type="text" data-language="en" placeholder="Date des obsèques *" name="date_obseques" required>
+                                            <input class="datepicker-here digits this-bc @error('date_obseques') is-invalid @enderror" type="text" data-language="en" placeholder="Date des obsèques *" name="date_obseques" required>
                                         </div>
                                         @error('date_obseques')
                                             <span class="invalid-feedback" role="alert">
@@ -154,7 +136,7 @@
                                     <div class="form-group col-lg-4">
                                         <label for="date_assistance">Date d'assistance </label>
                                         <div class="common_date_picker">
-                                            <input value="{{ ucwords((new Carbon\Carbon($assistance->date_assistance ))->locale('fr')->isoFormat('DD-MM-YYYY')) }}" class="datepicker-here digits this-bc @error('date_assistance') is-invalid @enderror" type="text" data-language="en" placeholder="Date d'assistance *" name="date_assistance">
+                                            <input class="datepicker-here digits this-bc @error('date_assistance') is-invalid @enderror" type="text" data-language="en" placeholder="Date d'assistance *" name="date_assistance">
                                         </div>
                                         @error('date_assistance')
                                             <span class="invalid-feedback" role="alert">
@@ -165,11 +147,11 @@
                                     <div class="form-group col-lg-4">
                                         <label for="moyen_assistance">Moyen d'assistance</label>
                                         <select id="moyen_paie" class="form-control @error('moyen_assistance') is-invalid @enderror" name="moyen_assistance" >
-                                            <option  value="0" disabled>--- Sélectionnez un moyen de paiement ---</option>
-                                            <option {{ $assistance->moyen_assistance == 1 ? 'selected' : '' }} value="1">Espèces </option>
-                                            <option {{ $assistance->moyen_assistance == 2 ? 'selected' : '' }} value="2">Chèque</option>
-                                            <option {{ $assistance->moyen_assistance == 3 ? 'selected' : '' }} value="3">Virement </option>
-                                            <option {{ $assistance->moyen_assistance == 4 ? 'selected' : '' }} value="4">Dépôt électronique</option>
+                                            <option selected value="0" disabled>-- Sélectionnez moyen de paiement --</option>
+                                            <option value="1">Espèces </option>
+                                            <option value="2">Chèque</option>
+                                            <option value="3">Virement </option>
+                                            <option value="4">Dépôt électronique</option>
                                         </select>
                                         @error('moyen_assistance')
                                         <span class="invalid-feedback" role="alert">
@@ -182,7 +164,7 @@
                                     </div>
                                     <div class="form-group col-lg-3">
                                         <label for="enfant_defunt">Nom d'un enfant du défunt </label>
-                                        <input type="text" value="{{ $assistance->enfant_defunt }}" name="enfant_defunt" class="form-control @error('enfant_defunt') is-invalid @enderror" placeholder="Nom et prénom(s)" >
+                                        <input type="text" name="enfant_defunt" class="form-control @error('enfant_defunt') is-invalid @enderror" placeholder="Nom et prénom(s)" >
                                         @error('enfant_defunt')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -191,7 +173,7 @@
                                     </div>
                                     <div class="form-group col-lg-3">
                                         <label for="enfant_contact">Contact de cet enfant du défunt</label>
-                                        <input type="text" value="{{ $assistance->enfant_contact }}" name="enfant_contact" class="form-control @error('enfant_contact') is-invalid @enderror" placeholder="Numéro de téléphone" data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask>
+                                        <input type="text" name="enfant_contact" class="form-control @error('enfant_contact') is-invalid @enderror" placeholder="Numéro de téléphone" data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask>
                                         @error('enfant_contact')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -200,7 +182,7 @@
                                     </div>
                                     <div class="form-group col-lg-3">
                                         <label for="proche_defunt">Nom d'un proche du défunt</label>
-                                        <input type="text" value="{{ $assistance->proche_defunt }}" name="proche_defunt" class="form-control @error('proche_defunt') is-invalid @enderror" placeholder="Nom et prénom(s)">
+                                        <input type="text" name="proche_defunt" class="form-control @error('proche_defunt') is-invalid @enderror" placeholder="Nom et prénom(s)">
                                         @error('proche_defunt')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -209,7 +191,7 @@
                                     </div>
                                     <div class="form-group col-lg-3">
                                         <label for="proche_contact">Contact de ce proche du défunt</label>
-                                        <input type="text" name="proche_contact" value="{{ $assistance->proche_contact }}" class="form-control @error('proche_contact') is-invalid @enderror" placeholder="Numéro de téléphone" data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask>
+                                        <input type="text" name="proche_contact" class="form-control @error('proche_contact') is-invalid @enderror" placeholder="Numéro de téléphone" data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask>
                                         @error('proche_contact')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -218,9 +200,9 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-lg-3  offset-lg-5">
+                                <div class="col-lg-2  offset-lg-5">
                                        
-                                    <button class="btn btn-primary btn-lg m-1 this-item-bg this-item-bc" type="submit">Mettre à jour</button>
+                                    <button class="btn btn-primary btn-lg m-1 this-item-bg this-item-bc" type="submit">Ajouter</button>
          
                                 </div>
                             </form>
@@ -239,24 +221,59 @@
 </script>
 <script>
     $('#id_beneficiaire').on('change', function() {
+            //console.log(e);
 
-        get_nom_pnom($(this).val());
+        let num_adhesion = $(this).val();
         
+        $('#benef_num').empty();
+        $('#souscript_num').empty();
+        $('#souscript_nom').empty();
+        $('#souscript_contact').empty();
+        $('#souscript_id').empty();
+        $('#benef_num').val(`Chargement...`);
+        $('#souscript_num').val(`Chargement...`);
+        $('#souscript_nom').val(`Chargement...`);
+        $('#souscript_contact').val(`Chargement...`);
+        $('#souscript_id').val(`Chargement...`);
+        
+        $.ajax({
+                type: 'GET',
+                url: '/admin/get-benef-nom-pnom/' + num_adhesion,
+                success: function(response) {
+                    var response = JSON.parse(response);
+                        //console.log(response['id']);
+                        $('#benef_num').val(response['num_adhesion']);
+                        $('#benef_id').attr("value",response['id']);
+                
+                        
+                }
+            });
 
+            $.ajax({
+                type: 'GET',
+                url: '/admin/get-sous-benef/' + num_adhesion,
+                success: function(response) {
+                    var response = JSON.parse(response);
+                        //console.log(response['id']);
+                        $('#souscript_num').val(response['num_adhesion']);
+                        $('#souscript_nom').val(response['nom']+' '+response['pnom']);
+                        $('#souscript_id').val(response['id']);
+                        $('#souscript_contact').val(response['contact']);
+                        
+                }
+            });
     });
 
-    $(document).ready(function() {
-
-        get_nom_pnom($('#id_beneficiaire').val());
-
-
-        switch($("#moyen_paie").val()) {
+    $('#moyen_paie').on('change', function() {
+      
+        console.log('bonjour');
+        switch($(this).val()) {
 
         case '2':
             $('#bloc_insert').empty();
             $('#bloc_insert').append(`
                                         <label for="num_cheque">Numéro de chèque </label>
-                                        <input type="text" value="{{ $assistance->num_cheque }}" name="num_cheque" class="form-control @error('num_cheque') is-invalid @enderror" placeholder="Saisir le numéro de chèque" >
+                                        <input type="text" name="num_cheque" class="form-control @error('num_cheque') is-invalid @enderror" placeholder="Saisir le numéro de chèque" >
                                         @error('num_cheque')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -268,7 +285,7 @@
             $('#bloc_insert').empty();
             $('#bloc_insert').append(`
                                         <label for="num_compte">Numéro de compte </label>
-                                        <input type="text" value="{{ $assistance->num_cheque }}" name="num_compte" value="{{ $assistance->num_compte }}" class="form-control @error('num_compte') is-invalid @enderror" placeholder="Saisir le numéro de compte" >
+                                        <input type="text" name="num_compte" class="form-control @error('num_compte') is-invalid @enderror" placeholder="Saisir le numéro de compte" >
                                         @error('num_compte')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -280,7 +297,7 @@
             $('#bloc_insert').empty();
             $('#bloc_insert').append(`
                                         <label for="num_depot">Numéro de téléphone du dépôt</label>
-                                        <input type="text" value="{{ $assistance->num_cheque }}" name="num_depot" value="{{ $assistance->num_depot }}" class="form-control @error('num_depot') is-invalid @enderror" placeholder="Saisir le numéro de téléphone " data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask>
+                                        <input type="text" name="num_depot" class="form-control @error('num_depot') is-invalid @enderror" placeholder="Saisir le numéro de téléphone " data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask>
                                         @error('num_depot')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -292,79 +309,9 @@
         default:
             $('#bloc_insert').empty();
             
-        }
+}
         
     });
-        
-    function get_nom_pnom(num_adhe){
-        $('#benef_nom').empty();
-        $('#benef_pnom').empty();
-        $('#benef_nom').val(`Chargement...`);
-        $('#benef_pnom').val(`Chargement...`);
-        
-        $.ajax({
-                type: 'GET',
-                url: '/admin/get-benef-info/' + num_adhe,
-                success: function(response) {
-                    var response = JSON.parse(response);
-                        //console.log(response['id']);
-                        $('#benef_nom').val(response['nom']);
-                        $('#benef_pnom').val(response['pnom']);
-                        $('#benef_id').attr("value",response['id']);
-                        
-                }
-            });
-    }
-
-
-    $('#moyen_paie').on('change', function() {
-      
-      console.log('bonjour');
-      switch($(this).val()) {
-
-      case '2':
-          $('#bloc_insert').empty();
-          $('#bloc_insert').append(`
-                                      <label for="num_compte">Numéro de compte </label>
-                                      <input type="text" name="num_compte" class="form-control @error('num_compte') is-invalid @enderror" placeholder="Saisir le numéro de compte" >
-                                      @error('num_compte')
-                                          <span class="invalid-feedback" role="alert">
-                                              <strong>{{ $message }}</strong>
-                                          </span>
-                                      @enderror
-          `);
-          break;
-      case '3':
-          $('#bloc_insert').empty();
-          $('#bloc_insert').append(`
-                                      <label for="num_compte">Numéro de compte </label>
-                                      <input type="text" name="num_compte" class="form-control @error('num_compte') is-invalid @enderror" placeholder="Saisir le numéro de compte" >
-                                      @error('num_compte')
-                                          <span class="invalid-feedback" role="alert">
-                                              <strong>{{ $message }}</strong>
-                                          </span>
-                                      @enderror
-          `);
-          break;
-      case '4':
-          $('#bloc_insert').empty();
-          $('#bloc_insert').append(`
-                                      <label for="num_depot">Numéro de téléphone du dépôt</label>
-                                      <input type="text" name="num_depot" class="form-control @error('num_depot') is-invalid @enderror" placeholder="Saisir le numéro de téléphone " data-inputmask='"mask": "+(225) 99-99-99-99-99"' data-mask>
-                                      @error('num_depot')
-                                          <span class="invalid-feedback" role="alert">
-                                              <strong>{{ $message }}</strong>
-                                          </span>
-                                      @enderror
-          `);
-          $('[data-mask]').inputmask();
-          break;
-      default:
-          $('#bloc_insert').empty();
-          
-}
-      
-  });
-
+    
 </script>
 @endsection

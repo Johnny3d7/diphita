@@ -56,7 +56,7 @@
                                     <th scope="col">Contact</th>
                                     <th scope="col">Date naissance</th>
                                     <th scope="col">statut</th>
-                                    <th scope="col">Actions</th>
+                                    <th scope="col">Détails</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -90,8 +90,6 @@
                                     </td>
                                 </tr>
                                 @endforeach
-                                
-                               
                             </tbody>
                         </table>
                     </div>

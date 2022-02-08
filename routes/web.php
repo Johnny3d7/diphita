@@ -138,6 +138,8 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         Route::get('/assistance/{id}/rejeter', 'AssistanceController@rejeter')->name('assistance.rejeter');
         Route::get('/assistance/{id}/assister', 'AssistanceController@assister')->name('assistance.assister');
         Route::get('/assistance/{id}/destroy', 'AssistanceController@destroy')->name('assistance.destroy');
+
+        Route::get('/assistance-without-sousid/create', 'AssistanceController@assistance_without_sousid_create')->name('assistance.without_sousid.create');
   
         
     
@@ -181,6 +183,12 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     
     //Afficher les informations d'un bénéficiaire à partir de son numéro d'adhesion
     Route::get('get-benef-info/{num_adhesion}', 'AjaxController@getBenefNomPnom')->name('get-benef-info.search');
+
+    //Afficher les informations d'un bénéficiaire à partir de son nom et prénom(s)
+    Route::get('get-benef-nom-pnom/{num_adhesion}', 'AjaxController@getBenefNumAdhe')->name('get-benef-info.search_num_adhesion');
+    
+    //Afficher les infos d'un souscripteur à partir du nom et prénom
+    Route::get('get-sous-benef/{num_adhesion}', 'AjaxController@getSousBenef')->name('get-sous-benef.search');
 
 });
 

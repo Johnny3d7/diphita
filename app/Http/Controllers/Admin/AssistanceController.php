@@ -140,6 +140,7 @@ class AssistanceController extends Controller
                 'id_souscripteur'=> $request->souscript_id,
                 'num_compte' => $request->num_compte,
                 'num_depot' => $request->num_depot,
+                'num_cheque'=> $request->num_cheque
             ]);
         }
 
@@ -226,6 +227,7 @@ class AssistanceController extends Controller
                 'proche_contact'=> $request->proche_contact,
                 'num_compte' => $request->num_compte,
                 'num_depot' => $request->num_depot,
+                'num_cheque' => $request->num_cheque
             ]);
 
             return redirect()->back()->with('message', 'Les informations ont été mises à jour avec succèss !')->with('type', 'bg-success');
@@ -300,5 +302,10 @@ class AssistanceController extends Controller
         $assistances = Assistance::where(['valide'=>0])->get();
 
         return view('admin.assistance.en_attente',compact('assistances'));
+    }
+
+    public function assistance_without_sousid_create(){
+
+        return view('admin.assistance.assistance_without_sousid');
     }
 }
