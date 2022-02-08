@@ -102,6 +102,16 @@ class Adherents extends Model
                 }
             }
         }
+        $this->firstReglement();
+    }
+
+    public function firstReglement(){
+        $annuelle = $this->cotisations("annuelle")->first();
+        Reglement::create([
+            'id_adherent' => $this->id,
+            'id_cotisation' => $annuelle->id,
+            'montant' => $annuelle->montant
+        ]);
     }
 
     public static function selectAll(Bool $souscripteur = false){
