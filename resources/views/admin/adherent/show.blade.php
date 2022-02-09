@@ -1,6 +1,5 @@
 @php
 // dd($souscripteur->cotisations('exceptionnelle', true));
-// dd($souscripteur->transactions());
 @endphp
 
 @extends('admin.main')
@@ -226,10 +225,10 @@
                             <div class="icon-wrapper-bg bg-primary"></div>
                             <i class="ti-money text-primary"></i>
                         </div>
-                            @if ($souscripteur->versements->count() == 0)
+                            @if (!$souscripteur->solde())
                                 <div class="widget-numbers"><span>0 FCFA</span></div>
                             @else
-                                <div class="widget-numbers"><span style="font-size: 1.5rem !important;">{{ number_format($souscripteur->versements->where('parcouru',0)->sum('montant'), 0, '', ' ') }} FCFA</span></div>
+                                <div class="widget-numbers"><span style="font-size: 1.5rem !important;">{{ number_format($souscripteur->solde(), 0, '', ' ') }} FCFA</span></div>
                             @endif
                             
                             <div class="widget-subheading">Solde</div>

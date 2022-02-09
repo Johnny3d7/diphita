@@ -30,7 +30,7 @@ class Cotisation extends Model
                 $item->type = 'exceptionnelle';
             }
 
-            $item->montant = $item->type == "exceptionnelle" ? Parameters::cotisationAnnuelle() : Parameters::cotisationAnnuelle();
+            $item->montant = $item->type == "exceptionnelle" ? Parameters::cotisationExceptionnelle() : Parameters::cotisationAnnuelle();
 
             // if this month or this year => parcouru : false
             if($item->type != "exceptionnelle" && $item->annee_cotis < Carbon::now()->year) $item->parcouru = true;
@@ -83,9 +83,9 @@ class Cotisation extends Model
         return $type=='exceptionnelles' ? static::selectAllExceptionnelle() : ($type=='annuelles' ? static::whereType('annuelle')->get() : ($type=='false' ? static::whereType('exceptionnelle')->get() : null));
     }
 
-    public function montant(){
-        return $this->type == "annuelle" ? 2500 : 800;
-    }
+    // public function montant(){
+    //     return $this->type == "annuelle" ? 2500 : 800;
+    // }
 
     public function cas (){
         return $this->type == "exceptionnelle" ? Assistance::whereCodeDeces($this->code_deces)->get() : null;

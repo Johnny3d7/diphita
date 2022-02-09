@@ -19,10 +19,14 @@ class CreateReglementsTable extends Migration
             $table->integer('id_admin')->nullable();
             $table->string('parcouru')->default(0);
             $table->integer('status')->default(1);
+
+            $table->string('type');
+            $table->text('description')->nullable();
+
             $table->timestamps();
 
             $table->integer('id_adherent')->unsigned();
-            $table->integer('id_cotisation')->unsigned();
+            $table->integer('id_cotisation')->nullable()->unsigned();
         });
     }
 

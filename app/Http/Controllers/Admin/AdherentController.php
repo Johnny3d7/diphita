@@ -527,26 +527,28 @@ class AdherentController extends Controller
         $campagne = json_decode($response);
 
         $curl = curl_init();
+        if($campagne){
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.letexto.com/v1/campaigns/'.$campagne->id.'/schedules',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer 7e8f4b3245f7d88054771d58a4739a'
+            ),
+            CURLOPT_SSL_VERIFYHOST =>  false,
+            CURLOPT_SSL_VERIFYPEER => false
+            ));
+    
+            $response = curl_exec($curl);
+            curl_close($curl);
+        }
 
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://api.letexto.com/v1/campaigns/'.$campagne->id.'/schedules',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_HTTPHEADER => array(
-            'Authorization: Bearer 7e8f4b3245f7d88054771d58a4739a'
-        ),
-        CURLOPT_SSL_VERIFYHOST =>  false,
-        CURLOPT_SSL_VERIFYPEER => false
-        ));
 
-        $response = curl_exec($curl);
-
-        curl_close($curl);
         return $response;
     }
 
@@ -609,26 +611,29 @@ class AdherentController extends Controller
         $campagne = json_decode($response);
 
         $curl = curl_init();
+        if($campagne) {
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.letexto.com/v1/campaigns/'.$campagne->id.'/schedules',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer 7e8f4b3245f7d88054771d58a4739a'
+            ),
+            CURLOPT_SSL_VERIFYHOST =>  false,
+            CURLOPT_SSL_VERIFYPEER => false
+            ));
+    
+            $response = curl_exec($curl);
+    
+            curl_close($curl);
+            
+        }
 
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://api.letexto.com/v1/campaigns/'.$campagne->id.'/schedules',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_HTTPHEADER => array(
-            'Authorization: Bearer 7e8f4b3245f7d88054771d58a4739a'
-        ),
-        CURLOPT_SSL_VERIFYHOST =>  false,
-        CURLOPT_SSL_VERIFYPEER => false
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
         return $response;
     }
 
@@ -998,10 +1003,13 @@ class AdherentController extends Controller
         ]);
         $cotis = AdherentHasCotisations::whereIdAdherent($request->id_adherent)->whereIdCotisation($request->id_cotisation)->first();
         if($cotis && !$cotis->reglee){
+            $identifiant = $cotis->code_deces ?? $cotis->annee_cotis;
             Reglement::create([
                 'id_adherent' => $request->id_adherent,
                 'id_cotisation' => $request->id_cotisation,
                 'montant' => $request->montant,
+                'type' => 'Paiement de cotisation',
+                'description' => "Cotisation $cotis->type : $identifiant"
             ]);
         }
 

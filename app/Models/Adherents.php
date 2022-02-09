@@ -60,26 +60,6 @@ class Adherents extends Model
         static::created(function($item) {
             // Creating cotisation items for each cotisation  based on $this->date_debutcotisation
             if($item->isSouscripteur() && $item->isValide()){
-                // $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($item->date_debutcotisation))->get();
-                // $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->get();
-
-                // $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($item->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($item->date_debutcotisation))->get();
-                // if($cotisations){
-                //     // dd($cotisations);
-                //     foreach ($cotisations as $cotisation) { // Select all souscripteurs and create items
-                //         if(!AdherentHasCotisations::whereIdCotisation($cotisation->id)->whereIdAdherent($item->id)->first()){
-                //             AdherentHasCotisations::create([
-                //                 'id_cotisation' => $cotisation->id,
-                //                 'id_adherent' => $item->id,
-                //                 'nbre_benef' => $item->total_benef_life(),
-                //                 'montant' => $cotisation->montant * $item->total_benef_life(),
-                //                 'reglee' => false,
-                //                 'parcouru' => false,
-                //             ]);
-                //         }
-                //     }
-                // }
-
                 $item->firstCotisations();
             }
         });
@@ -88,7 +68,6 @@ class Adherents extends Model
     public function firstCotisations(){
         $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($this->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($this->date_debutcotisation))->get();
         if($cotisations){
-            // dd($cotisations);
             foreach ($cotisations as $cotisation) { // Select all souscripteurs and create thiss
                 if(!AdherentHasCotisations::whereIdCotisation($cotisation->id)->whereIdAdherent($this->id)->first()){
                     AdherentHasCotisations::create([
@@ -105,12 +84,39 @@ class Adherents extends Model
         $this->firstReglement();
     }
 
+    public function firstReglementPerso(Adherents $adherent){
+        Reglement::create([
+            'id_adherent' => $this->id,
+            'montant' => Parameters::droitInscription(),
+            'type' => "Droit d'inscription",
+            'description' => "Droit d'inscription : $adherent->num_adhesion"
+        ]);
+        Reglement::create([
+            'id_adherent' => $this->id,
+            'montant' => Parameters::traitementKit(),
+            'type' => "Kit d'inscription",
+            'description' => "Kit d'inscription : $adherent->num_adhesion"
+        ]);
+    }
+    
     public function firstReglement(){
+        Versement::create([
+            'id_adherent' => $this->id,
+            'montant' => (Parameters::cotisationAnnuelle()+Parameters::droitInscription()+Parameters::traitementKit()) * ($this->beneficiaires()->count() + 1)
+        ]);
+
+        $this->firstReglementPerso($this);
+        foreach ($this->beneficiaires() as $beneficiaire) {
+            $this->firstReglementPerso($beneficiaire);
+        }
+
         $annuelle = $this->cotisations("annuelle")->first();
         Reglement::create([
             'id_adherent' => $this->id,
             'id_cotisation' => $annuelle->id,
-            'montant' => $annuelle->montant
+            'montant' => $this->psCotisation($annuelle)->montant(),
+            'type' => 'Paiement de cotisation première année',
+            'description' => "Cotisation annuelle : $annuelle->annee_cotis"
         ]);
     }
 
@@ -160,13 +166,16 @@ class Adherents extends Model
         return $this->isBeneficiaire() ? null : self::where(['status'=>1,'role'=>2,'parent'=>$this->id])->orderBy('created_at', 'DESC')->get();
     }
 
-    public function versements(){
-        return $this->hasMany(Versement::class, 'id_adherent');
+    public function versements(int $parcouru = 10){
+        $versements = $this->hasMany(Versement::class, 'id_adherent');
+        if($parcouru != 10) $versements = $versements->whereParcouru($parcouru)->get();
+        return $versements;
     }
     
-    public function reglements(Cotisation $cotisation=null){
+    public function reglements(Cotisation $cotisation=null, int $parcouru = 10){
         $reglements = $this->hasMany(Reglement::class, 'id_adherent');
         if($cotisation) $reglements = $reglements->whereIdCotisation($cotisation->id)->get();
+        if($parcouru != 10) $reglements = $reglements->whereParcouru($parcouru)->get();
         return $reglements;
     }
 
@@ -181,11 +190,9 @@ class Adherents extends Model
     }
 
     public function transactions(){
-        // $reglements = Versement::whereIdAdherent($this->id)->get();
-        $transactions = $this->versements;
-        // $transactions = $transactions->merge($this->cotisations($type, $reglee));
-        $transactions = $transactions->merge($this->reglements);
-        // dd($transactions);
+        $reglements = new Collection($this->reglements);
+        $versements = new Collection($this->versements);
+        $transactions = $reglements->concat($versements);
         return $transactions;
     }
 
@@ -211,6 +218,10 @@ class Adherents extends Model
                 ->orWhere('date_annonce', '>=', Carbon::create($this->date_adhesion));
         });
         return $cotisations->get();
+    }
+
+    public function solde(){
+        return $this->solde + $this->versements(0)->sum('montant') - $this->reglements(null, 0)->sum('montant');
     }
 
     public function total_benef_life(){

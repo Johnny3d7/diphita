@@ -19,6 +19,7 @@ class CreateVersementsTable extends Migration
             $table->integer('id_admin')->nullable();
             $table->string('parcouru')->default(0);
             $table->integer('status')->default(1);
+            $table->text('description')->nullable();
             $table->timestamps();
 
             //foreign key
