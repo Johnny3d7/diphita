@@ -33,8 +33,8 @@ class Reglement extends Model
             $cotisation = Cotisation::find($item->id_cotisation);
             $adherent = Adherents::find($item->id_adherent);
             $adherentHasCotisation = $adherent && $cotisation ? $adherent->psCotisation($cotisation) : null;
-            if($cotisation && $adherent && ($cotisation->reglements($adherent)->sum('montant') >= $adherentHasCotisation->montant())){
-                $adherentHasCotisation->update(['reglee' => true]);
+            if($cotisation && $adherent && ($cotisation->reglements($adherent)->sum('montant') >= ($adherentHasCotisation ? $adherentHasCotisation->montant() : 0 ))){
+                if($adherentHasCotisation) $adherentHasCotisation->update(['reglee' => true]);
             } else {
                 if($adherentHasCotisation) $adherentHasCotisation->update(['reglee' => false]);
             }
