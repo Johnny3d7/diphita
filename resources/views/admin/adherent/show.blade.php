@@ -134,13 +134,9 @@
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Civilité:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">
-                                                        @if ($souscripteur->civilite == 1)
-                                                            M.
-                                                        @elseif($souscripteur->civilite == 2)
-                                                            Mme
-                                                        @elseif($souscripteur->civilite == 3)
-                                                            Mlle
-                                                        @endif
+                                                        {{ $souscripteur->civilite }}
+                                                            
+                                                        
                                     </div>
                                 </div>
                                 </div>
@@ -318,13 +314,7 @@
                                                         <th scope="row"> <a href="{{ route('admin.adherent.formulaire-print',['id'=>$benef->id]) }}" class="question_content {{ $benef->is_not_cas() ? 'text-success' : 'text-danger'  }}"> {{ $benef->num_adhesion }}</a></th>
                                                     @endif
                                                     <td>
-                                                        @if ($benef->civilite == 1)
-                                                            Monsieur
-                                                        @elseif($benef->civilite == 2)
-                                                            Madame
-                                                        @elseif($benef->civilite == 3)
-                                                            Mademoiselle
-                                                        @endif
+                                                        {{ $benef->civilite }}
                                                     </td>
                                                     <td>{{ $benef->nom }}</td>
                                                     <td>{{ $benef->pnom }}</td>
@@ -418,13 +408,7 @@
                                                 <tr>
                                                     <td>{{ $ayant->priorite }}</td>
                                                     <td>
-                                                        @if ($ayant->civilite == 1)
-                                                            Monsieur
-                                                        @elseif($ayant->civilite == 2)
-                                                            Madame
-                                                        @elseif($ayant->civilite == 3)
-                                                            Mademoiselle
-                                                        @endif
+                                                        {{ $ayant->civilite }}                                                          
                                                     </td>
                                                     <td>{{ $ayant->nom }}</td>
                                                     <td>{{ $ayant->pnom }}</td>

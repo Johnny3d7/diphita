@@ -41,13 +41,8 @@
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Civilité:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">
-                                                        @if ($assistance->adherent->civilite == 1)
-                                                            M.
-                                                        @elseif($assistance->adherent->civilite == 2)
-                                                            Mme
-                                                        @elseif($assistance->adherent->civilite == 3)
-                                                            Mlle
-                                                        @endif
+                                                        {{ $assistance->adherent->civilite }} 
+                                                        
                                     </div>
                                 </div>
                                 </div>
@@ -84,13 +79,7 @@
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Civilité:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">
-                                                        @if ($assistance->beneficiaire->civilite == 1)
-                                                            Monsieur
-                                                        @elseif($assistance->beneficiaire->civilite == 2)
-                                                            Madame
-                                                        @elseif($assistance->beneficiaire->civilite == 3)
-                                                            Mademoiselle
-                                                        @endif
+                                                        {{ $assistance->beneficiaire->civilite }}
                                     </div>
                                 </div>
                                 </div>
@@ -223,16 +212,7 @@
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Moyen d'assistance:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">
-                                        @if ($assistance->moyen_assistance == 1)
-                                            Espèces
-                                        @elseif($assistance->moyen_assistance == 2)
-                                            Chèque
-                                        @elseif($assistance->moyen_assistance == 3)
-                                            Virement
-                                        @elseif($assistance->moyen_assistance == 4)
-                                            Dépôt électronique
-                                        @endif
-                                        
+                                       {{ $assistance->moyen_assistance }}
                                     </div>
                                 </div>
                                 </div>
@@ -313,13 +293,7 @@
                                                 <tr>
                                                     <td>{{ $ayant->priorite }}</td>
                                                     <td>
-                                                        @if ($ayant->civilite == 1)
-                                                            Monsieur
-                                                        @elseif($ayant->civilite == 2)
-                                                            Madame
-                                                        @elseif($ayant->civilite == 3)
-                                                            Mademoiselle
-                                                        @endif
+                                                        {{ $ayant->civilite }}
                                                     </td>
                                                     <td>{{ $ayant->nom }}</td>
                                                     <td>{{ $ayant->pnom }}</td>

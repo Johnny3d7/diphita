@@ -469,14 +469,6 @@ class AdherentController extends Controller
 
     public function sms_inscription_valider($num_adhe, $contact,$nom,$pnom,$civilite, $date_debutcotisation, $date_fincarence){
 
-        if ($civilite == 1) {
-            $titre = "M.";
-        } elseif($civilite == 2) {
-            $titre = "Mme";
-        }elseif($civilite == 3) {
-            $titre = "Mlle";
-        }
-        
 
         $curl1 = curl_init();
         $datas= [
@@ -489,7 +481,7 @@ class AdherentController extends Controller
         'filename' => NULL,
         'saveAsModel' => false,
         'destination' => 'NAT',
-        'message' => 'Félicitations '.$titre.' '.$nom.' '.$pnom.', votre adhésion à notre chaine de solidarité Diphita Prévoyance s\'est effetuée avec succès. Votre numéro ID: '.$num_adhe.'. Fin de carence: '.ucwords((new Carbon($date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')).'. Début de cotisation: '.ucwords((new Carbon($date_debutcotisation))->locale('fr')->isoFormat('DD/MM/YYYY')).'. La Fondation Diphita vous remercie pour la confiance !',
+        'message' => 'Félicitations '.$civilite.' '.$nom.' '.$pnom.', votre adhésion à notre chaine de solidarité Diphita Prévoyance s\'est effetuée avec succès. Votre numéro ID: '.$num_adhe.'. Fin de carence: '.ucwords((new Carbon($date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')).'. Début de cotisation: '.ucwords((new Carbon($date_debutcotisation))->locale('fr')->isoFormat('DD/MM/YYYY')).'. La Fondation Diphita vous remercie pour la confiance !',
         'emailText' => NULL,
         'recipients' => 
         [
