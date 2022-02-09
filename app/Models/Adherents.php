@@ -59,8 +59,29 @@ class Adherents extends Model
 
         static::created(function($item) {
             // Creating cotisation items for each cotisation  based on $this->date_debutcotisation
-            if($item->isSouscripteur() && $item->isValide()){
-                $item->firstCotisations();
+            
+            if($item->isValide()){
+                if($item->isSouscripteur()) $item->firstCotisations();
+                if($item->isBeneficiaire() && $item->souscripteur()){
+                    $souscripteur = $item->souscripteur();
+                    Versement::create([
+                        'id_adherent' => $souscripteur->id,
+                        'montant' => Parameters::cotisationAnnuelle()+Parameters::droitInscription()+Parameters::traitementKit()
+                    ]);
+            
+                    $souscripteur->firstReglementPerso($item);
+
+                    $annuelle = $item->cotisations("annuelle")->last()->first();
+                    if($annuelle){
+                        Reglement::create([
+                            'id_adherent' => $item->id,
+                            'id_cotisation' => $annuelle->id,
+                            'montant' => $item->psCotisation($annuelle) ? $item->psCotisation($annuelle)->montant() : 0,
+                            'type' => 'Paiement de cotisation première année',
+                            'description' => "Cotisation annuelle : $annuelle->annee_cotis"
+                        ]);
+                    }
+                }
             }
         });
     }
@@ -110,14 +131,16 @@ class Adherents extends Model
             $this->firstReglementPerso($beneficiaire);
         }
 
-        $annuelle = $this->cotisations("annuelle")->first();
-        Reglement::create([
-            'id_adherent' => $this->id,
-            'id_cotisation' => $annuelle->id,
-            'montant' => $this->psCotisation($annuelle)->montant(),
-            'type' => 'Paiement de cotisation première année',
-            'description' => "Cotisation annuelle : $annuelle->annee_cotis"
-        ]);
+        $annuelle = $this->cotisations("annuelle")->last()->first();
+        if($annuelle){
+            Reglement::create([
+                'id_adherent' => $this->id,
+                'id_cotisation' => $annuelle->id,
+                'montant' => $this->psCotisation($annuelle) ? $this->psCotisation($annuelle)->montant() : 0,
+                'type' => 'Paiement de cotisation première année',
+                'description' => "Cotisation annuelle : $annuelle->annee_cotis"
+            ]);
+        }
     }
 
     public static function selectAll(Bool $souscripteur = false){
