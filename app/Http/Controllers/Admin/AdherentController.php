@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\Parameters;
 use App\Http\Controllers\Controller;
 use App\Imports\AdhesionsImport;
 use App\Imports\BeneficiairesImport;
@@ -21,6 +22,7 @@ use DateTime;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Stmt\TryCatch;
+use Illuminate\Support\Facades\Auth;
 
 class AdherentController extends Controller
 {
@@ -128,7 +130,7 @@ class AdherentController extends Controller
     {
         //Stockage d'une adhésion
         $validatedData = $request->validate([
-            "souscript_civilite" => "required|integer",
+            "souscript_civilite" => "required",
             "souscript_nom" => "required",
             "souscript_pnom" => "required",
             "souscript_lhab" => "required",
@@ -183,6 +185,7 @@ class AdherentController extends Controller
             'role' => 1,
             'valide' => 0,
             'status' => 0,
+            'admin_id' => Auth::user()->id
         ]);
 
         //store bénéficiaire(s)
@@ -205,6 +208,7 @@ class AdherentController extends Controller
                 'role' => 2,
                 'valide' => 0,
                 'status' => 1,
+                'admin_id' => Auth::user()->id
             ]);
         }
 
@@ -360,16 +364,6 @@ class AdherentController extends Controller
         }*/
 
 
-        //Récupère le mois et l'année actuel
-        $current_month_year = Carbon::now()->format('Y-m');
-
-        //Récupère la date du premier jour du mois en cours
-        $first_day_month = Carbon::createFromFormat('Y-m-d', $current_month_year.'-01');
-
-        //Récupère la date du 5ième jour du mois en cours
-        $fifth_day_month = Carbon::createFromFormat('Y-m-d', $current_month_year.'-05');
-
-
         $adhesion = Adherents::where('id',$id)->first();
 
         //Numero de contrat
@@ -389,22 +383,39 @@ class AdherentController extends Controller
         
         //$order = (int)($order + 1);
 
+        //Récupère le mois et l'année actuel
+        $current_month_year = Carbon::now()->format('Y-m');
+
+        //Récupère la date du premier jour du mois en cours
+        $first_day_month = Carbon::createFromFormat('Y-m-d', $current_month_year.'-01');
+
+        //Récupère la date du 5ième jour du mois en cours
+        $fifth_day_month = Carbon::createFromFormat('Y-m-d', $current_month_year.'-05');
+
         $num_adhe = $suffix.$date.'S'.$order;
         
         $adhesion->valide = 1;
         $adhesion->status = 1;
-        $adhesion->num_adhesion = $num_adhe;
-        $adhesion->num_contrat = $num_contrat;
-        $adhesion->date_adhesion = Carbon::now();
-        $adhesion->date_fincarence = Carbon::now()->addMonths(DureeFincarences::where('status',1)->first()->duree);
-        
-        
-        //Vérifie si la date d'aujourd'hui est entre le 1er et le 5 du mois en cours
-        if (Carbon::now()->between($first_day_month, $fifth_day_month)) {
-            $adhesion->date_debutcotisation = Carbon::createFromFormat('Y-m-d', $current_month_year.'-25');
-        } else {
-            $adhesion->date_debutcotisation = Carbon::createFromFormat('Y-m-d', $current_month_year.'-25')->addMonth();
+
+        if (!$adhesion->num_adhesion) {
+            $adhesion->num_adhesion = $num_adhe;
+            $adhesion->num_contrat = $num_contrat;
+            $adhesion->date_adhesion = Carbon::now();
         }
+        //Montant de cotisation
+        $adhesion->droit_inscription_montant = Parameters::droitInscription();
+        $adhesion->cot_annuelle_montant = Parameters::cotisationAnnuelle();
+        $adhesion->kits_montant = Parameters::traitementKit();
+        
+        //$adhesion->date_fincarence = Carbon::create($adhesion->date_adhesion)->addMonths(DureeFincarences::where('status',1)->first()->duree);
+        
+        $dateAD = Carbon::create($adhesion->date_adhesion);
+            // Si $day < 5 alors day = 05 mois en cours sinon 05 mois suivant
+            $adhesion->date_debutcotisation = Carbon::create($dateAD->year, $dateAD->month + ($dateAD->day > 5 ?? 0) + 1, 5);
+
+            $adhesion->date_fincarence = $dateAD->addMonths(Parameters::dureeFinCarrence() ?? 4);
+
+       
 
         $adhesion->save();
         //Insérer cotisation
@@ -416,11 +427,18 @@ class AdherentController extends Controller
         foreach ($beneficiaires as $benef) {
             $no = $this->generate_order(Adherents::where('valide',1)->count());
             //$no = (int)($no + 1);
-            $benef->num_adhesion = $suffix.$date.'B'.$no;
+            if (!$benef->num_adhesion) {
+                $benef->num_adhesion = $suffix.$date.'B'.$no;
+                $benef->num_contrat = $num_contrat;
+                $benef->date_adhesion = Carbon::now();
+            }
+            
             $benef->valide = 1;
-            $benef->num_contrat = $num_contrat;
-            $benef->date_adhesion = Carbon::now();
-            $benef->date_fincarence = Carbon::now()->addMonths(DureeFincarences::where('status',1)->first()->duree);
+            
+            $benef->droit_inscription_montant = Parameters::droitInscription();
+            $benef->cot_annuelle_montant = Parameters::cotisationAnnuelle();
+            $benef->kits_montant = Parameters::traitementKit();
+            $benef->date_fincarence = Carbon::create($benef->date_adhesion)->addMonths(DureeFincarences::where('status',1)->first()->duree);
             $benef->date_debutcotisation = $adhesion->date_debutcotisation;
 
             $benef->save();
@@ -456,14 +474,12 @@ class AdherentController extends Controller
         $nb = $nb +1;
 
         if ($nb < 10) {
-            $no = "0000".$nb; 
+            $no = "000".$nb; 
         } elseif($nb < 100) {
-            $no = "000".$nb;
-        }elseif($nb < 1000) {
             $no = "00".$nb;
-        }elseif($nb < 10000) {
+        }elseif($nb < 1000) {
             $no = "0".$nb;
-        }elseif($nb < 100000) {
+        }elseif($nb < 10000) {
             $no = $nb;
         }
 
@@ -549,14 +565,6 @@ class AdherentController extends Controller
 
     public function sms_inscription_rejeter($contact, $nom, $pnom, $civilite){
 
-        if ($civilite == 1) {
-            $titre = "M.";
-        } elseif($civilite == 2) {
-            $titre = "Mme";
-        }elseif($civilite == 3) {
-            $titre = "Mlle";
-        }
-
         $curl1 = curl_init();
         $datas= [
         'step' => NULL,
@@ -568,7 +576,7 @@ class AdherentController extends Controller
         'filename' => NULL,
         'saveAsModel' => false,
         'destination' => 'NAT',
-        'message' => $titre." ".$nom." ".$pnom." votre inscription à Diphita Prévoyance à échoué. Veuillez nous contactez au numéro suivant pour plus d'informations \n Tel: +225 01010101",
+        'message' => $civilite." ".$nom." ".$pnom." votre inscription à Diphita Prévoyance à échoué. Veuillez nous contactez au numéro suivant pour plus d'informations \n Tel: +225 01010101",
         'emailText' => NULL,
         'recipients' => 
         [
@@ -807,11 +815,8 @@ class AdherentController extends Controller
             $fifth_day_month = Carbon::createFromFormat('Y-m-d', $current_month_year.'-05');
             
             //Vérifie si la date d'aujourd'hui est entre le 1er et le 5 du mois en cours
-            if (Carbon::now()->between($first_day_month, $fifth_day_month)) {
-                $date_debutcotisation = Carbon::createFromFormat('Y-m-d', $current_month_year.'-25');
-            } else {
-                $date_debutcotisation = Carbon::createFromFormat('Y-m-d', $current_month_year.'-25')->addMonth();
-            }
+            $dateAD = Carbon::now();
+            // Si $day < 5 alors day = 05 mois en cours sinon 05 mois suivant
 
             $souscripteur = Adherents::create([
                 'civilite' => $request->civilite ,
@@ -824,12 +829,16 @@ class AdherentController extends Controller
                 'num_contrat' => $sous_parent->num_contrat, 
                 'lieu_hab' =>  $request->lieu_hab,
                 'parent' => $sous,
-                'date_adhesion' => Carbon::now(),
-                'date_fincarence' => Carbon::now()->addMonths(DureeFincarences::where('status',1)->first()->duree),
-                'date_debutcotisation'=> $date_debutcotisation,
+                'date_adhesion' => $dateAD,
+                'date_fincarence' => $dateAD->addMonths(Parameters::dureeFinCarrence() ?? 4),
+                'date_debutcotisation'=> Carbon::create($dateAD->year, $dateAD->month + ($dateAD->day > 5 ?? 0) + 1, 5),
                 'role' => 2,
                 'valide' => 1,
                 'status' => 1,
+                'droit_inscription_montant' => Parameters::droitInscription(),
+                'cot_annuelle_montant' => Parameters::cotisationAnnuelle(),
+                'kits_montant' => Parameters::traitementKit(),
+                'admin_id' => Auth::user()->id
             ]);
 
             $souscripteur->firstCotisations();

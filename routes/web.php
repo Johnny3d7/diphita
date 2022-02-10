@@ -43,7 +43,9 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     Route::middleware('route-stack')->group(function(){
         //Dashboard
         Route::get('/home', 'HomeController@index')->name('index');
-    
+        
+        //User route
+        Route::get('/profil', 'UserController@show_profile')->name('user.show_profile');
         //Adhesion
     
         //Formulaire d'importation de données

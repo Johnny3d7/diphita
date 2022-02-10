@@ -155,18 +155,18 @@
                                                 <td>{{ ucwords((new Carbon\Carbon($adherent->date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                                               </tr>
                                               <tr>
-                                                <th scope="row" rowspan="3" class="v-align-mid">Somme à payer: <span style=" border:1.5px solid #2F5597; padding:5px 10px 5px 10px">10000 FCFA</span></th>
+                                                <th scope="row" rowspan="3" class="v-align-mid">Somme à payer: <span style=" border:1.5px solid #2F5597; padding:5px 10px 5px 10px">{{ (int)$adherent->droit_inscription_montant + (int)$adherent->cot_annuelle_montant + (int)$adherent->kits_montant }} FCFA</span></th>
                                                 <td>
                                                     <div class="row">
                                                         <div class="col-md-7">Droit d'inscription:</div>
-                                                        <div class="col-md-5 d-inline-flex"><div class="{{ !$adherent->isValide() ? 'dot ' : '' }}v-align-mid">{!! $adherent->isValide() ? '<i class="far fa-times-circle mr-2"></i>' : '' !!} </div> 7000 frs CFA</td></div>
+                                                        <div class="col-md-5 d-inline-flex"><div class="{{ !$adherent->isValide() ? 'dot ' : '' }}v-align-mid">{!! $adherent->isValide() ? '<i class="far fa-times-circle mr-2"></i>' : '' !!} </div> {{ $adherent->droit_inscription_montant }} frs CFA</td></div>
                                                     </div>
                                               </tr>
                                               <tr>
                                                 <td>
                                                     <div class="row">
                                                         <div class="col-md-7">Cotisation annuelle:</div>
-                                                        <div class="col-md-5 d-inline-flex"><div class="{{ !$adherent->isValide() ? 'dot ' : '' }}v-align-mid">{!! $adherent->isValide() ? '<i class="far fa-times-circle mr-2"></i>' : '' !!} </div> 2000 frs CFA</td></div>
+                                                        <div class="col-md-5 d-inline-flex"><div class="{{ !$adherent->isValide() ? 'dot ' : '' }}v-align-mid">{!! $adherent->isValide() ? '<i class="far fa-times-circle mr-2"></i>' : '' !!} </div> {{ $adherent->cot_annuelle_montant }} frs CFA</td></div>
                                                     </div>
                                                 </td>
                                               </tr>
@@ -174,7 +174,7 @@
                                                 <td>
                                                     <div class="row">
                                                         <div class="col-md-7">Traitement et kits d'inscription:</div>
-                                                        <div class="col-md-5 d-inline-flex"><div class="{{ !$adherent->isValide() ? 'dot ' : '' }}v-align-mid">{!! $adherent->isValide() ? '<i class="far fa-times-circle mr-2"></i>' : '' !!} </div> 1000 frs CFA</td></div>
+                                                        <div class="col-md-5 d-inline-flex"><div class="{{ !$adherent->isValide() ? 'dot ' : '' }}v-align-mid">{!! $adherent->isValide() ? '<i class="far fa-times-circle mr-2"></i>' : '' !!} </div> {{ $adherent->kits_montant }} frs CFA</td></div>
                                                     </div>
                                                 </td>
                                               </tr>
@@ -237,7 +237,7 @@
                                     </div>
                                     <div class="col">
                                         <h3 class="font-cambria mt_15 mb_15 txt-center">VISA DU BUREAU EXECUTIF</h3>
-                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">Lawrence Gallaty K.</div>                                 
+                                        <div class="font-cambria mt_15 mb_15 txt-center" style="font-size:21px;">{{ $adherent->admin->nom_pnom() }}</div>                                 
                                     </div>
                                     
                                 </div>

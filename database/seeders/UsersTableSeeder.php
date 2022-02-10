@@ -19,9 +19,59 @@ class UsersTableSeeder extends Seeder
         User::truncate();
 
         User::create([
-            'name' => 'lawrence',
-            'email'=> 'lgallaty@gmail.com',
-            'password' => Hash::make('diphita2022') 
+            'name' => 'Lawrence',
+            'pnom' => 'GALLATY',
+            'email'=> 'sregis.ble@gmail.com',
+            'password' => Hash::make('diphita2022') ,
+            'image_name' => 'admins_profil/lawrence_gallaty'
+        ]);
+
+        User::create([
+            'name' => 'Judith',
+            'pnom' => 'N\'GUESSAN',
+            'email'=> 'sregis.ble@gmail.com',
+            'password' => Hash::make('diphita2022'),
+            'image_name' => 'admins_profil/nguessan_judith'
+        ]);
+
+        User::create([
+            'name' => 'Bérenger',
+            'pnom' => 'KOUASSI',
+            'email'=> 'sregis.ble@gmail.com',
+            'password' => Hash::make('diphita2022'),
+            'image_name' => 'admins_profil/kouassi_berenger'
+        ]);
+
+        User::create([
+            'name' => 'Florentin',
+            'pnom' => 'N\'GUESSAN',
+            'email'=> 'sregis.ble@gmail.com',
+            'password' => Hash::make('diphita2022'),
+            'image_name' => 'admins_profil/nguessan_florentin'
+        ]);
+
+        User::create([
+            'name' => 'Alice',
+            'pnom' => 'BLA',
+            'email'=> 'sregis.ble@gmail.com',
+            'password' => Hash::make('diphita2022'),
+            'image_name' => 'admins_profil/bla_alice'
+        ]);
+
+        User::create([
+            'name' => 'Richard',
+            'pnom' => 'LOLOU',
+            'email'=> 'sregis.ble@gmail.com',
+            'password' => Hash::make('diphita2022'),
+            'image_name' => 'client_img',
+        ]);
+
+        User::create([
+            'name' => 'Narcisse',
+            'pnom' => 'BOUAZO',
+            'email'=> 'sregis.ble@gmail.com',
+            'password' => Hash::make('diphita2022'),
+            'image_name' => 'admins_profil/bouazo_narcisse'
         ]);
     }
 }
