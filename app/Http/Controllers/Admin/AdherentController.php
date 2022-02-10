@@ -407,6 +407,8 @@ class AdherentController extends Controller
         }
 
         $adhesion->save();
+        //Insérer cotisation
+        $adhesion->firstCotisations();
 
         //Numéro des beneficiaires a génerer
         $beneficiaires = Adherents::where('parent',$id)->get();
@@ -420,11 +422,12 @@ class AdherentController extends Controller
             $benef->date_adhesion = Carbon::now();
             $benef->date_fincarence = Carbon::now()->addMonths(DureeFincarences::where('status',1)->first()->duree);
             $benef->date_debutcotisation = $adhesion->date_debutcotisation;
+
             $benef->save();
+            //Insérer cotisation
+            $benef->firstCotisations();
         }
 
-        //Insérer cotisation
-        $adhesion->firstCotisations();
 
         // Envoyer un sms au concerné
 
@@ -836,6 +839,8 @@ class AdherentController extends Controller
                 'valide' => 1,
                 'status' => 1,
             ]);
+
+            $souscripteur->firstCotisations();
 
             $this->sms_add_new_benef($souscripteur);
 
