@@ -35,7 +35,7 @@
                         {{-- <td>{{ $data->role }}</td> --}}
                         <td><a href="{{ route('admin.adhesion.show', $souscripteur) }}">{{ $souscripteur->num_adhesion }}</a></td>
                         <td>{{ $souscripteur->nom }} {{ $souscripteur->pnom }}</td>
-                        <td>{{ $souscripteur->psCotisation($cotisation)->nbre_benef + 1 }}</td>
+                        <td>{{ $souscripteur->psCotisation($cotisation)->nbre_benef }}</td>
                         <td>{{ date_format(date_create($cotisation->date_assistance), 'd/m/Y') }}</td>
                         <td>{{ $cotisation->reglements($souscripteur)->sum('montant') }}</td>
                         <td>{{ $souscripteur->isReglee($cotisation) ? "A Jour" : "Non A Jour" }}</td>
