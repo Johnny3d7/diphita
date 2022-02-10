@@ -108,7 +108,7 @@
                         <div class="profile_info_iner">
                             <div class="profile_author_name">
                                 <p>{{ auth()->user()->nom_pnom() }}</p>
-                                <h5>Super Admin</h5>
+                                <h5 style="color:white !important;">Super Admin</h5>
                             </div>
                             <div class="profile_info_details">
                                 <a href="{{ route('admin.user.show_profile',['']) }}">Mon compte</a>
