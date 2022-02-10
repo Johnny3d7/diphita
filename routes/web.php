@@ -36,7 +36,7 @@ Route::middleware(['guest'])->group(function(){
   Route::get('/home', 'HomeController@index');
 });*/
 
-Route::get('/adhesion-liste', 'App\Http\Controllers\Client\AdherentController@index')->name('client.adhesion.liste')->middleware('auth');
+Route::get('/adhesion-liste', 'App\Http\Controllers\Client\AdherentController@index')->name('client.adhesion.liste')->middleware(['auth', 'route-stack']);
 
 //Route::get('/index', 'HomeController@index')->name('index');
 Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')->middleware(['auth','route-stack'])->group( function(){
