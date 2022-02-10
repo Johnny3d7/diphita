@@ -20,8 +20,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'pnom',
         'email',
         'password',
+        'image_name'
     ];
 
     /**
@@ -42,4 +44,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function nom_pnom(){
+        return $this->name.' '.$this->pnom;
+    }
+
+    public function adherents(){
+        return $this->hasMany(Adherents::class, 'admin_id');
+   }
 }
