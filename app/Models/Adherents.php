@@ -53,17 +53,19 @@ class Adherents extends Model
         parent::boot();
 
         static::creating(function($item) {
-            $dateAD = Carbon::create($item->date_adhesion);
-            // Si $day < 5 alors day = 05 mois en cours sinon 05 mois suivant
-            $item->date_debutcotisation = Carbon::create($dateAD->year, $dateAD->month + ($dateAD->day > 5 ?? 0), 5);
-
-            $item->date_fincarence = $dateAD->addMonths(Parameters::dureeFinCarrence() ?? 4);
+            if($item->date_adhesion){
+                $dateAD = Carbon::create($item->date_adhesion);
+                // Si $day < 5 alors day = 05 mois en cours sinon 05 mois suivant
+                $item->date_debutcotisation = Carbon::create($dateAD->year, $dateAD->month + ($dateAD->day > 5 ?? 0), 5);
+    
+                $item->date_fincarence = $dateAD->addMonths(Parameters::dureeFinCarrence() ?? 4);
+            }
         });
 
         static::created(function($item) {
             // Creating cotisation items for each cotisation  based on $this->date_debutcotisation
             
-            if($item->isValide()){
+            if($item->isValide() && (0 == 1)){
                 if($item->isSouscripteur()) $item->firstCotisations();
                 if($item->isBeneficiaire() && $item->souscripteur()){
                     $souscripteur = $item->souscripteur();
@@ -89,16 +91,31 @@ class Adherents extends Model
         });
     }
 
+    public function valider(){
+        
+    }
+
     public function firstCotisations(){
-        $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($this->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($this->date_debutcotisation))->get();
+        $beneficiaire = $this; // Tout souscripteur est d'abord un adhérent
+        $souscripteur = $this->isSouscripteur() ? $this : $this->souscripteur();
+
+        $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($beneficiaire->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($beneficiaire->date_debutcotisation))->get();
         if($cotisations){
-            foreach ($cotisations as $cotisation) { // Select all souscripteurs and create thiss
-                if(!AdherentHasCotisations::whereIdCotisation($cotisation->id)->whereIdAdherent($this->id)->first()){
+            foreach ($cotisations as $cotisation) { // Select all souscripteurs and create this
+                $exists = AdherentHasCotisations::whereIdCotisation($cotisation->id)->whereIdAdherent($souscripteur->id)->first();
+                if(!$exists){
                     AdherentHasCotisations::create([
                         'id_cotisation' => $cotisation->id,
-                        'id_adherent' => $this->id,
-                        'nbre_benef' => $this->total_benef_life() + 1,
-                        'montant' => $cotisation->montant * ($this->total_benef_life() + 1),
+                        'id_adherent' => $souscripteur->id,
+                        'nbre_benef' => $souscripteur->total_benef_life() + 1,
+                        'montant' => $cotisation->montant * ($souscripteur->total_benef_life() + 1),
+                        'reglee' => false,
+                        'parcouru' => false,
+                    ]);
+                } else {
+                    $exists->update([
+                        'nbre_benef' => $souscripteur->total_benef_life() + 1,
+                        'montant' => $cotisation->montant * ($souscripteur->total_benef_life() + 1),
                         'reglee' => false,
                         'parcouru' => false,
                     ]);
@@ -108,42 +125,58 @@ class Adherents extends Model
         $this->firstReglement();
     }
 
-    public function firstReglementPerso(Adherents $adherent){
+    public function firstReglementPerso(){
+        $beneficiaire = $this; // Tout souscripteur est d'abord un adhérent
+        $souscripteur = $this->isSouscripteur() ? $this : $this->souscripteur();
+
         Reglement::create([
-            'id_adherent' => $this->id,
+            'id_adherent' => $souscripteur->id,
             'montant' => Parameters::droitInscription(),
             'type' => "Droit d'inscription",
-            'description' => "Droit d'inscription : $adherent->num_adhesion"
+            'description' => "Droit d'inscription : $beneficiaire->num_adhesion"
         ]);
         Reglement::create([
-            'id_adherent' => $this->id,
+            'id_adherent' => $souscripteur->id,
             'montant' => Parameters::traitementKit(),
             'type' => "Kit d'inscription",
-            'description' => "Kit d'inscription : $adherent->num_adhesion"
+            'description' => "Kit d'inscription : $beneficiaire->num_adhesion"
         ]);
+
+        $annuelle = $souscripteur->cotisations("annuelle")->last();
+
+        if($annuelle){
+            Reglement::create([
+                'id_adherent' => $souscripteur->id,
+                'id_cotisation' => $annuelle->id,
+                'montant' => $annuelle->montant,
+                // 'montant' => $this->psCotisation($annuelle) ? $this->psCotisation($annuelle)->montant() : 0,
+                'type' => 'Paiement de cotisation première année',
+                'description' => "Cotisation annuelle : $beneficiaire->num_adhesion ($annuelle->annee_cotis)"
+            ]);
+        }
+
     }
     
     public function firstReglement(){
-        Versement::create([
-            'id_adherent' => $this->id,
-            'montant' => (Parameters::cotisationAnnuelle()+Parameters::droitInscription()+Parameters::traitementKit()) * ($this->beneficiaires()->count() + 1)
-        ]);
-
-        $this->firstReglementPerso($this);
-        foreach ($this->beneficiaires() as $beneficiaire) {
-            $this->firstReglementPerso($beneficiaire);
-        }
-
-        $annuelle = $this->cotisations("annuelle")->last()->first();
-        if($annuelle){
-            Reglement::create([
-                'id_adherent' => $this->id,
-                'id_cotisation' => $annuelle->id,
-                'montant' => $this->psCotisation($annuelle) ? $this->psCotisation($annuelle)->montant() : 0,
-                'type' => 'Paiement de cotisation première année',
-                'description' => "Cotisation annuelle : $annuelle->annee_cotis"
+        $souscripteur = $this->isSouscripteur() ? $this : $this->souscripteur();
+        
+        $exists = Versement::whereIdAdherent($souscripteur->id)->whereDate('created_at', Carbon::today())->first();
+        if(!$exists) {
+            Versement::create([
+                'id_adherent' => $souscripteur->id,
+                // 'montant' => (Parameters::cotisationAnnuelle()+Parameters::droitInscription()+Parameters::traitementKit()) * ($nbre == 0 ? ($this->beneficiaires()->count() + 1) : $nbre)
+                'montant' => Parameters::cotisationAnnuelle()+Parameters::droitInscription()+Parameters::traitementKit()
+            ]);
+        } else {
+            $exists->update([
+                'montant' => $exists->montant + Parameters::cotisationAnnuelle()+Parameters::droitInscription()+Parameters::traitementKit()
             ]);
         }
+
+        $this->firstReglementPerso();
+        // foreach ($this->beneficiaires() as $beneficiaire) {
+        //     $this->firstReglementPerso($beneficiaire);
+        // }
     }
 
     public static function selectAll(Bool $souscripteur = false){
