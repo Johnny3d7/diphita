@@ -43,6 +43,9 @@ class Adherents extends Model
         'conseiller_diph',
         'cas',
         'status',
+        'droit_inscription_montant',
+        'cot_annuelle_montant',
+        'kits_montant',
         'admin_id'
     ];
 
@@ -290,6 +293,9 @@ class Adherents extends Model
         return $this->psCotisation($cotisation) ? $this->psCotisation($cotisation)->reglee : null;
     }
 
+    public function admin(){
+         return $this->belongsTo(User::class, 'admin_id');
+    }
     
 
 }
