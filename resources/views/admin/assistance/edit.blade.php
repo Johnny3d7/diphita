@@ -166,10 +166,10 @@
                                         <label for="moyen_assistance">Moyen d'assistance</label>
                                         <select id="moyen_paie" class="form-control @error('moyen_assistance') is-invalid @enderror" name="moyen_assistance" >
                                             <option  value="0" disabled>--- Sélectionnez un moyen de paiement ---</option>
-                                            <option {{ $assistance->moyen_assistance == 1 ? 'selected' : '' }} value="1">Espèces </option>
-                                            <option {{ $assistance->moyen_assistance == 2 ? 'selected' : '' }} value="2">Chèque</option>
-                                            <option {{ $assistance->moyen_assistance == 3 ? 'selected' : '' }} value="3">Virement </option>
-                                            <option {{ $assistance->moyen_assistance == 4 ? 'selected' : '' }} value="4">Dépôt électronique</option>
+                                            <option {{ $assistance->moyen_assistance == "Espèces" ? 'selected' : '' }} value="Espèces">Espèces </option>
+                                            <option {{ $assistance->moyen_assistance == "Chèque" ? 'selected' : '' }} value="Chèque">Chèque</option>
+                                            <option {{ $assistance->moyen_assistance == "Virement" ? 'selected' : '' }} value="Virement">Virement </option>
+                                            <option {{ $assistance->moyen_assistance == "Dépôt électronique" ? 'selected' : '' }} value="Dépôt électronique">Dépôt électronique</option>
                                         </select>
                                         @error('moyen_assistance')
                                         <span class="invalid-feedback" role="alert">
