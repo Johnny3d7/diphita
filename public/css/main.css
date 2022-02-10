@@ -251,6 +251,10 @@ div#ayant_bloc, div#benef_bloc{
   .fr{
     float: right;
 }
+
+.profile_info .profile_info_iner .profile_author_name {
+    background: #29235c !important;
+}
   
 
   
