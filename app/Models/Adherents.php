@@ -56,7 +56,7 @@ class Adherents extends Model
             if($item->date_adhesion){
                 $dateAD = Carbon::create($item->date_adhesion);
                 // Si $day < 5 alors day = 05 mois en cours sinon 05 mois suivant
-                $item->date_debutcotisation = Carbon::create($dateAD->year, $dateAD->month + ($dateAD->day > 5 ?? 0), 5);
+                $item->date_debutcotisation = Carbon::create($dateAD->year, $dateAD->month + ($dateAD->day > 5 ?? 0) + 1, 5);
     
                 $item->date_fincarence = $dateAD->addMonths(Parameters::dureeFinCarrence() ?? 4);
             }
