@@ -104,14 +104,14 @@
                         </li>
                     </div>
                     <div class="profile_info">
-                        <img src="{{ url('img/client_img.png') }}" alt="#">
+                        <img src="{{ url('img/'.auth()->user()->image_name.'.png') }}" alt="#">
                         <div class="profile_info_iner">
                             <div class="profile_author_name">
-                                <p>Super Admin </p>
-                                <h5>{{ auth()->user()->name }}</h5>
+                                <p>{{ auth()->user()->nom_pnom() }}</p>
+                                <h5>Super Admin</h5>
                             </div>
                             <div class="profile_info_details">
-                                <a href="#">Mon compte</a>
+                                <a href="{{ route('admin.user.show_profile',['']) }}">Mon compte</a>
                                 <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">Déconnexion </a>
                                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

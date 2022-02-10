@@ -42,9 +42,9 @@
                                         <label for="civilite">Civilité <code class="highlighter-rouge">*</code></label>
                                         <select class="form-control @error('civilite') is-invalid @enderror" name="civilite" required>
                                             <option value="0" selected disabled>--- Civilité de l'ayant droit ---</option>
-                                            <option value="1">M. </option>
-                                            <option value="2">Mme</option>
-                                            <option value="3">Mlle</option>
+                                            <option value="M">M. </option>
+                                            <option value="Mme">Mme</option>
+                                            <option value="Mlle">Mlle</option>
                                         </select>
                                         @error('civilite')
                                         <span class="invalid-feedback" role="alert">

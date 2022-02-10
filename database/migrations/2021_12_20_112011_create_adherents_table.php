@@ -38,6 +38,9 @@ class CreateAdherentsTable extends Migration
             $table->integer('cas')->default(0);
             $table->integer('status')->default(1);
             $table->integer('admin_id')->nullable();
+            $table->string('droit_inscription_montant')->nullable();
+            $table->string('cot_annuelle_montant')->nullable();
+            $table->string('kits_montant')->nullable();
             $table->integer('solde')->nullable();
             $table->timestamps();
         });

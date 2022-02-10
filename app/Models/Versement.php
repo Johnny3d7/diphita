@@ -22,6 +22,14 @@ class Versement extends Model
         'parcouru',
         'id_admin'
     ];
+
+    public static function boot(){
+        parent::boot();
+
+        static::creating(function($item){
+            $item->description = "Versement";
+        });
+    }
     
     public function adherent()
     {

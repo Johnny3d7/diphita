@@ -38,7 +38,7 @@
                 @php $year = $cots['year']; $cotis = $cots['cotisations'];@endphp
                 <div class="tab-pane fade {{ $year == date_format(date_create(), 'Y') ? 'show active' : '' }}" id="pills-{{ $year }}" role="tabpanel" aria-labelledby="pills-{{ $year }}-tab">
                     <div class="row">
-                        @foreach ($cotis as $cotisation)
+                        @foreach ($cotis->sortByDesc('id') as $cotisation)
                             <div class="col-lg-3 col-md-4 col-sm-6">
                                 <div class="white_card position-relative mb_20 ">
                                     <div class="card-body p-0">

@@ -15,6 +15,9 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
+        $this->call(ParametersTableSeeder::class);
+        $this->command->info('Parameters tables seeded! { Kit - Droit - Annuelle - Exceptionnelle - Durée }');
+
         $this->call(UsersTableSeeder::class);
         $this->command->info('User table seeded!');
 

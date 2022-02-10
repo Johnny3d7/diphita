@@ -25,9 +25,10 @@
                         <div class="tab-pane fade show active" id="pills-success-transaction" role="tabpanel" aria-labelledby="success-tab">
                             @if (count($souscripteur->transactions()) > 0)
                                 <ul class="list-group">
-                                    @foreach($souscripteur->transactions()->sortByDesc('id') as $transaction)
+                                    @foreach($souscripteur->transactions()->sortByDesc('created_at') as $transaction)
                                         <li class="list-group-item">
-                                            {{ ucwords((new Carbon\Carbon($transaction->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm'))  }} : {{ $transaction->type ? $transaction->montant() : $transaction->montant }} francs
+                                            {{-- {{ ucwords((new Carbon\Carbon($transaction->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm'))  }} : {{ $transaction->type ? $transaction->montant() : $transaction->montant }} francs --}}
+                                            {{ ucwords((new Carbon\Carbon($transaction->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm'))  }} : {{ $transaction->montant }} francs => <small>{{ $transaction->description }}</small>
                                         </li>
                                     @endforeach 
                                 </ul>
@@ -52,14 +53,14 @@
                         <div class="tab-pane fade" id="pills-errors-transaction" role="tabpanel" aria-labelledby="errors-tab">
                             @if (count($souscripteur->reglements) > 0)
                                 <ul class="list-group">
-                                    @foreach($souscripteur->reglements->sortByDesc('id') as $cotisation)
+                                    @foreach($souscripteur->reglements->sortByDesc('created_at') as $reglement)
                                         <li class="list-group-item">
-                                            {{ $cotisation->code_deces ?? $cotisation->annee_cotis  }} : {{ $cotisation->montant }} francs
+                                            {{ ucwords((new Carbon\Carbon($reglement->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm'))  }}  : {{ $reglement->montant }} francs => <small>{{ $reglement->description }}</small>
                                         </li>
                                     @endforeach 
                                 </ul>
                             @else
-                                <h6 class="text-center">Aucune cotisation</h6>
+                                <h6 class="text-center">Aucun règlement</h6>
                             @endif
 
                         </div>

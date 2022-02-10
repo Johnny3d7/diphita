@@ -36,14 +36,16 @@ Route::middleware(['guest'])->group(function(){
   Route::get('/home', 'HomeController@index');
 });*/
 
-Route::get('/adhesion-liste', 'App\Http\Controllers\Client\AdherentController@index')->name('client.adhesion.liste')->middleware('auth');
+Route::get('/adhesion-liste', 'App\Http\Controllers\Client\AdherentController@index')->name('client.adhesion.liste')->middleware(['auth', 'route-stack']);
 
 //Route::get('/index', 'HomeController@index')->name('index');
 Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')->middleware(['auth','route-stack'])->group( function(){
     Route::middleware('route-stack')->group(function(){
         //Dashboard
         Route::get('/home', 'HomeController@index')->name('index');
-    
+        
+        //User route
+        Route::get('/profil', 'UserController@show_profile')->name('user.show_profile');
         //Adhesion
     
         //Formulaire d'importation de données

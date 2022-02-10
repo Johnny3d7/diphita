@@ -21,6 +21,8 @@ class Reglement extends Model
         'id_adherent',
         'id_cotisation',
         'parcouru',
+        'type',
+        'description',
         'id_admin'
     ];
 
@@ -30,11 +32,11 @@ class Reglement extends Model
         static::created(function($item) {
             $cotisation = Cotisation::find($item->id_cotisation);
             $adherent = Adherents::find($item->id_adherent);
-            $adherentHasCotisation = $adherent ? $adherent->psCotisation($cotisation) : null;
-            if($cotisation && $adherent && ($cotisation->reglements($adherent)->sum('montant') >= $adherentHasCotisation->montant())){
-                $adherentHasCotisation->update(['reglee' => true]);
+            $adherentHasCotisation = $adherent && $cotisation ? $adherent->psCotisation($cotisation) : null;
+            if($cotisation && $adherent && ($cotisation->reglements($adherent)->sum('montant') >= ($adherentHasCotisation ? $adherentHasCotisation->montant() : 0 ))){
+                if($adherentHasCotisation) $adherentHasCotisation->update(['reglee' => true]);
             } else {
-                $adherentHasCotisation->update(['reglee' => false]);
+                if($adherentHasCotisation) $adherentHasCotisation->update(['reglee' => false]);
             }
         });
     }

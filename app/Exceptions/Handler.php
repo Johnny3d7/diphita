@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -38,4 +39,15 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    // public function render($request, Throwable $e)
+    // {
+    //     if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+    //         return redirect('/admin/home');
+    //     } 
+    //     elseif( $e instanceof \ErrorException){
+    //         return redirect('/admin/home');
+    //     }
+    //     return parent::render($request, $e);
+    // }
 }

@@ -46,7 +46,7 @@ class SouscripteursImport implements ToCollection, WithHeadingRow
                 // Création d'une Request en vue de la validation des informations renseignées dans chaque ligne
                 $request2 = new Request([
                     'role' => 1, // Souscripteur
-                    'valide' => 1, // Valider d'office
+                    'valide' => $row['valide'] ?? 1, // Valider d'office
                     'num_adhesion' => $row['idsouscripteur'] ? Functions::trimInsideString($row['idsouscripteur']) : null,
                     'civilite' => $row['civilite'] ?? null,
                     'nom' => $row['nomprenom'] ? trim(explode(' ', $row['nomprenom'])[0]) : null,

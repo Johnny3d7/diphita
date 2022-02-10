@@ -28,4 +28,11 @@ class UserController extends Controller
             return redirect()->route('login');
         }
     }
+
+    public function show_profile(){
+
+        $user = Auth::user();
+
+        return view('admin.user.show_profile',compact('user'));
+    }
 }

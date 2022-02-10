@@ -42,9 +42,9 @@
                                         <label for="civilite">Civilité <code class="highlighter-rouge">*</code></label>
                                         <select class="form-control @error('civilite') is-invalid @enderror" name="civilite" required>
                                             <option  value="0" disabled>--- Civilité du bénéficiaire ---</option>
-                                            <option {{ $beneficiaire->civilite == 1 ? 'selected' : '' }} value="1">M. </option>
-                                            <option {{ $beneficiaire->civilite == 2 ? 'selected' : '' }} value="2">Mme</option>
-                                            <option {{ $beneficiaire->civilite == 3 ? 'selected' : '' }} value="3">Mlle</option>
+                                            <option {{ $beneficiaire->civilite == "M" ? 'selected' : '' }} value="M">M. </option>
+                                            <option {{ $beneficiaire->civilite == "Mme" ? 'selected' : '' }} value="Mme">Mme</option>
+                                            <option {{ $beneficiaire->civilite == "Mlle" ? 'selected' : '' }} value="Mlle">Mlle</option>
                                         </select>
                                         @error('civilite')
                                         <span class="invalid-feedback" role="alert">
