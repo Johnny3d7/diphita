@@ -41,6 +41,7 @@ class BeneficiairesImport implements ToCollection, WithHeadingRow
                     'pnom' => $row['nomprenom'] ? trim(substr($row['nomprenom'], strlen(explode(' ', $row['nomprenom'])[0]))) : null,
                     'email' => $row['email'] ?? null,
                     'num_cni' => $row['cni'] ?? null,
+                    'admin_id' => 1,
                     'date_naiss' => isset($row['datenaissance']) ? Functions::dateFromExcel($row['datenaissance']) : null,
                     'lieu_naiss' => $row['lieunaissance'] ?? null,
                     'lieu_hab' => $row['lieuhabitation'] ?? null,

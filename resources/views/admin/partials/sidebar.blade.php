@@ -44,10 +44,11 @@
                 </div>
             </a>
             <ul>
-              <li><a href="{{ route('admin.adherent.index') }}">Les souscripteurs</a></li>
-              <li><a href="{{ route('admin.beneficiaires.index') }}">Tous les bénéficiaires</a></li>
-              <li><a href="javascript:void(0);">Les souscripteurs Oumé</a></li>
-              <li><a href="javascript:void(0);">Les souscripteurs Ouéllé</a></li>
+              <li><a href="{{ route('admin.adherent.index') }}">Les souscripteurs {{ auth()->user()->role == 'admin_ouelle' ? 'Ouellé' :''  }} {{ auth()->user()->role == 'admin_oume' ? 'Oumé' :''  }}</a></li>
+              <li><a href="{{ route('admin.beneficiaires.index') }}">Tous les bénéficiaires {{ auth()->user()->role == 'admin_ouelle' ? 'Ouellé' :''  }} {{ auth()->user()->role == 'admin_oume' ? 'Oumé' :''  }}</a></li>
+              {{-- <li><a href="javascript:void(0);">Les souscripteurs Oumé</a></li>
+              <li><a href="javascript:void(0);">Les souscripteurs Ouéllé</a></li> --}}
+              <li><a href="{{ route('admin.adhesion.inactif.liste') }}">Les souscripteurs Inactifs</a></li>
             </ul>
         </li>
         <li class="">

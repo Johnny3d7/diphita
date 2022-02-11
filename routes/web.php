@@ -62,7 +62,9 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         Route::get('/adhesions-valider-liste', 'AdherentController@adhesion_valider_liste')->name('adhesion.valider.liste');
     
         //Adhesion deja rejeter
-        Route::get('/adhesions-rejeter-liste', 'AdherentController@adhesion_rejeter_liste')->name('adhesion.rejeter.liste');    
+        Route::get('/adhesions-rejeter-liste', 'AdherentController@adhesion_rejeter_liste')->name('adhesion.rejeter.liste');   
+        
+         
         
     
         //show contrat souscriptzur
@@ -78,6 +80,12 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         //Adhérents routes
         Route::get('/adherents', 'AdherentController@index')->name('adherent.index');
         Route::get('/beneficiaires', 'AdherentController@beneficiaires')->name('beneficiaires.index');
+
+        //Adherent inactif
+        Route::get('/adherents-inactifs', 'AdherentController@adherent_inactif_liste')->name('adhesion.inactif.liste');
+        
+        //Adherent localité
+        Route::get('/adherents/{localite}', 'AdherentController@adhesion_par_localite_liste')->name('adhesion.localite.liste');
 
         // Reglement de cotisation adherent
         Route::post('/adherents/cotisation/paiement', 'AdherentController@paiementCotisation')->name('adherent.cotisation.paiement');
@@ -144,14 +152,10 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         Route::get('/assistance/{id}/assister', 'AssistanceController@assister')->name('assistance.assister');
         Route::get('/assistance/{id}/destroy', 'AssistanceController@destroy')->name('assistance.destroy');
 
-
         Route::get('/assistance-without-sousid/create', 'AssistanceController@assistance_without_sousid_create')->name('assistance.without_sousid.create');
 
         Route::get('/assistance/{id}/publier', 'AssistanceController@publier')->name('assistance.publier');
 
-  
-        
-    
         Route::get('/assistance/importation', 'AssistanceController@importation')->name('assistance.importation');
         Route::post('/assistance/importation', 'AssistanceController@importationPost')->name('assistance.importationPost');
     

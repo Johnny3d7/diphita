@@ -42,7 +42,7 @@
                                         <label for="civilite">Civilité <code class="highlighter-rouge">*</code></label>
                                         <select value="{{ old('civilite') }}" class="form-control @error('civilite') is-invalid @enderror" name="civilite" required>
                                             <option value="0" selected disabled>--- Civilité du bénéficiaire ---</option>
-                                            <option value="M">M. </option>
+                                            <option value="M.">M. </option>
                                             <option value="Mme">Mme</option>
                                             <option value="Mlle">Mlle</option>
                                         </select>

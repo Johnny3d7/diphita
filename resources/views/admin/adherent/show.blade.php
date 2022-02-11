@@ -144,16 +144,16 @@
                             <div class="row">
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Nom:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $souscripteur->nom }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Nom:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ strtoupper($souscripteur->nom) }}</div></div>
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Prénom(s):&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $souscripteur->pnom }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Prénom(s):&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ strtoupper($souscripteur->pnom) }}</div></div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb_15" style="font-size:16px !important">
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Lieu de naissance:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">
-                                        {{ $souscripteur->lieu_naiss }}                
+                                        {{ strtoupper($souscripteur->lieu_naiss) }}                
                                     </div>
                                 </div>
                                 </div>
@@ -167,7 +167,7 @@
                             </div>  
                             <div class="row">
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Lieu de résidence:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $souscripteur->lieu_hab }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Lieu de résidence:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ strtoupper($souscripteur->lieu_hab) }}</div></div>
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
                                     
@@ -196,7 +196,7 @@
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Début de cotisation:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ ucwords((new Carbon\Carbon($souscripteur->date_debutcotisation))->locale('fr')->isoFormat('Do MMMM YYYY')) }}</div></div>
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Conseiller:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $souscripteur->conseiller_diph ? $souscripteur->conseiller_diph : 'Indisponible' }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Conseiller:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $souscripteur->conseiller_diph ? strtoupper($souscripteur->conseiller_diph) : 'INDISPONIBLE' }}</div></div>
                                 </div>
                             </div>
                             <div class="row mt_30 justify-content-center">

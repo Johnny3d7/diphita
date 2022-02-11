@@ -45,7 +45,7 @@
                                         <label for="souscript_civilite">Civilité <code class="highlighter-rouge">*</code></label>
                                         <select class="form-control @error('souscript_civilite') is-invalid @enderror" name="souscript_civilite" required>
                                             <option selected value="0" disabled>--- Civilité du souscripteur ---</option>
-                                            <option value="M">M. </option>
+                                            <option value="M.">M. </option>
                                             <option value="Mme">Mme</option>
                                             <option value="Mlle">Mlle</option>
                                         </select>
@@ -153,7 +153,7 @@
                                             <label for="benef_civilite[]">Civilité <code class="highlighter-rouge">*</code></label>
                                             <select class="form-control @error('benef_civilite[]') is-invalid @enderror" name="benef_civilite[]" required>
                                                 <option selected value="0" disabled>--- Civilité du bénéficiaire ---</option>
-                                                <option value="M">M. </option>
+                                                <option value="M.">M. </option>
                                                 <option value="Mme">Mme</option>
                                                 <option value="Mlle">Mlle</option>
                                             </select>
@@ -240,7 +240,7 @@
                                         <label for="ayant_civilite[]">Civilité <code class="highlighter-rouge">*</code></label>
                                         <select class="form-control @error('ayant_civilite[]') is-invalid @enderror" name="ayant_civilite[]" required>
                                             <option selected value="0" disabled>--- Civilité de l'ayant-droit ---</option>
-                                            <option value="M">M. </option>
+                                            <option value="M.">M. </option>
                                             <option value="Mme">Mme</option>
                                             <option value="Mlle">Mlle</option>
                                         </select>
@@ -338,7 +338,7 @@
                                             <label for="benef_civilite[]">Civilité <code class="highlighter-rouge">*</code></label>
                                             <select class="form-control @error('benef_civilite[]') is-invalid @enderror" name="benef_civilite[]" required>
                                                 <option selected value="0" disabled>--- Civilité du bénéficiaire ---</option>
-                                                <option value="M">M. </option>
+                                                <option value="M.">M. </option>
                                                 <option value="Mme">Mme</option>
                                                 <option value="Mlle">Mlle</option>
                                             </select>
@@ -440,7 +440,7 @@ $("#ayant_btn").click(function (e) {
                                         <label for="ayant_civilite[]">Civilité <code class="highlighter-rouge">*</code></label>
                                         <select class="form-control @error('ayant_civilite[]') is-invalid @enderror" name="ayant_civilite[]" required>
                                             <option selected value="0" disabled>--- Civilité de l'ayant-droit ---</option>
-                                            <option value="M">M. </option>
+                                            <option value="M.">M. </option>
                                             <option value="Mme">Mme</option>
                                             <option value="Mlle">Mlle</option>
                                         </select>
