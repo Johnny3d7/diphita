@@ -179,10 +179,36 @@ class Adherents extends Model
         // }
     }
 
-    public static function selectAll(Bool $souscripteur = false){
-        $valides = static::where(['valide'=>1,'status'=>1]);
+    public static function selectAll(Bool $souscripteur = false,$statut = 1){
+        $valides = static::where(['valide'=>1,'status'=>$statut]);
         if($souscripteur) $valides = $valides->whereRole(1);
         return $valides->get();
+    }
+
+    public static function selectAllForAdmin(string $lieu_hab = null, $status = 1){
+
+        if($lieu_hab == null){
+            return static::where(['valide'=>1,'status'=>$status,'role'=>1])->get();
+        }else{
+            return static::where(['valide'=>1,'status'=>$status,'lieu_hab'=>$lieu_hab,'role'=>1])->get();
+        }
+        
+    }
+
+    public static function selectAllBenefLocalite($lieu_hab){
+
+        $valides = static::where(['valide'=>1,'status'=>1])->get();
+        $benefs = [];
+        foreach ($valides as $item) {
+            if ($item->isSouscripteur() && $item->lieu_hab == $lieu_hab ) {
+                $benefs[] = $item;
+            }
+            elseif($item->isBeneficiaire() && $item->souscripteur()->lieu_hab == $lieu_hab){
+                $benefs[] = $item;
+            }
+            # code...
+        }
+        return $benefs;
     }
 
     /**

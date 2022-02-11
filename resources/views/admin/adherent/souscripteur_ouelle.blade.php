@@ -5,11 +5,11 @@
 @endsection
 
 @section('title')
-    Liste des souscripteurs
+    Liste des souscripteurs de OUELLÉ
 @endsection
 
 @section('subtitle')
-    Liste des souscripteurs
+    Liste des souscripteurs de OUELLÉ
 @endsection
 
 @section('content')
@@ -69,7 +69,6 @@
                                     <td>{{ ucwords((new Carbon\Carbon($souscripteur->date_naiss))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
                         
                                     <td><a href="#" style="{{ $souscripteur->status==1 ? '' : 'background-color:red'  }}" class="status_btn" >{{ $souscripteur->status==1 ? 'Actif' : 'Inactif' }}</a></td>
-
                                     <td>
                                         <div class="header_more_tool">
                                             <div class="dropdown">

@@ -57,6 +57,7 @@ class SouscripteursImport implements ToCollection, WithHeadingRow
                     'lieu_naiss' => $row['lieunaissance'] ?? null,
                     'lieu_hab' => $row['lieuhabitation'] ?? null,
                     'contact' => $row['contact'] ?? null,
+                    'admin_id' => 1,
                     'cas' => (isset($row['cas']) && $row['cas'] == "Oui") ? 1 : 0,
                     'beneficiaire1' => $row['beneficiaire1'] ? Functions::trimInsideString($row['beneficiaire1']) : null,
                     'beneficiaire2' => $row['beneficiaire2'] ? Functions::trimInsideString($row['beneficiaire2']) : null,
