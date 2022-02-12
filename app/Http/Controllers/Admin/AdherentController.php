@@ -65,6 +65,21 @@ class AdherentController extends Controller
         return view('admin.adherent.inactif.index',compact('souscripteurs'));
     }
 
+    public function adhesion_par_localite_liste($localite){
+
+        if ($localite == "oume") {
+            $souscripteurs = Adherents::selectAllForAdmin('OUMÉ',0)->sortByDesc('created_at');
+            
+        } elseif($localite == "ouelle") {
+            $souscripteurs = Adherents::selectAllForAdmin('OUELLÉ',0)->sortByDesc('created_at');
+        }
+
+        return view('admin.adherent.'.$localite,compact('souscripteurs'));
+        
+    }
+
+
+
    
     /**
      * Display a listing of the resource.

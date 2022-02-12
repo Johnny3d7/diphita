@@ -49,6 +49,11 @@
               {{-- <li><a href="javascript:void(0);">Les souscripteurs Oumé</a></li>
               <li><a href="javascript:void(0);">Les souscripteurs Ouéllé</a></li> --}}
               <li><a href="{{ route('admin.adhesion.inactif.liste') }}">Les souscripteurs Inactifs</a></li>
+              @if (auth()->user()->role == 'super_admin' )
+                <li><a href="{{ route('admin.adhesion.localite.liste',['localite'=>'oume']) }}">Les souscripteurs Oumé</a></li>
+                <li><a href="{{ route('admin.adhesion.localite.liste',['localite'=> 'ouelle']) }}">Les souscripteurs Ouellé</a></li>
+              @endif
+              
             </ul>
         </li>
         <li class="">
@@ -151,7 +156,7 @@
             </a>
             <ul>
               <li><a href="javascript:void(0);">Ajout</a></li>
-              <li><a href="javascript:void(0);">Liste</a></li>
+              <li><a href="{{ route('admin.user.index') }}">Liste</a></li>
             </ul>
         </li>
         <li class="">
@@ -164,8 +169,8 @@
               </div>
             </a>
             <ul>
-              <li><a href="javascript:void(0);">Mes informations</a></li>
-              <li><a href="javascript:void(0);">Modifier mon mot de passe</a></li>
+              <li><a href="{{ route('admin.user.show_profile') }}">Mes informations</a></li>
+              <li><a href="{{ route('admin.user.edit_password') }}">Modifier mon mot de passe</a></li>
             </ul>
         </li>
         <li class="">
