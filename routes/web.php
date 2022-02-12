@@ -26,7 +26,7 @@ Route::get('/login', function () {
 //Route::get('/home', 'App\Http\Controllers\Admin\HomeController@index')->name('admin.index');
 
 Route::middleware(['guest'])->group(function(){
-    Route::post('checkuser', 'App\Http\Controllers\UserController@checkuser')->name('checkuser');
+    Route::post('checkuser', 'App\Http\Controllers\Admin\UserController@checkuser')->name('checkuser');
     Route::post('/adhesion-store', 'App\Http\Controllers\Client\AdherentController@store')->name('adhesion.store');
     Route::get('/adhesion', 'App\Http\Controllers\Client\AdherentController@adhesion')->name('client.adhesion');
 });
@@ -39,13 +39,36 @@ Route::middleware(['guest'])->group(function(){
 Route::get('/adhesion-liste', 'App\Http\Controllers\Client\AdherentController@index')->name('client.adhesion.liste')->middleware(['auth', 'route-stack']);
 
 //Route::get('/index', 'HomeController@index')->name('index');
-Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')->middleware(['auth','route-stack'])->group( function(){
+Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')->middleware(['auth'])->group( function(){
     Route::middleware('route-stack')->group(function(){
         //Dashboard
         Route::get('/home', 'HomeController@index')->name('index');
         
-        //User route
+        //User routes
         Route::get('/profil', 'UserController@show_profile')->name('user.show_profile');
+
+        //user update infos
+        
+        Route::get('/edit-infos', 'UserController@edit_infos')->name('user.edit_infos');
+        Route::get('/update-infos', 'UserController@update_infos')->name('user.update_infos');
+
+        //User update password
+        Route::get('/edit-password', 'UserController@edit_password')->name('user.edit_password');
+        Route::get('/update-password', 'UserController@update_password')->name('user.update_password');
+
+        //User list admin
+        Route::get('/users-list', 'UserController@index')->name('user.index');
+
+        //Réinitialiser mot de passe user
+        Route::get('/reinitialise-password/{id}', 'UserController@reinitialiser_password')->name('user.reinitialiser_password');
+
+        //Désactiver un compte user
+        Route::get('/deactive-account/{id}', 'UserController@deactive_account')->name('user.deactive_account');
+
+        //Activer un compte user
+        Route::get('/active-account/{id}', 'UserController@active_account')->name('user.active_account');
+
+
         //Adhesion
     
         //Formulaire d'importation de données
