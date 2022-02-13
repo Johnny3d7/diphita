@@ -96,20 +96,21 @@ class AdherentController extends Controller
                 $adherents = session('resultsSousc')['data'];
                 if(count($adherents) > 0){
                     foreach ($adherents as $adherent) { // Select all souscripteurs created
-                        $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($adherent->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($adherent->date_debutcotisation))->get();
-                        if($cotisations){
-                            foreach ($cotisations as $cotisation) { // Select all souscripteurs and create items
-                                $ligne = AdherentHasCotisations::whereIdAdherent($adherent->id)->whereIdCotisation($cotisation->id);
-                                if($ligne) {
-                                    $ligne->update([
-                                        'nbre_benef' => $adherent->total_benef_life() + 1,
-                                        'montant' => $cotisation->montant * ($adherent->total_benef_life() + 1),
-                                        'reglee' => false,
-                                        'parcouru' => false,
-                                    ]);
-                                }
-                            }
-                        }
+                        $adherent->firstCotisations();
+                        // $cotisations = Cotisation::where('annee_cotis', '>=', Carbon::create($adherent->date_adhesion)->year)->orWhere('date_annonce', '>=', Carbon::create($adherent->date_debutcotisation))->get();
+                        // if($cotisations){
+                        //     foreach ($cotisations as $cotisation) { // Select all souscripteurs and create items
+                        //         $ligne = AdherentHasCotisations::whereIdAdherent($adherent->id)->whereIdCotisation($cotisation->id);
+                        //         if($ligne) {
+                        //             $ligne->update([
+                        //                 'nbre_benef' => $adherent->total_benef_life() + 1,
+                        //                 'montant' => $cotisation->montant * ($adherent->total_benef_life() + 1),
+                        //                 'reglee' => false,
+                        //                 'parcouru' => false,
+                        //             ]);
+                        //         }
+                        //     }
+                        // }
                     }
                 }
     
@@ -1008,18 +1009,29 @@ class AdherentController extends Controller
             'id_cotisation' => 'required|exists:cotisations,id',
         ]);
         $cotis = AdherentHasCotisations::whereIdAdherent($request->id_adherent)->whereIdCotisation($request->id_cotisation)->first();
+        // dd($cotis);
         if($cotis && !$cotis->reglee){
-            $identifiant = $cotis->code_deces ?? $cotis->annee_cotis;
+            $cotisation = $cotis->cotisation;
+            $souscripteur = $cotis->souscripteur;
+            $identifiant = $cotisation->code_deces ?? $cotisation->annee_cotis;
             Reglement::create([
-                'id_adherent' => $request->id_adherent,
-                'id_cotisation' => $request->id_cotisation,
+                'id_adherent' => $souscripteur->id,
+                'id_cotisation' => $cotisation->id,
                 'montant' => $request->montant,
                 'type' => 'Paiement de cotisation',
-                'description' => "Cotisation $cotis->type : $identifiant"
+                'description' => "Cotisation $cotisation->type : $identifiant"
             ]);
         }
 
         return back();
+    }
+
+
+    public function refresh(){
+        $beneficiaires = Adherents::selectAll();
+        foreach ($beneficiaires as $beneficiaire) {
+            $beneficiaire->firstCotisations();
+        }
     }
 
    

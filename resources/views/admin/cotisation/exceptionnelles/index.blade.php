@@ -26,7 +26,7 @@
                 </li>
             @endfor --}}
                 
-            @foreach ($cotisations as $key => $cotisation)
+            @foreach ($cotisations->sortByDesc('year') as $key => $cotisation)
                 @php $year = $cotisation['year'] @endphp
                 <li class="nav-item">
                     <a class="nav-link {{ $year == date_format(date_create(), 'Y') ? 'active' : '' }}" id="pills-{{ $year }}-tab" data-toggle="pill" href="#pills-{{ $year }}" role="tab" aria-controls="pills-{{ $year }}" aria-selected="true">{{ $year }}</a>

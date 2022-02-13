@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Helpers\Functions;
 use App\Models\Adherents;
 use App\Models\Assistance;
+use App\Models\Cotisation;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
@@ -40,7 +41,8 @@ class AssistancesImport implements ToCollection, WithHeadingRow
                     'lieu_deces' => $row['lieu_de_deces'] ?? null,
                     'date_obseques' => isset($row['date_des_obseques']) ? Functions::dateFromExcel($row['date_des_obseques']) : null,
                     'date_assistance' => isset($row['date_dassistance']) ? Functions::dateFromExcel($row['date_dassistance']) : null,
-                    'moyen_assistance' => $row['moyen_dassistance'] ?? null
+                    'moyen_assistance' => $row['moyen_dassistance'] ?? null,
+                    'code_deces' => Cotisation::whereCodeDeces($row['code_deces'])->first()->code_deces ?? null
                 ]);
 
                 // Validation des données de $request2
@@ -68,6 +70,7 @@ class AssistancesImport implements ToCollection, WithHeadingRow
                         $beneficiaire = Adherents::whereNumAdhesion($request2->benef)->first();
                         if($beneficiaire){
                             if($cas = Assistance::whereIdBenef($beneficiaire->id)->first()){
+                                // dd($row['code_deces']);
                                 array_push($results["warns"], [
                                     "title" => "Avertissement à la ligne ".($key+1),
                                     "msg" => ["Cas déjà assisté pour le bénéficiaire ".$beneficiaire->num_adhesion],
