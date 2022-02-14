@@ -14,7 +14,7 @@ class Cotisation extends Model
 
     protected $guarded = ['id'];
 
-    public static function boot() {
+    public static function boot(){
         parent::boot();
         
         static::creating(function($item) {
@@ -53,13 +53,17 @@ class Cotisation extends Model
                     AdherentHasCotisations::create([
                         'id_cotisation' => $item->id,
                         'id_adherent' => $adherent->id,
-                        'nbre_benef' => $adherent->total_benef_life(),
-                        'montant' => $item->montant() * $adherent->total_benef_life(),
+                        'nbre_benef' => $adherent->total_benef_life() + 1,
+                        'montant' => $item->montant * ($adherent->total_benef_life() +1 ),
                         'reglee' => false,
                         'parcouru' => false,
                     ]);
                 }
             }
+        });
+
+        static::updated(function($item){
+            if($item->montant != $item->getOriginal('montant')) $item->refreshCotisations();
         });
     }
 
@@ -81,6 +85,15 @@ class Cotisation extends Model
 
     public static function selectAll(String $type = 'exceptionnelles'){
         return $type=='exceptionnelles' ? static::selectAllExceptionnelle() : ($type=='annuelles' ? static::whereType('annuelle')->get() : ($type=='false' ? static::whereType('exceptionnelle')->get() : null));
+    }
+
+    public function refreshCotisations(){
+        $cotisations = AdherentHasCotisations::whereIdCotisation($this->id)->get();
+        foreach ($cotisations as  $cotisation) {
+            $cotisation->update([
+                'montant' => $this->montant * $this->cas()->count() * $cotisation->nbre_benef,
+            ]);
+        }
     }
 
     // public function montant(){
@@ -109,6 +122,5 @@ class Cotisation extends Model
         if($adherent) $reglements = $adherent->reglements($this);
         return $reglements;
     }
-
 
 }

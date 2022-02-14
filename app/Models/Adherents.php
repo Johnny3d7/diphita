@@ -64,8 +64,28 @@ class Adherents extends Model
 
         static::created(function($item) {
             // Creating cotisation items for each cotisation  based on $this->date_debutcotisation
+            // $beneficiaire = $item; // Tout souscripteur est d'abord un adhérent
+            // $souscripteur = $item->isSouscripteur() ? $item : $item->souscripteur();
+            // $cotisations = Cotisation::whereDate($this->)
+
+
+            // $adherents = $item->type == "exceptionnelle" ? Adherents::whereDate('date_debutcotisation', '<=', $item->date_annonce)->get() : Adherents::whereYear('date_adhesion', '<=', $item->annee_cotis)->get();
+
+            // foreach ($adherents as $adherent) { // Select all souscripteurs and create items
+            //     if(!AdherentHasCotisations::whereIdCotisation($item->id)->whereIdAdherent($adherent->id)->first()){
+            //         AdherentHasCotisations::create([
+            //             'id_cotisation' => $item->id,
+            //             'id_adherent' => $adherent->id,
+            //             'nbre_benef' => $adherent->total_benef_life(),
+            //             'montant' => $item->montant() * $adherent->total_benef_life(),
+            //             'reglee' => false,
+            //             'parcouru' => false,
+            //         ]);
+            //     }
+            // }
+
             
-            if($item->isValide() && (0 == 1)){
+            if($item->isValide()){
                 if($item->isSouscripteur()) $item->firstCotisations();
                 if($item->isBeneficiaire() && $item->souscripteur()){
                     $souscripteur = $item->souscripteur();
@@ -108,14 +128,14 @@ class Adherents extends Model
                         'id_cotisation' => $cotisation->id,
                         'id_adherent' => $souscripteur->id,
                         'nbre_benef' => $souscripteur->total_benef_life() + 1,
-                        'montant' => $cotisation->montant * ($souscripteur->total_benef_life() + 1),
+                        'montant' => $cotisation->montant * ($souscripteur->total_benef_life() + 1) * ($cotisation->type == 'exceptionnelle' ? $cotisation->cas()->count() : 1),
                         'reglee' => false,
                         'parcouru' => false,
                     ]);
                 } else {
                     $exists->update([
                         'nbre_benef' => $souscripteur->total_benef_life() + 1,
-                        'montant' => $cotisation->montant * ($souscripteur->total_benef_life() + 1),
+                        'montant' => $cotisation->montant * ($souscripteur->total_benef_life() + 1) * ($cotisation->type == 'exceptionnelle' ? $cotisation->cas()->count() : 1),
                         'reglee' => false,
                         'parcouru' => false,
                     ]);
