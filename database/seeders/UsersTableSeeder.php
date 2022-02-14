@@ -23,7 +23,9 @@ class UsersTableSeeder extends Seeder
             'pnom' => 'GALLATY',
             'email'=> 'sregis.ble@gmail.com',
             'password' => Hash::make('diphita2022') ,
-            'image_name' => 'admins_profil/lawrence_gallaty'
+            'image_name' => 'admins_profil/lawrence_gallaty',
+            'role' => 'super_admin',
+            'contact' => '+(225) 01-41-68-30-29'
         ]);
 
         User::create([
@@ -31,7 +33,9 @@ class UsersTableSeeder extends Seeder
             'pnom' => 'N\'GUESSAN',
             'email'=> 'sregis.ble@gmail.com',
             'password' => Hash::make('diphita2022'),
-            'image_name' => 'admins_profil/nguessan_judith'
+            'image_name' => 'admins_profil/nguessan_judith',
+            'role' => 'super_admin',
+            'contact' => '+(225) 01-41-68-30-29'
         ]);
 
         User::create([
@@ -39,7 +43,9 @@ class UsersTableSeeder extends Seeder
             'pnom' => 'KOUASSI',
             'email'=> 'sregis.ble@gmail.com',
             'password' => Hash::make('diphita2022'),
-            'image_name' => 'admins_profil/kouassi_berenger'
+            'image_name' => 'admins_profil/kouassi_berenger',
+            'role' => 'admin',
+            'contact' => '+(225) 01-41-68-30-29'
         ]);
 
         User::create([
@@ -47,7 +53,9 @@ class UsersTableSeeder extends Seeder
             'pnom' => 'N\'GUESSAN',
             'email'=> 'sregis.ble@gmail.com',
             'password' => Hash::make('diphita2022'),
-            'image_name' => 'admins_profil/nguessan_florentin'
+            'image_name' => 'admins_profil/nguessan_florentin',
+            'role' => 'admin',
+            'contact' => '+(225) 01-41-68-30-29'
         ]);
 
         User::create([
@@ -55,7 +63,9 @@ class UsersTableSeeder extends Seeder
             'pnom' => 'BLA',
             'email'=> 'sregis.ble@gmail.com',
             'password' => Hash::make('diphita2022'),
-            'image_name' => 'admins_profil/bla_alice'
+            'image_name' => 'admins_profil/bla_alice',
+            'role' => 'admin',
+            'contact' => '+(225) 01-41-68-30-29'
         ]);
 
         User::create([
@@ -64,6 +74,8 @@ class UsersTableSeeder extends Seeder
             'email'=> 'sregis.ble@gmail.com',
             'password' => Hash::make('diphita2022'),
             'image_name' => 'client_img',
+            'role' => 'admin_oume',
+            'contact' => '+(225) 01-41-68-30-29'
         ]);
 
         User::create([
@@ -71,7 +83,9 @@ class UsersTableSeeder extends Seeder
             'pnom' => 'BOUAZO',
             'email'=> 'sregis.ble@gmail.com',
             'password' => Hash::make('diphita2022'),
-            'image_name' => 'admins_profil/bouazo_narcisse'
+            'image_name' => 'admins_profil/bouazo_narcisse',
+            'role' => 'admin_ouelle',
+            'contact' => '+(225) 01-41-68-30-29'
         ]);
     }
 }

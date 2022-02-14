@@ -307,11 +307,11 @@
                             <div class="single_plan d-flex align-items-center justify-content-between">
                                 <div class="plan_left d-flex align-items-center">
                                     <div class="thumb">
-                                        <img src="{{ url('img/icon2/3.svg') }}" alt="">
+                                        <img src="{{ url('img/icon2/email.svg') }}" alt="">
                                     </div>
                                     <div>
                                         <h5>$2,034</h5>
-                                        <span>Author Sales</span>
+                                        
                                     </div>
                                 </div>
                             </div>

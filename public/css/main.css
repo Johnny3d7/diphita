@@ -110,6 +110,14 @@
     margin-top:30px !important;
 }
 
+.mt_40{
+    margin-top:40px !important;
+}
+
+.mt_50{
+    margin-top:50px !important;
+}
+
 .pt_50{
     padding-top:50px !important;
 }
@@ -254,6 +262,30 @@ div#ayant_bloc, div#benef_bloc{
 
 .profile_info .profile_info_iner .profile_author_name {
     background: #29235c !important;
+}
+
+/* .admin_profil{
+    border: repeating-linear-gradient(30deg, #4d9f0c, #9198e5, #4d9f0c 20px) 60 !important;
+} */
+
+.icon_flat_success{
+    background: #C9F7F5;width: 45px;
+    height: 45px;
+    border-radius: 0.42rem;
+    margin-right: 10px;
+    padding: 12px;
+                                                    
+    line-height: 1;
+}
+
+.icon_flat_danger{
+    background: #FFE2E5;width: 45px;
+    height: 45px;
+    border-radius: 0.42rem;
+    margin-right: 10px;
+    padding: 12px;
+                                                    
+    line-height: 1;
 }
   
 

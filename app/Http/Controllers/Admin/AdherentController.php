@@ -33,13 +33,54 @@ class AdherentController extends Controller
      */
     public function index()
     {
-        //+
-        // $souscripteurs = Adherents::selectAll(true)->orderBy('created_at', 'DESC')->get();
-        $souscripteurs = Adherents::selectAll(true)->sortByDesc('created_at');
+        if(in_array(Auth::user()->role,['super_admin','admin'])){
+            $souscripteurs = Adherents::selectAllForAdmin()->sortByDesc('created_at');
+            $localite = 'index';
+        }
+        elseif (Auth::user()->role == "admin_oume") {
+            $souscripteurs = Adherents::selectAllForAdmin('OUMÉ')->sortByDesc('created_at');
+            $localite = 'oume';
+        }
+        elseif (Auth::user()->role == "admin_ouelle") {
+            $souscripteurs = Adherents::selectAllForAdmin('OUELLÉ')->sortByDesc('created_at');
+            $localite = 'ouelle';
+        }
 
-        return view('admin.adherent.index',compact('souscripteurs'));
+        return view('admin.adherent.'.$localite,compact('souscripteurs'));
     }
 
+    public function adherent_inactif_liste(){
+        if(in_array(Auth::user()->role,['super_admin','admin'])){
+            $souscripteurs = Adherents::selectAllForAdmin(null,0)->sortByDesc('created_at');
+            $localite = 'index';
+        }
+        elseif (Auth::user()->role == "admin_oume") {
+            $souscripteurs = Adherents::selectAllForAdmin('OUMÉ',0)->sortByDesc('created_at');
+            $localite = 'oume';
+        }
+        elseif (Auth::user()->role == "admin_ouelle") {
+            $souscripteurs = Adherents::selectAllForAdmin('OUELLÉ',0)->sortByDesc('created_at');
+            $localite = 'ouelle';
+        }
+        return view('admin.adherent.inactif.index',compact('souscripteurs'));
+    }
+
+    public function adhesion_par_localite_liste($localite){
+
+        if ($localite == "oume") {
+            $souscripteurs = Adherents::selectAllForAdmin('OUMÉ',0)->sortByDesc('created_at');
+            
+        } elseif($localite == "ouelle") {
+            $souscripteurs = Adherents::selectAllForAdmin('OUELLÉ',0)->sortByDesc('created_at');
+        }
+
+        return view('admin.adherent.'.$localite,compact('souscripteurs'));
+        
+    }
+
+
+
+   
     /**
      * Display a listing of the resource.
      *
@@ -48,9 +89,15 @@ class AdherentController extends Controller
     public function beneficiaires()
     {
         //
-        // $beneficiaires = Adherents::selectAll()->orderBy('created_at', 'DESC')->get();
-        $beneficiaires = Adherents::selectAll()->sortByDesc('created_at');
-
+        if(in_array(Auth::user()->role,['super_admin','admin'])){
+            $beneficiaires = Adherents::selectAll()->sortByDesc('created_at');
+        }
+        elseif(Auth::user()->role == "admin_oume"){
+            $beneficiaires = Adherents::selectAllBenefLocalite('OUMÉ');
+        }
+        elseif(Auth::user()->role == "admin_ouelle"){
+            $beneficiaires = Adherents::selectAllBenefLocalite('OUELLÉ');
+        }
         return view('admin.adherent.beneficiaires',compact('beneficiaires'));
     }
 

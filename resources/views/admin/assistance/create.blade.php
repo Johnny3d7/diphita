@@ -265,7 +265,7 @@
         console.log('bonjour');
         switch($(this).val()) {
 
-        case '2':
+        case 'Chèque':
             $('#bloc_insert').empty();
             $('#bloc_insert').append(`
                                         <label for="num_cheque">Numéro de chèque </label>
@@ -277,7 +277,7 @@
                                         @enderror
             `);
             break;
-        case '3':
+        case 'Virement':
             $('#bloc_insert').empty();
             $('#bloc_insert').append(`
                                         <label for="num_compte">Numéro de compte </label>
@@ -289,7 +289,7 @@
                                         @enderror
             `);
             break;
-        case '4':
+        case 'Dépôt électronique':
             $('#bloc_insert').empty();
             $('#bloc_insert').append(`
                                         <label for="num_depot">Numéro de téléphone du dépôt</label>

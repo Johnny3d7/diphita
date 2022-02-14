@@ -148,10 +148,10 @@
                                         <label for="moyen_assistance">Moyen d'assistance</label>
                                         <select id="moyen_paie" class="form-control @error('moyen_assistance') is-invalid @enderror" name="moyen_assistance" >
                                             <option selected value="0" disabled>-- Sélectionnez moyen de paiement --</option>
-                                            <option value="1">Espèces </option>
-                                            <option value="2">Chèque</option>
-                                            <option value="3">Virement </option>
-                                            <option value="4">Dépôt électronique</option>
+                                            <option value="Espèces">Espèces </option>
+                                            <option value="Chèque">Chèque</option>
+                                            <option value="Virement">Virement </option>
+                                            <option value="Dépôt électronique">Dépôt électronique</option>
                                         </select>
                                         @error('moyen_assistance')
                                         <span class="invalid-feedback" role="alert">
@@ -269,7 +269,7 @@
         console.log('bonjour');
         switch($(this).val()) {
 
-        case '2':
+        case 'Chèque':
             $('#bloc_insert').empty();
             $('#bloc_insert').append(`
                                         <label for="num_cheque">Numéro de chèque </label>
@@ -281,7 +281,7 @@
                                         @enderror
             `);
             break;
-        case '3':
+        case 'Virement':
             $('#bloc_insert').empty();
             $('#bloc_insert').append(`
                                         <label for="num_compte">Numéro de compte </label>
@@ -293,7 +293,7 @@
                                         @enderror
             `);
             break;
-        case '4':
+        case 'Dépôt électronique':
             $('#bloc_insert').empty();
             $('#bloc_insert').append(`
                                         <label for="num_depot">Numéro de téléphone du dépôt</label>

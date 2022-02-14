@@ -99,10 +99,9 @@
                             </div>
                         </div>
                         {{-- <a href="{{ url()->previous() }}" class="white_btn3">Retour</a> --}}
-                        @if (Route::currentRouteName() == 'admin.index')
-                            <a href="{{ route('refresh') }}" class="btn_1">Actualiser les infos</a>
-                        @else
-                            <a href="{{ route('backStack') }}" class="white_btn3">Retour</a>
+
+                        @if (Route::currentRouteName() != 'admin.index')
+                            <a href="{{ route('backStack') }}" class="white_btn3">Retour</a> 
                         @endif
                     </div>
                 </div>

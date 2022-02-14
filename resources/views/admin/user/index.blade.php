@@ -5,11 +5,11 @@
 @endsection
 
 @section('title')
-    Liste des souscripteurs
+    Liste des administrateurs
 @endsection
 
 @section('subtitle')
-    Liste des souscripteurs
+    Liste des administrateurs
 @endsection
 
 @section('content')
@@ -26,21 +26,14 @@
             <div class="white_card_body">
                 <div class="QA_section">
                     <div class="white_box_tittle list_header">
-                        <h4>Souscripteur(s)</h4>
+                        <h4>Administrateurs(s)</h4>
                         <div class="box_right d-flex lms_block">
                             <div class="serach_field_2">
                                 <div class="search_inner">
-                                    {{-- <form Active="#">
-                                        <div class="search_field">
-                                            <input type="text" placeholder="Search content here...">
-                                        </div>
-                                        <button type="submit"> <i class="ti-search"></i> </button>
-                                    </form> --}}
+                                  
                                 </div>
                             </div>
-                            {{-- <div class="add_button ml-10">
-                                <a href="#" data-toggle="modal" data-target="#addcategory" class="btn_1">Add New</a>
-                            </div> --}}
+                        
                         </div>
                     </div>
 
@@ -52,23 +45,23 @@
                                 <tr>
                                     <th scope="col">Nom</th>
                                     <th scope="col">Prénom</th>
-                                    <th scope="col">Email</th>
                                     <th scope="col">Contact</th>
-                                    <th scope="col">Date naissance</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Role</th>
                                     <th scope="col">statut</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($souscripteurs as $souscripteur)
+                                @foreach ($admins as $admin)
                                 <tr>
-                                    <th scope="row"> <a href="{{ route('admin.adhesion.show', ['id' => $souscripteur->id]) }}" class="question_content"> {{ $souscripteur->nom }}</a></th>
-                                    <td>{{ $souscripteur->pnom }}</td>
-                                    <td>{{ $souscripteur->email }}</td>
-                                    <td>{{ $souscripteur->contact }}</td>
-                                    <td>{{ ucwords((new Carbon\Carbon($souscripteur->date_naiss))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
-                        
-                                    <td><a href="#" style="{{ $souscripteur->status==1 ? '' : 'background-color:red'  }}" class="status_btn" >{{ $souscripteur->status==1 ? 'Actif' : 'Inactif' }}</a></td>
+                                    <th scope="row"> <a href="#" class="question_content"> {{ $admin->name }}</a></th>
+                                    <td>{{ $admin->pnom }}</td>
+                                    <td>{{ $admin->contact }}</td>
+                                    <td>{{ $admin->email }}</td>
+                                    <td>{{ $admin->role }}</td>
+                    
+                                    <td><a href="#" style="{{ $admin->status==1 ? '' : 'background-color:red'  }}" class="status_btn" >{{ $admin->status==1 ? 'Actif' : 'Inactif' }}</a></td>
 
                                     <td>
                                         <div class="header_more_tool">
@@ -77,10 +70,17 @@
                                                   <i class="ti-more-alt"></i>
                                                 </span>
                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="{{ route('admin.adhesion.show', ['id' => $souscripteur->id]) }}"> <i class="ti-eye"></i> Voir</a>
-                                                    {{-- <a class="dropdown-item" href="{{ route('admin.adhesion.valider', ['id' => $souscripteur->id]) }}"> <i class="fas fa-edit"></i> Valider</a>
+                                                    {{-- <a class="dropdown-item" href="route('admin.adhesion.show',['id'=>$souscripteur->id])"> <i class="ti-eye"></i> Gérer les accès</a> --}}
+                                                    <a class="dropdown-item" href="{{ route('admin.user.reinitialiser_password', ['id'=>$admin->id]) }}"> <i class="ti-eye"></i> Réinitialiser mot de passe</a>
+                                                    @if ($admin->active == 0)
+                                                    <a class="dropdown-item" href="{{ route('admin.user.active_account',['id'=>$admin->id]) }}"> <i class="ti-eye"></i> Activer compte</a>
+                                                        
+                                                    @else
+                                                    <a class="dropdown-item" href="{{ route('admin.user.deactive_account',['id'=>$admin->id]) }}"> <i class="ti-eye"></i> Désactiver compte</a> 
+                                                    @endif
+                                                    {{-- <a class="dropdown-item" href="route('admin.adhesion.show',['id'=>$souscripteur->id])"> <i class="ti-eye"></i> Supprimer compte</a> --}}
                                                     
-                                                  <a class="dropdown-item" href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"> <i class="ti-trash"></i> Rejeter</a> --}}
+                                                    
                                                 </div>
                                               </div>
                                         </div>

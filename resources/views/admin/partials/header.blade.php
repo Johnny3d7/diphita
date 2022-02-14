@@ -111,7 +111,7 @@
                                 <h5 style="color:white !important;">Super Admin</h5>
                             </div>
                             <div class="profile_info_details">
-                                <a href="{{ route('admin.user.show_profile',['']) }}">Mon compte</a>
+                                <a href="{{ route('admin.user.show_profile') }}">Mon compte</a>
                                 <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">Déconnexion </a>
                                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

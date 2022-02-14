@@ -50,10 +50,10 @@
                             <div class="row">
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Nom:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->adherent->nom }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Nom:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ strtoupper($assistance->adherent->nom) }}</div></div>
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Prénom(s):&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->adherent->pnom }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Prénom(s):&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ strtoupper($assistance->adherent->pnom) }}</div></div>
                                 </div>
                             </div>
                             <div class="row">
@@ -87,10 +87,10 @@
                             <div class="row">
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Nom:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->beneficiaire->nom }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Nom:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ strtoupper($assistance->beneficiaire->nom) }}</div></div>
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Prénom(s):&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->beneficiaire->pnom }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Prénom(s):&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ strtoupper($assistance->beneficiaire->pnom) }}</div></div>
                                 </div>
                             </div>
                             <div class="row">
@@ -193,7 +193,7 @@
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Date de décès:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ ucwords((new Carbon\Carbon($assistance->date_deces))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</div></div>
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Lieu de décès:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->lieu_deces}}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Lieu de décès:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ strtoupper($assistance->lieu_deces) }}</div></div>
                                 </div>
                             </div>
                             <div class="row">
@@ -208,11 +208,11 @@
                             <div class="row">
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Validité:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->valide == 1 ? 'Oui': 'Non'}}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Validité:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->valide == 1 ? 'OUI': 'NON'}}</div></div>
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Moyen d'assistance:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">
-                                       {{ $assistance->moyen_assistance }}
+                                       {{ strtoupper($assistance->moyen_assistance) }}
                                     </div>
                                 </div>
                                 </div>
@@ -220,7 +220,7 @@
                             <div class="row">
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Enfant du défunt:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->enfant_defunt }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Enfant du défunt:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ strtoupper($assistance->enfant_defunt) }}</div></div>
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Téléphone:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->enfant_contact}}</div></div>
@@ -229,7 +229,7 @@
                             <div class="row">
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Proche du défunt:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->proche_defunt }}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Proche du défunt:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ strtoupper($assistance->proche_defunt) }}</div></div>
                                 </div>
                                 <div class="col mb_15" style="font-size:16px !important">
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Téléphone:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->proche_contact}}</div></div>
@@ -239,9 +239,11 @@
                                 
                                 <div class="col mb_15" style="font-size:16px !important">
                                     @if ($assistance->num_compte)
-                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Numéro de compte:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->num_compte}}</div></div>
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Numéro de compte:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ strtoupper($assistance->num_compte)}}</div></div>
                                     @elseif($assistance->num_depot)
                                     <div class="m-0 txt-color1 txt-bold" style="display:flex">Numéro de dépôt:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->num_depot}}</div></div>
+                                    @elseif($assistance->num_cheque)
+                                    <div class="m-0 txt-color1 txt-bold" style="display:flex">Numéro de chèque:&nbsp;&nbsp;&nbsp;<div class=" f_w_600 color_text_5">{{ $assistance->num_depot}}</div></div>
                                     @endif
                                     
                                 </div>
