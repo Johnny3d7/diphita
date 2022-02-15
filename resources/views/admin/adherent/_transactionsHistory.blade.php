@@ -11,31 +11,29 @@
                 <div class="container-fluid">
                     <ul class="nav nav-pills nav-justified mb-3" id="pills-tab-transaction" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="pills-success-transaction-tab" data-toggle="pill" href="#pills-success-transaction" role="tab" aria-controls="pills-success-transaction" aria-selected="true">Toutes</a>
+                            <a class="nav-link active" id="pills-success-transaction-tab" data-toggle="pill" href="#pills-success-transaction" role="tab" aria-controls="pills-success-transaction" aria-selected="true">Cotisations</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="pills-warning-transaction-tab" data-toggle="pill" href="#pills-warning-transaction" role="tab" aria-controls="pills-warning-transaction" aria-selected="false">Versements</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="pills-errors-transaction-tab" data-toggle="pill" href="#pills-errors-transaction" role="tab" aria-controls="pills-errors-transaction" aria-selected="false">Cotisations</a>
+                            <a class="nav-link" id="pills-errors-transaction-tab" data-toggle="pill" href="#pills-errors-transaction" role="tab" aria-controls="pills-errors-transaction" aria-selected="false">Toutes</a>
                         </li>
                     </ul>
 
                     <div class="tab-content" style="overflow-x: auto;">
                         <div class="tab-pane fade show active" id="pills-success-transaction" role="tabpanel" aria-labelledby="success-tab">
-                            @if (count($souscripteur->transactions()) > 0)
+                            @if (count($souscripteur->reglements) > 0)
                                 <ul class="list-group">
-                                    @foreach($souscripteur->transactions()->sortByDesc('created_at') as $transaction)
+                                    @foreach($souscripteur->reglements->sortByDesc('created_at') as $reglement)
                                         <li class="list-group-item">
-                                            {{-- {{ ucwords((new Carbon\Carbon($transaction->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm'))  }} : {{ $transaction->type ? $transaction->montant() : $transaction->montant }} francs --}}
-                                            {{ ucwords((new Carbon\Carbon($transaction->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm'))  }} : {{ $transaction->montant }} francs => <small>{{ $transaction->description }}</small>
+                                            {{ ucwords((new Carbon\Carbon($reglement->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm'))  }}  : {{ $reglement->montant }} francs => <small>{{ $reglement->description }}</small>
                                         </li>
                                     @endforeach 
                                 </ul>
                             @else
-                                <h6 class="text-center">Aucune transaction</h6>
+                                <h6 class="text-center">Aucun règlement</h6>
                             @endif
-                            
                         </div>
                         <div class="tab-pane fade" id="pills-warning-transaction" role="tabpanel" aria-labelledby="warning-tab">
                             @if (count($souscripteur->versements) > 0)
@@ -51,25 +49,25 @@
                             @endif
                         </div>
                         <div class="tab-pane fade" id="pills-errors-transaction" role="tabpanel" aria-labelledby="errors-tab">
-                            @if (count($souscripteur->reglements) > 0)
+                            @if (count($souscripteur->transactions()) > 0)
                                 <ul class="list-group">
-                                    @foreach($souscripteur->reglements->sortByDesc('created_at') as $reglement)
+                                    @foreach($souscripteur->transactions()->sortByDesc('created_at') as $transaction)
                                         <li class="list-group-item">
-                                            {{ ucwords((new Carbon\Carbon($reglement->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm'))  }}  : {{ $reglement->montant }} francs => <small>{{ $reglement->description }}</small>
+                                            {{-- {{ ucwords((new Carbon\Carbon($transaction->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm'))  }} : {{ $transaction->type ? $transaction->montant() : $transaction->montant }} francs --}}
+                                            {{ ucwords((new Carbon\Carbon($transaction->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm'))  }} : {{ $transaction->montant }} francs => <small>{{ $transaction->description }}</small>
                                         </li>
                                     @endforeach 
                                 </ul>
                             @else
-                                <h6 class="text-center">Aucun règlement</h6>
+                                <h6 class="text-center">Aucune transaction</h6>
                             @endif
-
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            {{-- <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>

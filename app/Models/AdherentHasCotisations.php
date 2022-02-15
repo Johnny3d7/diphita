@@ -20,11 +20,13 @@ class AdherentHasCotisations extends Model
     }
 
     public function montant(){
+        return ($this->cotisation->montant * 
+            ($this->cotisation->type == "exceptionnelle" ? $this->cotisation->cas()->count() : 1) * 
+            ($this->nbre_benef));
         return $this->cotisation->parcouru ? $this->montant : ($this->cotisation->montant * 
                                                             ($this->cotisation->type == "exceptionnelle" ? $this->cotisation->cas()->count() : 1) * 
                                                             ($this->nbre_benef));
                                                             // ($this->souscripteur->total_benef_life() + 1));
     }
-    
 
 }

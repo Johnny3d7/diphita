@@ -234,6 +234,7 @@ Route::post('/demande/store', 'App\Http\Controllers\Admin\DemandeController@stor
 
 
 Route::get('back', function () {
+    // App\Models\Cotisation::first()->update(['code_deces' => 'test']);
     $array = $tab = session('routeStack');
     $route = '';
     if(is_array($array)){
@@ -244,6 +245,8 @@ Route::get('back', function () {
     // dd($array, $tab, $route);
     return redirect()->route(is_array($route) ? $route['name'] : 'admin.index', is_array($route) ? $route['params'] : null);
 })->name('backStack');
+
+Route::get('refresh', 'App\Http\Controllers\Admin\AdherentController@refresh')->name('refresh');
 
 
 Auth::routes();

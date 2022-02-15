@@ -35,7 +35,7 @@
                         {{-- <td>{{ $data->role }}</td> --}}
                         <td><a href="{{ route('admin.adhesion.show', $souscripteur) }}">{{ $souscripteur->num_adhesion }}</a></td>
                         <td>{{ $souscripteur->nom }} {{ $souscripteur->pnom }}</td>
-                        <td>{{ $souscripteur->psCotisation($cotisation)->nbre_benef + 1 }}</td>
+                        <td>{{ $souscripteur->psCotisation($cotisation)->nbre_benef }}</td>
                         <td>{{ date_format(date_create($cotisation->date_assistance), 'd/m/Y') }}</td>
                         <td>{{ $cotisation->reglements($souscripteur)->sum('montant') }}</td>
                         <td>{{ $souscripteur->isReglee($cotisation) ? "A Jour" : "Non A Jour" }}</td>
@@ -47,7 +47,7 @@
                                     </span>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Voir</a>
-                                        <a class="dropdown-item" data-toggle="modal" data-target="#reglement{{ $identifiant }}Modal"> <i class="ti-money"></i> Faire un reglement</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#reglement{{ $identifiant }}{{ $souscripteur->num_adhesion }}Modal"> <i class="ti-money"></i> Faire un reglement</a>
                                         {{-- <a class="dropdown-item" href="{{ route('admin.adhesion.valider', ['id' => $souscripteur->id]) }}"> <i class="fas fa-edit"></i> Valider</a>
                                         
                                     <a class="dropdown-item" href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"> <i class="ti-trash"></i> Rejeter</a> --}}
@@ -93,7 +93,7 @@
                                     </span>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Voir</a>
-                                        <a class="dropdown-item" href="#"> <i class="ti-money"></i> Faire un reglement</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#reglement{{ $identifiant }}{{ $souscripteur->num_adhesion }}Modal" href="#"> <i class="ti-money"></i> Faire un reglement</a>
                                         {{-- <a class="dropdown-item" href="{{ route('admin.adhesion.valider', ['id' => $souscripteur->id]) }}"> <i class="fas fa-edit"></i> Valider</a>
                                         
                                     <a class="dropdown-item" href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"> <i class="ti-trash"></i> Rejeter</a> --}}
@@ -139,7 +139,7 @@
                                     </span>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Voir</a>
-                                        <a class="dropdown-item" href="#"> <i class="ti-money"></i> Faire un reglement</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#reglement{{ $identifiant }}{{ $souscripteur->num_adhesion }}Modal" href="#"> <i class="ti-money"></i> Faire un reglement</a>
                                         {{-- <a class="dropdown-item" href="{{ route('admin.adhesion.valider', ['id' => $souscripteur->id]) }}"> <i class="fas fa-edit"></i> Valider</a>
                                         
                                     <a class="dropdown-item" href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"> <i class="ti-trash"></i> Rejeter</a> --}}

@@ -28,6 +28,6 @@ class ParametersTableSeeder extends Seeder
         CotisationAnnuelle::create(['montant' => 2000, 'status' => true]);
         CotisationExceptionnelle::create(['montant' => 650, 'status' => true]);
         TraitementKit::create(['montant' => 1000, 'status' => true]);
-        DureeFincarences::create(['duree' => 2, 'status' => true]);
+        DureeFincarences::create(['duree' => 4, 'status' => true]);
     }
 }
