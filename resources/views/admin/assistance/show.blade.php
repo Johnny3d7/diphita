@@ -141,7 +141,7 @@
                     </a>
                     @endif
                     
-                    @if (!$assistance->code_deces)
+                    @if (!$assistance->code_deces || $assistance->valide == 1)
                     <a href="{{ route('admin.assistance.publier',['id' => $assistance->id]) }}" class="btn_3 w-100 mb-2 btn-lg email-gradient gradient-9-hover email__btn waves-effect">
                         <i class="ti-money"></i> Attribuer Code Décès
                     </a>
