@@ -24,7 +24,7 @@
                     <div class="tab-content" style="overflow-x: auto;">
                         <div class="tab-pane fade show active" id="pills-success-cotisation" role="tabpanel" aria-labelledby="success-tab">
                             @if (count($souscripteur->cotisations(null, false)) > 0)
-                                @include('admin.adherent._payementLine', ['cotisations' => $souscripteur->cotisations()])
+                                @include('admin.adherent._payementLine', ['cotisations' => $souscripteur->cotisations(null, false)])
                             @else
                                 <h6 class="text-center">Aucune cotisation</h6>
                             @endif
@@ -32,14 +32,14 @@
                         </div>
                         <div class="tab-pane fade" id="pills-warning-cotisation" role="tabpanel" aria-labelledby="warning-tab">
                             @if (count($souscripteur->cotisations('exceptionnelle', false)) > 0)
-                                @include('admin.adherent._payementLine', ['cotisations' => $souscripteur->cotisations('exceptionnelle')])
+                                @include('admin.adherent._payementLine', ['cotisations' => $souscripteur->cotisations('exceptionnelle', false)])
                             @else
                                 <h6 class="text-center">Aucune cotisation exceptionnelle</h6>
                             @endif
                         </div>
                         <div class="tab-pane fade" id="pills-errors-cotisation" role="tabpanel" aria-labelledby="errors-tab">
                             @if (count($souscripteur->cotisations('annuelle', false)) > 0)
-                                @include('admin.adherent._payementLine', ['cotisations' => $souscripteur->cotisations('annuelle')])
+                                @include('admin.adherent._payementLine', ['cotisations' => $souscripteur->cotisations('annuelle', false)])
                             @else
                                 <h6 class="text-center">Aucune cotisation annuelle</h6>
                             @endif
@@ -48,9 +48,9 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            {{-- <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>

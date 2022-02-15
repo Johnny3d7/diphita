@@ -498,8 +498,12 @@
     </div>
 </div>
 
-@include('admin.adherent._transactionsHistory')
-@include('admin.adherent._cotisationsImpayees')
+    @include('admin.adherent._transactionsHistory')
+    @include('admin.adherent._cotisationsImpayees')
+
+    @foreach ($souscripteur->cotisations() as $cotisation)
+        @include('admin.cotisation._reglementModal')
+    @endforeach
 @endsection
 
 @section('js')
