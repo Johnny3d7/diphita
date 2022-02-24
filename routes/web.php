@@ -209,7 +209,7 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         //Kit d'inscription
         Route::get('/montant-kit', 'ConfigurationController@traitementKit')->name('montant-kit.index');
         Route::post('/montant-kit/store', 'ConfigurationController@traitementKitStore')->name('montant-kit.store');
-    
+
         //Mois de carence
         Route::get('/duree-fin-de-carence', 'ConfigurationController@dureeFincarence')->name('duree-carence.index');
         Route::post('/duree-fin-de-carence/store', 'ConfigurationController@dureeFincarenceStore')->name('duree-carence.store');

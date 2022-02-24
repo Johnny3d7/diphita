@@ -111,7 +111,7 @@ class Cotisation extends Model
             $cotisations = $filter=="Regle" ? $cotisations->whereReglee(true) : $cotisations->whereReglee(false);
         }
         foreach ($cotisations->get() as $cotisation) {
-            $souscripteurs->add($cotisation->souscripteur);
+            if($cotisation->souscripteur->isValide()) $souscripteurs->add($cotisation->souscripteur);
         }
 
         return $souscripteurs;

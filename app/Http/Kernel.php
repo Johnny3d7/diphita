@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http;
+ini_set('memory_limit', '5120M');
+set_time_limit ( 0 );
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
