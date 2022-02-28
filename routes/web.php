@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 Route::get('/', function () {
     return redirect('/login');
@@ -104,7 +106,9 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         Route::get('/adherents', 'AdherentController@index')->name('adherent.index');
         Route::get('/beneficiaires', 'AdherentController@beneficiaires')->name('beneficiaires.index');
         Route::get('/adherent/show/{id}/transactions', 'AdherentController@transactionHistory')->name('adherent.transactionHistory');
-    
+        // Generate PDF before printing
+        Route::get('/adherent/{id}/imprimer/', [PDFController::class, 'generatePDF'])->name('adherent.print');
+        
         //Adherent inactif
         Route::get('/adherents-inactifs', 'AdherentController@adherent_inactif_liste')->name('adhesion.inactif.liste');
         
