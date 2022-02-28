@@ -5,29 +5,16 @@
 @endsection
 
 @section('title')
-    <small>Détails de cotisation de l'année</small> {{ $cotisation->code_deces }}
+    <small>Détails de cotisation exceptionnelle</small> {{ $cotisation->code_deces }}
 @endsection
 
 @section('subtitle')
-    <small>Détails de cotisation de l'année</small> {{ $cotisation->code_deces }}
+    <small>Détails de cotisation exceptionnelle</small> {{ $cotisation->code_deces }}
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="white_card card_height_100 mb_30">
-        <div class="white_card_header">
-            <div class="box_header m-0">
-                <div class="main-title">
-                    <h3 class="m-0">Formulaire d'ajout d'un adhérent</h3>
-                    <div class="col-md-12 text-center mt_15">
-                        
-                    </div>
-                </div>
-                <span class="float-right">
-                    <a href="{{ route("admin.adhesion.importation") }}" class="btn btn-warning text-light"><i class="fa fa-upload"></i> Importer</a>
-                </span>
-            </div>
-        </div>
         <div class="white_card_body">
             <div class="card-body">
                 <div class="row">
@@ -49,10 +36,10 @@
                         <button class="btn btn-secondary btn-block"><i class="fa fa-cogs"></i> Configurer</button>
                     </div>
                 </div>
+                @include('admin.cotisation._navDetails')
             </div>
         </div>
     </div>    
-    {{-- @include('admin.cotisation._navDetails') --}}
 
 </div>
 {{-- @include('admin.cotisation._navDetails') --}}
@@ -70,6 +57,7 @@
             // $('.nav-link:first()').click();
             $("").dataTable({
             });
+
         });
     </script>
 @endsection

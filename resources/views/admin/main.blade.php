@@ -7,6 +7,7 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
+    <meta name="_token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title> | Diphita prévoyance</title>
 
@@ -321,13 +322,125 @@
             paging: true,
             "language": {
                 "url": "{{ url('js/language/french_json.json')}}"
-     },
+            },
             searching: true,
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ]
-} );
+        });
+
+        $(".verser").on('click', function(e) {
+            $this = $(this);
+            modalParent = $this.parents('.modal')[0];
+            
+            span = $(modalParent).find('span.error')[0]
+            versement = $(modalParent).find('.versement');
+            id_souscripteur = $(modalParent).find('.id_souscripteur');
+
+            console.log('Querying')
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('admin.versement.store')}}",
+                data: {
+                    'api':true,
+                    'montant':$(versement).val(),
+                    'id_adherent':$(id_souscripteur).val(),
+                },
+                success: function(msg) {
+                    console.log($($(span).parent()))
+                    if(!$($(span).parent()).hasClass('d-none')) $(span).addClass('d-none')
+                    
+                    if(msg.status && msg.status == 'success'){
+                        $(modalParent).find(".close").click()
+                    } else {
+                        $(span).html(msg.message)
+                        if($($(span).parent()).hasClass('d-none')) $(span).removeClass('d-none')
+                    }
+                },
+                error: function(error){
+                    console.log(error)
+                }
+            });
+
+            
+        });
+
+        $(".PaiementForm .montant").on('change keyup', function(){
+            $this = $(this);
+            formParent = $this.parents('form')[0];
+            modalParent = $this.parents('.modal')[0];
+
+            identifiant = $(modalParent).attr('id');
+            btnSubmit = $(formParent).find('#' + identifiant + 'Submit')
+            btnDocker = $(btnSubmit).parent()
+            
+            solde = $($(formParent).find('.solde')[0]).val();
+            aRegler = $($(formParent).find('.aRegler')[0]).val();
+
+            if($this.val() - aRegler > 0 || $this.val() < 0) $this.val(aRegler)
+
+            $($(modalParent).find('#'+identifiant+'Footer')).remove()
+            
+            if($this.val() < 0 || ($this.val() % 50 != 0)){
+                btnSubmit.attr('disabled')
+                if(!btnDocker.hasClass('d-none')) btnDocker.addClass('d-none');
+                $($(modalParent).find('.modal-content')[0]).append(`
+                    <div id="${identifiant}Footer" class="modal-footer alert-warning text-center" style="justify-content: center; display: block;">
+                        <span class="h5 pb-3"> &#129300; Montant saisi Incorrect !</span>
+                        <div class="row mt-2 h6">
+                            <div class="container">
+                                <span>Veuillez saisir un montant multiple de 50 et supérieur à 50 FCFA</span>
+                            </div>
+                        </div>
+                    </div>
+                `)
+            } else {
+                if($this.val() >= 50 && (solde - $this.val() >= 0)){
+                    btnSubmit.removeAttr('disabled')
+                    if(btnDocker.hasClass('d-none')) btnDocker.removeClass('d-none');
+                    let residuel = solde - $this.val();
+                    $($(modalParent).find('.modal-content')[0]).append(`
+                        <div id="${identifiant}Footer" class="modal-footer alert-success text-center" style="justify-content: center; display: block;">
+                            <span class="h5 pb-3"> &#128578; Solde suffisant !</span>
+                            <div class="row mt-2 h6">
+                                <div class="col">
+                                    <span>Solde Actuel : ${solde} FCFA</span>
+                                </div>
+                                <div class="col">
+                                    <span>Solde Résiduel : ${residuel} FCFA</span>
+                                </div>
+                            </div>
+                        </div>
+                    `)
+                } else {
+                    btnSubmit.attr('disabled','disabled')
+                    if(!btnDocker.hasClass('d-none')) btnDocker.addClass('d-none');
+                    $($(modalParent).find('.modal-content')[0]).append(`
+                        <div id="${identifiant}Footer" class="modal-footer alert-danger text-center" style="justify-content: center; display: block;">
+                            <span class="h5 pb-3"> &#128577; Solde insuffisant !</span>
+                            <div class="row mt-2 h6">
+                                <div class="container">
+                                    <span>Solde Actuel : ${solde} FCFA</span>
+                                </div>
+                            </div>
+                        </div>
+                    `)
+                }
+            }
+
+            console.log(solde)
+            console.log(aRegler)
+            console.log($this.val())
+            console.log(solde - $this.val())
+        })
     });
 </script>
 </body>

@@ -103,7 +103,8 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         //Adhérents routes
         Route::get('/adherents', 'AdherentController@index')->name('adherent.index');
         Route::get('/beneficiaires', 'AdherentController@beneficiaires')->name('beneficiaires.index');
-
+        Route::get('/adherent/show/{id}/transactions', 'AdherentController@transactionHistory')->name('adherent.transactionHistory');
+    
         //Adherent inactif
         Route::get('/adherents-inactifs', 'AdherentController@adherent_inactif_liste')->name('adhesion.inactif.liste');
         
@@ -138,7 +139,7 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     
         //Adhérent formulaire print
         Route::get('/adherent-formulaire-print/{id}', 'AdherentController@formulaire_print')->name('adherent.formulaire-print');
-    
+
         //Contrats 
         Route::get('/contrats', 'ContratController@index')->name('contrat.index');
         Route::get('/contrats/expire', 'ContratController@expire')->name('contrat.expire');

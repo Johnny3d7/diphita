@@ -292,11 +292,8 @@ class AdherentController extends Controller
             if($souscripteur->cas == 1){
                 $beneficiaire = $souscripteur;
                 return view('admin.adherent.cas',compact('beneficiaire'));
-            } else {
-                return redirect()->back();
             }
-
-            dd('Ceci est un bénéficiaire');
+            return redirect()->back();
         }
 
         //Les bénéficiaires
@@ -306,6 +303,19 @@ class AdherentController extends Controller
         $ayants = AyantDroit::where(['status'=>1,'id_adherent'=>$id])->orderBy('created_at', 'DESC')->get();
 
         return view('admin.adherent.show',compact('souscripteur','benefs','ayants'));
+    }
+
+    public function transactionHistory($id){
+        $souscripteur = Adherents::find($id);
+        if($souscripteur && $souscripteur->isBeneficiaire()){
+            if($souscripteur->cas == 1){
+                $beneficiaire = $souscripteur;
+                return view('admin.adherent.cas',compact('beneficiaire'));
+            }
+            return redirect()->back();
+        }
+
+        return view('admin.adherent.transactions_history', compact('souscripteur'));
     }
 
     /**

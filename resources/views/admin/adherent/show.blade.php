@@ -1,20 +1,7 @@
-@php
-// dd($souscripteur->cotisations('exceptionnelle', true));
-@endphp
-
 @extends('admin.main')
 
 @section('css')
     <link rel="stylesheet" href="{{ url('css/main.css') }}" />
-    <style>
-        /* modal backdrop fix */
-        .modal:nth-of-type(even) {
-            z-index: 1052 !important;
-        }
-        .modal-backdrop.show:nth-of-type(even) {
-            z-index: 1051 !important;
-        }
-    </style>
 @endsection
 
 @section('title')
@@ -251,9 +238,9 @@
                             <li><a href="{{ route('admin.adherent.debloquer',['id' => $souscripteur->id]) }}"><i class="ti-unlock"></i> <span> <span>Activer compte</span>  </span> </a></li>
                             
                         @elseif ($souscripteur->status == 1 && $souscripteur->valide == 1)
-                            <li><a href="#" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-money-bill"></i> <span> <span>Ajouter versement</span>  </span> </a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#versementModal"><i class="fa fa-money-bill"></i> <span> <span>Ajouter versement</span>  </span> </a></li>
                             <li><a href="#" data-toggle="modal" data-target="#cotisationsModal"><i class="ti-new-window"></i> <span> <span>Cotisations impayées</span>  </span> </a></li>
-                            <li><a href="#" data-toggle="modal" data-target="#transactionsModal"><i class="ti-new-window"></i> <span> <span>Historique des transactions</span>  </span> </a></li>
+                            <li><a href="{{ route('admin.adherent.transactionHistory', ['id' => $souscripteur->id]) }}"><i class="ti-new-window"></i> <span> <span>Historique des transactions</span>  </span> </a></li>
                             
                             <li><a href="{{ route('admin.adherent.bloquer', ['id' => $souscripteur->id]) }}"><i class="ti-lock"></i> <span> <span>Désactiver compte</span>  </span> </a></li>
                             <li><a href="{{ route('admin.assistance.create',['id' => $souscripteur->id]) }}"><i class="ti-save"></i> <span> <span>Ajouter une assistance</span> </span> </a></li>
@@ -468,57 +455,49 @@
 @endsection
 
 @section('modals')
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Insérer un versement</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <form action="{{ route('admin.versement.store') }}" method="post" id="versement_form">
-                @csrf
-                @method('POST')
-                <div class="form-row">
-                    <div class="col-12 mt_15 mb_15">
-                        <h4 class="m-0 txt-color1 txt-upper txt-bold">Montant</h4>
-                    </div>
-        
-                    <div class="form-group col-lg-12">
-                        <label for="montant">Montant du versement <code class="highlighter-rouge">*</code></label>
-                        <input type="text"  name="montant" class="form-control @error('montant') is-invalid @enderror" placeholder="Ex: 50000" required>
-                        <input type="text" value="{{ $souscripteur->id }}" name="id_adherent" hidden required>
-                        @error('montant')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-          <button type="button" id="verser" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
-        </div>
-      </div>
-    </div>
-</div>
-
-    @include('admin.adherent._transactionsHistory')
     @include('admin.adherent._cotisationsImpayees')
-
     @foreach ($souscripteur->cotisations() as $cotisation)
         @include('admin.cotisation._reglementModal')
     @endforeach
+    @include('admin.adherent._versementModal')
+    @include('admin.adherent._transactionsHistory')
+
 @endsection
 
 @section('js')
     <script>
-        $( "#verser" ).click(function() {
-            $( "#versement_form" ).submit();
-        });
+        // console.log("JE suis là")
+        // $(document).ready(function(){
+        //     console.log($('#verser'));
+        //     $("#verser").on('click', function(e) {
+        //         e.preventDefault();
+        //         $this = $(this);
+        //         modalParent = $this.parents('.modal')[0];
+                
+        //         versement = $(modalParent).find('.versement');
+
+        //         console.log('Querying')
+
+        //         $.ajaxSetup({
+        //             headers: {
+        //                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+        //             }
+        //         });
+
+        //         $.ajax({
+        //             type: "POST",
+        //             url: " {{ route('admin.versement.store')}} ",
+        //             data: {
+        //                 'montant' : versement
+        //             },
+        //             success: function(msg) {
+        //                 console.log(msg)
+        //             }
+        //         });
+
+        //         // $(modalParent).find(".close").click()
+                
+        //     });
+        // })
     </script>
 @endsection
