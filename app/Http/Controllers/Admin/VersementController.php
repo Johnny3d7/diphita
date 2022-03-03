@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Adherents;
 use App\Models\Versement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -64,13 +65,14 @@ class VersementController extends Controller
                 }
                 return redirect()->back()->with('message', 'L\'enregistrement du versement a échoué')->with('type', 'bg-danger');
             }
-            // $versement = Versement::create([
-            //         "montant" => $request->montant,
-            //         "id_adherent" => $request->id_adherent
-            //     ]);
+            $versement = Versement::create([
+                    "montant" => $request->montant,
+                    "id_adherent" => $request->id_adherent
+                ]);
             if($request->api) {
                 return response()->json([
                     'status' => 'success',
+                    'data' => Adherents::find($request->id_adherent)->solde(),
                     'message' => 'L\'enregistrement du versement à été un succès'
                 ]);
             }

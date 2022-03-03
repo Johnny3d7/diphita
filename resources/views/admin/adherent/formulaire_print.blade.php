@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="col-md-12 txt-center">
-                <a href="{{ route('admin.adherent.print', ['id'=>$adherent->id]) }}" class="white_btn_1">Imprimer</a>
+                <a href="{{ route('admin.adherent.print', ['id'=>$adherent->id]) }}" target="_blank" class="white_btn_1">Imprimer</a>
                 {{-- <a href="#" class="white_btn_1 btnblprint">Imprimer</a> --}}
             </div>
         </div>

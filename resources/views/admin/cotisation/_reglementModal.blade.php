@@ -2,7 +2,7 @@
     $id = $cotisation->type == 'annuelle' ? $cotisation->annee_cotis : $cotisation->code_deces;
     $identifiant = $id . $souscripteur->num_adhesion;
 @endphp
-<div class="modal fade" id="reglement{{ $identifiant }}Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none; background-color:rgba(10, 10, 10, 0.5)" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div class="modal fade reglementModal" id="reglement{{ $identifiant }}Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none; background-color:rgba(10, 10, 10, 0.5)" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -74,7 +74,8 @@
                         <span class="h5 pb-3"> &#128577; Solde insuffisant !</span>
                         <div class="row mt-2 h6">
                             <div class="container">
-                                <span>Solde Actuel : {{ number_format($souscripteur->solde(), 0, '', ' ') }} FCFA</span>
+                                <span>Solde Actuel : {{ number_format($souscripteur->solde(), 0, '', ' ') }} FCFA</span> <div class="py-1"></div>
+                                <a href="#" class="pt-2 btn btn-sm btn-info" data-toggle="modal" data-target="#versementModal{{ $identifiant }}"><i class="fa fa-plus"></i> <span> <span>Versement</span>  </span> </a>
                             </div>
                         </div>
                     </div>

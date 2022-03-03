@@ -220,7 +220,7 @@
                             @if (!$souscripteur->solde())
                                 <div class="widget-numbers"><span>0 FCFA</span></div>
                             @else
-                                <div class="widget-numbers"><span style="font-size: 1.5rem !important;">{{ number_format($souscripteur->solde(), 0, '', ' ') }} FCFA</span></div>
+                                <div class="widget-numbers"><span style="font-size: 1.5rem !important;"><span style="font-size: 1.5rem !important;" class="solde">{{ number_format($souscripteur->solde(), 0, '', ' ') }}</span> FCFA</span></div>
                             @endif
                             
                             <div class="widget-subheading">Solde</div>

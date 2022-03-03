@@ -1,4 +1,4 @@
-<div class="modal fade" id="versementModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade versementModal" id="versementModal{{ $id ?? '' }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -29,7 +29,7 @@
                     </div>
 
                     {{-- <div class="form-group">
-                        <button type="submit" id="verser" class="verser btn btn-primary">Enregistrer</button>
+                        <button type="submit" class="verser btn btn-primary">Enregistrer</button>
                     </div> --}}
                 </div>
             </form>

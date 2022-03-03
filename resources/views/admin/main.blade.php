@@ -338,8 +338,6 @@
             versement = $(modalParent).find('.versement');
             id_souscripteur = $(modalParent).find('.id_souscripteur');
 
-            console.log('Querying')
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -355,14 +353,21 @@
                     'id_adherent':$(id_souscripteur).val(),
                 },
                 success: function(msg) {
-                    console.log($($(span).parent()))
-                    if(!$($(span).parent()).hasClass('d-none')) $(span).addClass('d-none')
+                    if(!$($(span).parent()).hasClass('d-none')) $($(span).parent()).addClass('d-none')
                     
                     if(msg.status && msg.status == 'success'){
                         $(modalParent).find(".close").click()
+                        modalReglement = $('.reglementModal.show:first')
+                        if(modalReglement.length){
+                            console.log($($(modalReglement).find('.solde:first')));
+                            $($(modalReglement).find('.solde:first')).val(msg.data)
+                            $($(modalReglement).find('.montant')).change()
+                        } else {
+                            $($(document).find('.solde:first')).html(msg.data)
+                        }
                     } else {
                         $(span).html(msg.message)
-                        if($($(span).parent()).hasClass('d-none')) $(span).removeClass('d-none')
+                        if($($(span).parent()).hasClass('d-none')) $($(span).parent()).removeClass('d-none')
                     }
                 },
                 error: function(error){
@@ -428,18 +433,14 @@
                             <span class="h5 pb-3"> &#128577; Solde insuffisant !</span>
                             <div class="row mt-2 h6">
                                 <div class="container">
-                                    <span>Solde Actuel : ${solde} FCFA</span>
+                                    <span>Solde Actuel : ${solde} FCFA</span> <div class="py-1"></div>
+                                    <a href="#" class="pt-2 btn btn-sm btn-info" data-toggle="modal" data-target="#versementModal${identifiant}"><i class="fa fa-plus"></i> <span> <span>Versement</span>  </span> </a>
                                 </div>
                             </div>
                         </div>
                     `)
                 }
             }
-
-            console.log(solde)
-            console.log(aRegler)
-            console.log($this.val())
-            console.log(solde - $this.val())
         })
     });
 </script>

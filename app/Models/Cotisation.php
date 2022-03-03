@@ -96,10 +96,6 @@ class Cotisation extends Model
         }
     }
 
-    // public function montant(){
-    //     return $this->type == "annuelle" ? 2500 : 800;
-    // }
-
     public function cas (){
         return $this->type == "exceptionnelle" ? Assistance::whereCodeDeces($this->code_deces)->get() : null;
     }
@@ -117,10 +113,19 @@ class Cotisation extends Model
         return $souscripteurs;
     }
 
+    public function montant_total(){
+        $ahc = $this->hasMany(AdherentHasCotisations::class, 'id_cotisation')->get();
+        return $ahc->sum('montant');
+    }
+
     public function reglements(Adherents $adherent=null){
-        $reglements = $this->hasMany(AdherentHasCotisations::class, 'id_cotisation');
+        $reglements = $this->hasMany(Reglement::class, 'id_cotisation')->get();
         if($adherent) $reglements = $adherent->reglements($this);
         return $reglements;
+    }
+
+    public function montant_collecte(){
+        return $this->reglements()->sum('montant');
     }
 
 }
