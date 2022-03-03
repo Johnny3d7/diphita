@@ -56,7 +56,8 @@
                                                 </div>
                                             </div>
                                             @if($cotisation->parcouru)
-                                                <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->code_deces }}Modal">Détails</button>
+                                                <a class="btn_2 btn-block text-center" href="{{ route('admin.cotisations.exceptionnelles.show', $cotisation->code_deces) }}">Détails</a>
+                                                {{-- <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->code_deces }}Modal">Détails</button> --}}
                                             @else
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -114,14 +115,14 @@
 </div>
 @endsection
 
-@section('modals')
+{{-- @section('modals')
     @foreach (App\Models\Cotisation::selectAll('false') as $cotisation)
         @include('admin.cotisation.exceptionnelles._details')
         @foreach ($cotisation->souscripteurs() as $souscripteur)
             @include('admin.cotisation._reglementModal')
         @endforeach
     @endforeach
-@endsection
+@endsection --}}
 
 @section('js')
     <script>

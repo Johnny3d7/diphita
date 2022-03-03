@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Adherents;
 use App\Models\Cotisation;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,9 @@ class CotisationAnnuController extends Controller
      */
     public function index()
     {
+        // foreach (Adherents::selectAll(true) as $adherent) {
+        //     $adherent->update(['valide' => false]);
+        // }
         $cotisations = Cotisation::selectAll('annuelles')->sortByDesc('annee_cotis');
         return view("admin.cotisation.annuelles.index", compact('cotisations'));
     }
@@ -48,7 +52,8 @@ class CotisationAnnuController extends Controller
      */
     public function show($id)
     {
-        //
+        $cotisation = Cotisation::whereAnneeCotis($id)->first();
+        return view("admin.cotisation.annuelles.show", compact('cotisation'));
     }
 
     /**

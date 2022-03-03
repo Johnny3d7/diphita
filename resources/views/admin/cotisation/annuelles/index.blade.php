@@ -25,11 +25,13 @@
                             <div class="p-2">
                                 <h6 class="text-info text-center">Date de cotisation : {{ ucwords(Carbon\Carbon::create($cotisation->date_cotis)->locale('fr')->isoFormat('DD MMM YYYY')) }}</h6>
                                 @if($cotisation->parcouru)
-                                    <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->annee_cotis }}Modal">Détails</button>
+                                    <a class="btn_2 btn-block text-center" href="{{ route('admin.cotisations.annuelles.show', $cotisation->annee_cotis) }}">Détails</a>
+                                    {{-- <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->annee_cotis }}Modal">Détails</button> --}}
                                 @else
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->annee_cotis }}Modal">Détails</button>
+                                            <a class="btn_2 btn-block text-center" href="{{ route('admin.cotisations.annuelles.show', $cotisation->annee_cotis) }}">Détails</a>
+                                            {{-- <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->annee_cotis }}Modal">Détails</button> --}}
                                         </div>
                                         <div class="col-md-6">
                                             <button class="btn_6 btn-block">Publier</button>
@@ -50,7 +52,7 @@
 </div>
 @endsection
 
-@section('modals')
+{{-- @section('modals')
     @foreach (App\Models\Cotisation::selectAll('annuelles') as $cotisation)
         @include('admin.cotisation.annuelles._details')
         @include('admin.cotisation.annuelles._configuration')
@@ -58,7 +60,7 @@
             @include('admin.cotisation._reglementModal')
         @endforeach
     @endforeach
-@endsection
+@endsection --}}
 
 @section('js')
     <script>

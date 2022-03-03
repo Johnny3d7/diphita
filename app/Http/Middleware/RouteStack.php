@@ -17,6 +17,7 @@ class RouteStack
      */
     public function handle(Request $request, Closure $next)
     {
+        $home = 'admin.index';
         $to_ignore = [
             'admin.adhesion.valider',
             'admin.adhesion.rejeter',
@@ -37,8 +38,7 @@ class RouteStack
 
         if($request->method() == "GET" && !in_array(Route::currentRouteName(), $to_ignore)){
             $array = session('routeStack');
-            // dd(Route::getCurrentRoute()->uri(), Route::currentRouteName(), Route::getCurrentRoute()->parameters(), Route::getCurrentRoute(), $array);
-            if(Route::currentRouteName() == 'admin.index'){
+            if(Route::currentRouteName() == $home){
                 session(['routeStack' => []]);
             } else {
                 if(count($array) == 0 || $array[array_unshift($array)-1]["name"] != Route::currentRouteName()){

@@ -48,7 +48,8 @@ class CotisationExceptController extends Controller
      */
     public function show($id)
     {
-        //
+        $cotisation = Cotisation::whereCodeDeces($id)->first();
+        return view("admin.cotisation.exceptionnelles.show", compact('cotisation'));
     }
 
     /**

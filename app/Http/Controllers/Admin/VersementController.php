@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Adherents;
 use App\Models\Versement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -37,6 +38,7 @@ class VersementController extends Controller
      */
     public function store(Request $request)
     {
+        // return response()->json($request->all());
         //
         $validatedData = Validator::make($request->all(),[
             
@@ -46,13 +48,34 @@ class VersementController extends Controller
         ]);
 
         if ($validatedData->fails()) {
+            if($request->api) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => sprintf(' ', $validatedData->errors())
+                ]);
+            }
             return redirect()->back()->with('message', 'L\'enregistrement du versement a échoué')->with('type', 'bg-danger');
         }else{
+            if($request->montant < 0 || (($request->montant % 50) != 0)){
+                if($request->api) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Le montant doit être multiple de 50 et supérieur à 50 FCFA'
+                    ]);
+                }
+                return redirect()->back()->with('message', 'L\'enregistrement du versement a échoué')->with('type', 'bg-danger');
+            }
             $versement = Versement::create([
-                "montant" => $request->montant,
-                "id_adherent" => $request->id_adherent
-            ]);
-            
+                    "montant" => $request->montant,
+                    "id_adherent" => $request->id_adherent
+                ]);
+            if($request->api) {
+                return response()->json([
+                    'status' => 'success',
+                    'data' => Adherents::find($request->id_adherent)->solde(),
+                    'message' => 'L\'enregistrement du versement à été un succès'
+                ]);
+            }
             return redirect()->back()->with('message', 'L\'enregistrement du versement à été un succès')->with('type', 'bg-success');;
         }
     }
