@@ -51,7 +51,7 @@
                             {{-- <h6 class="card-subtitle mb-2">Les champs marqués du signe <code class="highlighter-rouge">(*)</code> sont tous obligatoires.</h6> --}}
                             
                             <div class="col-md-8 offset-md-2">
-                                <form class="form-horizontal" role="form" method="POST" action="{{ route('admin.adhesion.importationPost') }}" enctype="multipart/form-data">
+                                <form id="adherentForm" class="form-horizontal" role="form" method="POST" action="{{ route('admin.adhesion.importationPost') }}" enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <div class="form-group{{ $errors->has('csv') ? ' has-error has-feedback' : '' }}">
                                         <label class="form-control my-1" for="csv" id="csvLabel" style="cursor: pointer;">Selectionnez un fichier à importer</label>
@@ -65,10 +65,18 @@
                                     </div>
                                     <div class="col-md-4 offset-md-4">
                                         <div class="input-group">
-                                            <button type="submit" class="btn btn-info btn-block py-2"><i class="fa fa-3x py-2 fa-upload"></i> <br> <span>Importer</span>
+                                            <button id="btnSubmit" type="submit" class="btn btn-info btn-block py-2">
+                                                <i class="fa fa-3x py-2 fa-upload"></i> <br> <span>Importer</span>
                                             </button>
                                         </div>
                                     </div>
+                                    {{-- <div class="container mt-5">
+                                        <h6 class="text-center"><span class="text-uppercase">é</span>tape 1 sur 3</h6>
+                                        <h6 class="text-center">(Importation des bénéficiaires)</h6>
+                                        <div class="progress progress-md mb-3">
+                                            <div class="text-center progress-bar progress-bar-striped progress-bar-animated bg-blue-1" id="myBar" style="width: 0%;">0%</div>
+                                        </div>
+                                    </div> --}}
                                 </form>
                             </div>
 
@@ -110,6 +118,83 @@
         $('#csv').change(function(){
             $('#csvLabel').html(this.files[0].name)
         })
+
+        const element = document.getElementById("myBar");
+        let width = 0;
+        const id = setInterval(frame, 100);
+        function frame() {
+            if (width == 10) {
+                clearInterval(id);
+            } else {
+                width++;
+                element.style.width = width + '%';
+                $(element).html(width+'%')
+            }
+        }
+
+        /*
+        $('#adherentForm').submit(function(e){
+            e.preventDefault();
+            $this = $(this);
+
+            var file = document.getElementById('csv').files[0];
+            var formData = new FormData(document.getElementById('adherentForm'));
+
+            formData.append("csv", file, file.name);
+            formData.append("api", true);
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: $this.attr('action'), //script qui traitera l'envoi du fichier
+                type: 'POST',
+                // xhr: function() { // xhr qui traite la barre de progression
+                //     myXhr = $.ajaxSettings.xhr();
+                //     if(myXhr.upload){ // vérifie si l'upload existe
+                //         myXhr.upload.addEventListener('progress',afficherAvancement, false); // Pour ajouter l'évènement progress sur l'upload de fichier
+                //     }
+                //     return myXhr;
+                // },
+                //Traitements AJAX
+                beforeSend: ()=>{
+                    verifyStatus();
+                },
+                success:(msg)=>{
+                    console.log('Success')
+                    console.log(msg)
+                    verifyStatus();
+                },
+                error: ()=>{
+                    console.log('error')
+                },
+                //Données du formulaire envoyé
+                data: formData,
+                //Options signifiant à jQuery de ne pas s'occuper du type de données
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });*/
+
+        function verifyStatus() {
+            $.ajax({
+                url: "{{ route('admin.verifyStatus') }}",
+                type: 'GET',
+                success: function(res){
+                    console.log(res);
+                }
+            });
+        }
+
+        function afficherAvancement(e){
+            if(e.lengthComputable){
+                $('progress').attr({value:e.loaded,max:e.total});
+            }
+        }
     })
 </script>
 @endsection

@@ -61,7 +61,8 @@
                                             @else
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->code_deces }}Modal">Détails</button>
+                                                        {{-- <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->code_deces }}Modal">Détails</button> --}}
+                                                        <a class="btn_2 btn-block text-center" href="{{ route('admin.cotisations.exceptionnelles.show', $cotisation->code_deces) }}">Détails</a>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <button class="btn_6 btn-block">Publier</button>

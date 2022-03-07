@@ -114,8 +114,13 @@ class Cotisation extends Model
     }
 
     public function montant_total(){
-        $ahc = $this->hasMany(AdherentHasCotisations::class, 'id_cotisation')->get();
-        return $ahc->sum('montant');
+        $ahcs = $this->hasMany(AdherentHasCotisations::class, 'id_cotisation')->get();
+        $montant = 0;
+        foreach ($ahcs as $ahc) {
+            $souscripteur = $ahc->souscripteur;
+            $montant += $souscripteur->psCotisation($this)->montant();
+        }
+        return $montant;
     }
 
     public function reglements(Adherents $adherent=null){

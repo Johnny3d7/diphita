@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\AdherentHasCotisations;
 use App\Models\Cotisation;
+use App\Models\Reglement;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
@@ -17,6 +18,7 @@ class CotisationTableSeeder extends Seeder
     public function run()
     {
         Cotisation::truncate();
+        Reglement::truncate();
         AdherentHasCotisations::truncate();
 
         for ($i=2018; $i <= Carbon::now()->isoFormat('YYYY'); $i++) {

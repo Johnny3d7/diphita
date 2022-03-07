@@ -76,6 +76,10 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         //Formulaire d'importation de données
         Route::get('/adhesions/importation', 'AdherentController@importation')->name('adhesion.importation');
         Route::post('/adhesions/importation', 'AdherentController@importationPost')->name('adhesion.importationPost');
+        Route::get('/adhesions/importation/status', function(){
+            dd('Yeah', session('statutAdherent'));
+            return response()->json(session('statutAdherent'));
+        })->name('verifyStatus');
     
         //Formulaire d'ajout d'un adhérent
         Route::get('/adhesions/create', 'AdherentController@create')->name('adhesion.create');
