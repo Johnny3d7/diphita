@@ -85,5 +85,17 @@ return array (
     'normal' => $fontDir . '/font_awesome_5_free_normal_ddf20134b8c3e7e9a9b5f32382499932',
     '900' => $fontDir . '/font_awesome_5_free_900_993ec0aa10d3a6be659cf928da8d62b1',
   ),
+  'copperplate' => array(
+    'normal' => $fontDir . '/copperplate_normal_4b6569de649e527bdd0b968bd4f7ba17',
+  ),
+  'arialblack' => array(
+    'normal' => $fontDir . '/arialblack_normal_d05273aee708c0e1756504a7099a3ea1',
+  ),
+  'cambria' => array(
+    'normal' => $fontDir . '/cambria_normal_b9f777384a5e1f8efe0f6b94b26a6a18',
+  ),
+  'ms-reference-sans-serif' => array(
+    'normal' => $fontDir . '/ms_reference_sans_serif_normal_6d5224f6fdba3f107874355b68bab504',
+  ),
 );
 }; ?>

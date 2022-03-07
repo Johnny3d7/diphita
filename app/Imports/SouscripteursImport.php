@@ -38,7 +38,7 @@ class SouscripteursImport implements ToCollection, WithHeadingRow
         ];
 
         $nb_success = $nb_error = $nb_warning = 0;
-        
+
         foreach ($collection as $key => $row) 
         {
             $souscripteur = null; // initialisation pour une création ou une mise à jour des bénéficiaires

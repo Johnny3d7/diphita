@@ -18,7 +18,7 @@ class BeneficiairesImport implements ToCollection, WithHeadingRow
     */
     public function collection(Collection $collection)
     {
-        // Tableau de valeurs par defaut pour ecuperer le resultat de traitement
+        // Tableau de valeurs par defaut pour recuperer le resultat de traitement
         $results = [
             "msg" => '',
             "errs" => [],
@@ -27,6 +27,13 @@ class BeneficiairesImport implements ToCollection, WithHeadingRow
         ];
 
         $nb_success = $nb_error = $nb_warning = 0;
+
+        $status = [
+            'title' => "Initialisation du traitement",
+            'subtitle' => null,
+            'status' => 'pending',
+        ];
+        // session(['statutAdherent' => $status]);
         
         foreach ($collection as $key => $row) 
         {
@@ -84,8 +91,8 @@ class BeneficiairesImport implements ToCollection, WithHeadingRow
                     }
                 } else { // S'il n'y a aucune erreur de validation
                     try { // Essayer d'enregistrer et relever les éventuelles erreurs
-                        $beneficiaire = Adherents::create($request2->all());
-                        array_push($results["data"], $beneficiaire);
+                        // $beneficiaire = Adherents::create($request2->all());
+                        // array_push($results["data"], $beneficiaire);
                         $nb_success ++;
                     } catch (\Throwable $th) { // En cas d'une quelconque erreur
                         array_push($results["errs"], [
@@ -108,5 +115,6 @@ class BeneficiairesImport implements ToCollection, WithHeadingRow
         $results["msg"] = "$nb_success bénéficiaires importés avec succès. ".($nb_error ? " $nb_error erreurs." : '').($nb_warning ? " $nb_warning avertissements." : '');
         /* Mettre la variable de resultat dans la session de l'utilisateur pour y avoir accès n'importe où tant que la session est active ou que la variable n'a pas été supprimée de la session */
         session(['resultsBenef' => $results]);
+
     }
 }

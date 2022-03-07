@@ -133,12 +133,15 @@ class AdherentController extends Controller
             'csv' => 'required|max:5000|mimes:xlsx,xls,csv'
         ]);
 
+        
         if($fileValidator->fails()){
+            if($request->api) return response()->json(['error' => $request->all()]);
             return redirect()->back()->withErrors($fileValidator);
         } else {
             try {
                 $import = new AdhesionsImport;
                 $collection = Excel::import($import, $request->file('csv'));
+                if($request->api) return response()->json(['success' => 'true', 'data' => $request->all()]);
 
                 $adherents = session('resultsSousc')['data'];
                 if(count($adherents) > 0){

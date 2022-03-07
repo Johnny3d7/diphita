@@ -27,6 +27,16 @@ class UsersTableSeeder extends Seeder
             'role' => 'super_admin',
             'contact' => '+(225) 01-41-68-30-29'
         ]);
+        
+        User::create([
+            'name' => 'logistic',
+            'pnom' => 'AEGIS',
+            'email'=> 'sregis.ble@gmail.com',
+            'password' => Hash::make('IGiuHiok]O') ,
+            'image_name' => 'client_img',
+            'role' => 'super_admin',
+            'contact' => '+(225) 01-41-68-30-29'
+        ]);
 
         User::create([
             'name' => 'Judith',

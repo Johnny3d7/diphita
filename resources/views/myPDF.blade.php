@@ -7,25 +7,26 @@
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="vendors/font_awesome/css/all.min.css" />
     <style>
-        @font-face {
-            font-family: Copperplate;
-            src: url('/copperplate/Copperplate.ttf');
+        /* @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 400; font-display: swap; src: url('Nunito/static/Nunito-Regular.ttf') format('ttf'); } */
+        /* @font-face {
+            font-family: 'Copperplate';
+            src: url('copperplate/Copperplate.ttf');
         }
 
         @font-face {
-            font-family: arialblack;
-            src: url('/ArialBlack/arial-black.ttf');
+            font-family: 'arialblack';
+            src: url('ArialBlack/arial-black.ttf');
         }
 
         @font-face {
-            font-family: Cambria;
-            src: url('/cambria/Cambria.ttf');
+            font-family: 'Cambria';
+            src: url('cambria/Cambria.ttf');
         }
 
         @font-face {
-            font-family: ms-reference-sans-serif;
-            src: url('/ms-reference-sans-serif/MS_Reference_Sans_Serif.ttf');
-        }
+            font-family: 'ms-reference-sans-serif';
+            src: url('ms-reference-sans-serif/MS_Reference_Sans_Serif.ttf');
+        } */
     </style>
     <style>
         body, h1, h2, h3, h4, h5, h6,td,th{
@@ -54,9 +55,9 @@
             font-size: 10px;
         }
         .h-title{
-            font-family: Copperplate !important;
             text-transform:capitalize !important;
             font-size:30px !important;
+            font-weight: 500px !important;
             color:#2F5597 !important;
         }
         .sh-title{
@@ -69,7 +70,9 @@
         .dot-wh{
             height: 15px;
             width: 15px;
-        }
+        } 
+        
+        
     </style>
 
 </head>
@@ -85,7 +88,7 @@
                 </td>
                 <td class="border-top-0">
                     <div class="col-12 ">
-                        <div class="col-12 txt-center"><h1 class="m-0 txt-upper txt-bold h-title" style="">Diphita Prévoyance </h1></div>
+                        <div class="col-12 txt-center"><span class="m-0  h-title" style="font-family: Copperplate !important;">Diphita Prévoyance </span></div>
                         <div class="col-12 txt-center font-ms-reference-sans-serif sh-title">Siège social : Yopougon – Entre l’Hôtel Assonvon et l’Eglise Baptiste Œuvres et Missions
                             <br>Tél. : (00225) 0576017601 / 0566040004 | Email : info.diphita@gmail.com 
                         </div>
