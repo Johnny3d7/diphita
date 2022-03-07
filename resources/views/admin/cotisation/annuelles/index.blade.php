@@ -24,7 +24,7 @@
                             <img src="{{ asset($cotisation->image) }}" alt="" class="d-block mx-auto my-3 w-100">
                             <div class="p-2">
                                 <h6 class="text-info text-center">Date de cotisation : {{ ucwords(Carbon\Carbon::create($cotisation->date_cotis)->locale('fr')->isoFormat('DD MMM YYYY')) }}</h6>
-                                @if($cotisation->parcouru || !$cotisation->isClosing())
+                                @if($cotisation->parcouru && !$cotisation->isClosing())
                                     <a class="btn_2 btn-block text-center" href="{{ route('admin.cotisations.annuelles.show', $cotisation->annee_cotis) }}">Détails</a>
                                     {{-- <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->annee_cotis }}Modal">Détails</button> --}}
                                 @else

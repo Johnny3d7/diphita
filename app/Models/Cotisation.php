@@ -133,4 +133,7 @@ class Cotisation extends Model
         return $this->reglements()->sum('montant');
     }
 
+    public function isClosing(){
+        return false;
+    }
 }

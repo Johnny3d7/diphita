@@ -55,7 +55,7 @@
                                                     <h4 class="text-dark mt-0">{{ $cotisation->cas()->count() }} <small class="text-muted font-14">Cas</small></h4>
                                                 </div>
                                             </div>
-                                            @if($cotisation->parcouru)
+                                            @if($cotisation->parcouru && !$cotisation->isClosing())
                                                 <a class="btn_2 btn-block text-center" href="{{ route('admin.cotisations.exceptionnelles.show', $cotisation->code_deces) }}">Détails</a>
                                                 {{-- <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->code_deces }}Modal">Détails</button> --}}
                                             @else
