@@ -67,6 +67,10 @@ class Cotisation extends Model
         });
     }
 
+    public function ahcs(){
+        return $this->hasMany(AdherentHasCotisations::class, 'id_cotisation');
+    }
+
     public static function selectAllExceptionnelle() {
         $tabYear = [];
         $result = new Collection();
@@ -114,13 +118,20 @@ class Cotisation extends Model
     }
 
     public function montant_total(){
-        $ahcs = $this->hasMany(AdherentHasCotisations::class, 'id_cotisation')->get();
         $montant = 0;
-        foreach ($ahcs as $ahc) {
-            $souscripteur = $ahc->souscripteur;
+        $souscripteurs = AdherentHasCotisations::getSouscripteursFromCotisation($this);
+        foreach ($souscripteurs as $souscripteur) {
             $montant += $souscripteur->psCotisation($this)->montant();
         }
         return $montant;
+        
+        // $ahcs = $this->hasMany(AdherentHasCotisations::class, 'id_cotisation')->get();
+        // $montant = 0;
+        // foreach ($ahcs as $ahc) {
+        //     $souscripteur = $ahc->souscripteur;
+        //     $montant += $souscripteur->psCotisation($this)->montant();
+        // }
+        // return $montant;
     }
 
     public function reglements(Adherents $adherent=null){
@@ -135,5 +146,54 @@ class Cotisation extends Model
 
     public function isClosing(){
         return false;
+    }
+
+    public function publier(){
+        $souscripteurs = AdherentHasCotisations::getSouscripteursFromCotisation($this);
+
+        /**
+         * Tous les reglements et versements doivent être parcouru  |
+         *                                                          | Tous ceci de manière imbriquée
+         * Le solde de la caisse doit être mis à jour et fixé       |           non pas
+         *                                                          | l'une à la suide de l'autre
+         * Le solde de chaque adhérent doit être mis à jour et fixé |
+         */
+        foreach ($souscripteurs as $souscripteur) {
+            // Mise à jour et fixation du solde de chaque souscripteur
+            $souscripteur->updateSolde();
+            
+            // Mise à jour et fixation du solde de la caisse
+            $caisse = Caisse::first();
+            $caisse->updateSolde();
+            
+            // Parcours des versements
+            foreach ($souscripteur->versements(0) as $versement) {
+                $versement->update(['parcouru' => true]);
+            }
+            
+            // Parcours des reglements
+            foreach ($souscripteur->reglements($this, 0) as $reglement) {
+                $reglement->update(['parcouru' => true]);
+            }
+            
+            // Parcours des depenses
+            foreach (Depense::getNonParcouru() as $depense) {
+                $depense->update(['parcouru' => true]);
+            }
+        }
+        
+        // Parcours de la cotisation
+        $this->update([
+            'parcouru' => true
+        ]);
+
+        if($this->type == 'annuelle'){
+            Cotisation::create(['annee_cotis' => $this->annee_cotis + 1]);
+        }
+
+        if($this->type == 'exceptionnelle'){
+            $date_butoire = Carbon::create($this->date_butoire);
+            Cotisation::create(['date_butoire' => $date_butoire->addMonth(1)]);
+        }
     }
 }

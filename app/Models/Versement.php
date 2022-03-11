@@ -30,6 +30,10 @@ class Versement extends Model
             $item->description = "Versement";
         });
     }
+
+    public static function getNonParcouru(){
+        return static::whereParcouru(false)->get();
+    }
     
     public function adherent()
     {

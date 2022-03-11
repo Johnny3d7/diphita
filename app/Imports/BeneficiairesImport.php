@@ -91,8 +91,8 @@ class BeneficiairesImport implements ToCollection, WithHeadingRow
                     }
                 } else { // S'il n'y a aucune erreur de validation
                     try { // Essayer d'enregistrer et relever les éventuelles erreurs
-                        // $beneficiaire = Adherents::create($request2->all());
-                        // array_push($results["data"], $beneficiaire);
+                        $beneficiaire = Adherents::create($request2->all());
+                        array_push($results["data"], $beneficiaire);
                         $nb_success ++;
                     } catch (\Throwable $th) { // En cas d'une quelconque erreur
                         array_push($results["errs"], [

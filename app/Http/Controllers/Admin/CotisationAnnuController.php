@@ -89,4 +89,10 @@ class CotisationAnnuController extends Controller
     {
         //
     }
+
+    public function publier($annee){
+        $cotisation = Cotisation::whereAnneeCotis($annee)->first();
+        $cotisation->publier();
+        return back();
+    }
 }

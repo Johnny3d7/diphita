@@ -34,7 +34,8 @@
                                             {{-- <button class="btn_2 btn-block" data-toggle="modal" data-target="#details{{ $cotisation->annee_cotis }}Modal">Détails</button> --}}
                                         </div>
                                         <div class="col-md-6">
-                                            <button class="btn_6 btn-block">Publier</button>
+                                            <a class="btn_6 btn-block text-center" href="{{ route('admin.cotisations.annuelles.publier', $cotisation->annee_cotis) }}">Publier</a>
+                                            {{-- <button class="btn_6 btn-block">Publier</button> --}}
                                         </div>
                                     </div>
                                 @endif

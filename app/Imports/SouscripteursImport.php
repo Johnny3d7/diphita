@@ -109,7 +109,7 @@ class SouscripteursImport implements ToCollection, WithHeadingRow
                                             "num_contrat" => $souscripteur->num_contrat
                                         ]);
                                     } else {
-                                        array_push($msg,"Ce numereo ne correspond à aucun bénéficiaire");
+                                        array_push($msg,"Ce numero : ''$beneficiaire'' ne correspond à aucun bénéficiaire");
                                     }
                                 }
                             }
@@ -154,7 +154,7 @@ class SouscripteursImport implements ToCollection, WithHeadingRow
                                             "num_contrat" => $souscripteur->num_contrat
                                         ]);
                                     } else {
-                                        array_push($msg,"Ce numereo ne correspond à aucun bénéficiaire");
+                                        array_push($msg,"Ce numero : ''$beneficiaire'' ne correspond à aucun bénéficiaire");
                                     }
                                 }
                             }
@@ -183,32 +183,32 @@ class SouscripteursImport implements ToCollection, WithHeadingRow
                 $nb_error ++;
             }
             // dd($souscripteur, "YEs");
-            if($souscripteur){
-                $msg = [];
-                // Retrouver tous les bénéficiaires du souscripteur par leur numero d'adhésion
-                for ($i=0; $i < 4; $i++) { 
-                    $beneficiaire = $request2->{'beneficiaire'.$i}; // recuperer le champs bénéficiaire si renseigné
-                    if($beneficiaire){
-                        $bene = Adherents::whereRole(2)->whereNumAdhesion($beneficiaire)->first(); // test de l'existance du bénéficiare dans la base de données
-                        if($bene){
-                            // Mise à jour du champs parent du bénéficiaire par l'ID du souscripteur
-                            $bene->update([
-                                "parent" => $souscripteur->id,
-                                "num_contrat" => $souscripteur->num_contrat
-                            ]);
-                        } else {
-                            array_push($msg,"Ce numereo ne correspond à aucun bénéficiaire");
-                        }
-                    }
-                }
-                if(count($msg)){
-                    array_push($results["warns"], [
-                        "title" => "Avertissement à la ligne ".($key+1),
-                        "msg" => $msg,
-                    ]);
-                    $nb_warning ++;
-                }
-            }
+            // if($souscripteur){
+            //     $msg = [];
+            //     // Retrouver tous les bénéficiaires du souscripteur par leur numero d'adhésion
+            //     for ($i=0; $i < 4; $i++) { 
+            //         $beneficiaire = $request2->{'beneficiaire'.$i}; // recuperer le champs bénéficiaire si renseigné
+            //         if($beneficiaire){
+            //             $bene = Adherents::whereRole(2)->whereNumAdhesion($beneficiaire)->first(); // test de l'existance du bénéficiare dans la base de données
+            //             if($bene){
+            //                 // Mise à jour du champs parent du bénéficiaire par l'ID du souscripteur
+            //                 $bene->update([
+            //                     "parent" => $souscripteur->id,
+            //                     "num_contrat" => $souscripteur->num_contrat
+            //                 ]);
+            //             } else {
+            //                 array_push($msg,"Ce numero: ''$beneficiaire'' jhy  ne correspond à aucun bénéficiaire");
+            //             }
+            //         }
+            //     }
+            //     if(count($msg)){
+            //         array_push($results["warns"], [
+            //             "title" => "Avertissement à la ligne ".($key+1),
+            //             "msg" => $msg,
+            //         ]);
+            //         $nb_warning ++;
+            //     }
+            // }
         }
         // Stocker toutes les informations dans la variable de resultat
         $results["msg"] = "$nb_success souscripteurs importés avec succès. ".($nb_error ? " $nb_error erreurs." : '').($nb_warning ? " $nb_warning avertissements." : '');

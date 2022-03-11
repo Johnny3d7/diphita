@@ -77,8 +77,8 @@
                             <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                         </div>
                         <div class="crm_body">
-                            <h4>2455</h4>
-                            <p>User Registrations</p>
+                            <h4>{{ App\Models\Caisse::first()->solde() }}</h4>
+                            <p>Point de la caisse</p>
                         </div>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
             <div class="white_card_body ">
                 <div class="single_user_pil d-flex align-items-center justify-content-between">
                     <div class="user_pils_thumb d-flex align-items-center">
-                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                         <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                     </div>
                     <div class="user_info">
@@ -161,7 +161,7 @@
                 </div>
                 <div class="single_user_pil admin_bg d-flex align-items-center justify-content-between">
                     <div class="user_pils_thumb d-flex align-items-center">
-                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                         <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                     </div>
                     <div class="user_info">
@@ -174,7 +174,7 @@
                 </div>
                 <div class="single_user_pil d-flex align-items-center justify-content-between">
                     <div class="user_pils_thumb d-flex align-items-center">
-                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                         <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                     </div>
                     <div class="user_info">
@@ -187,7 +187,7 @@
                 </div>
                 <div class="single_user_pil d-flex align-items-center justify-content-between">
                     <div class="user_pils_thumb d-flex align-items-center">
-                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                         <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                     </div>
                     <div class="user_info">
@@ -200,7 +200,7 @@
                 </div>
                 <div class="single_user_pil d-flex align-items-center justify-content-between mb-0">
                     <div class="user_pils_thumb d-flex align-items-center">
-                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                         <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                     </div>
                     <div class="user_info">
@@ -877,7 +877,7 @@
                     <div class="col-lg-4 mb_30">
                         <div class="single_user_pil d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -890,7 +890,7 @@
                         </div>
                         <div class="single_user_pil admin_bg d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -903,7 +903,7 @@
                         </div>
                         <div class="single_user_pil d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -916,7 +916,7 @@
                         </div>
                         <div class="single_user_pil d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -929,7 +929,7 @@
                         </div>
                         <div class="single_user_pil d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -944,7 +944,7 @@
                     <div class="col-lg-4 mb_30">
                         <div class="single_user_pil d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -957,7 +957,7 @@
                         </div>
                         <div class="single_user_pil admin_bg d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -970,7 +970,7 @@
                         </div>
                         <div class="single_user_pil d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -983,7 +983,7 @@
                         </div>
                         <div class="single_user_pil d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -996,7 +996,7 @@
                         </div>
                         <div class="single_user_pil d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -1011,7 +1011,7 @@
                     <div class="col-lg-4 mb_30">
                         <div class="single_user_pil d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -1024,7 +1024,7 @@
                         </div>
                         <div class="single_user_pil admin_bg d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -1037,7 +1037,7 @@
                         </div>
                         <div class="single_user_pil d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -1050,7 +1050,7 @@
                         </div>
                         <div class="single_user_pil d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
@@ -1063,7 +1063,7 @@
                         </div>
                         <div class="single_user_pil d-flex align-items-center justify-content-between">
                             <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/1.png') }}" alt=""></div>
+                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
                                 <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
                             </div>
                             <div class="user_info">
