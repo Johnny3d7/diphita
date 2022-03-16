@@ -77,7 +77,7 @@
 
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid" style="width: 97% !important;">
         <table class="table">
             <tr>
                 <td class="border-top-0" style="width: 20%">
@@ -88,17 +88,22 @@
                 </td>
                 <td class="border-top-0">
                     <div class="col-12 ">
-                        <div class="col-12 txt-center"><span class="m-0  h-title" style="font-family: Copperplate !important;">Diphita Prévoyance </span></div>
+                        <div class="col-12 txt-center">
+                            <span class="m-0 h-title" style="font-family: Copperplate !important;">Diphita Prévoyance </span>
+                        </div>
                         <div class="col-12 txt-center font-ms-reference-sans-serif sh-title">Siège social : Yopougon – Entre l’Hôtel Assonvon et l’Eglise Baptiste Œuvres et Missions
                             <br>Tél. : (00225) 0576017601 / 0566040004 | Email : info.diphita@gmail.com 
                         </div>
-                        <div class="col-12 txt-bold txt-center mt_5 h-auto" style=" border:3px solid; border-radius: 8px; width:80%; margin-left: 2rem;"><h1 class="font-arialblack h-subtitle" style="color:#2F5597 !important;">FORMULAIRE D’ADHÉSION</h1></div>
+                        <div class="col-12 txt-bold txt-center h-auto" style=" border:2px solid; border-radius: 5px; width:80%; margin-left: 2rem; margin-top: 10px; padding: 0px;">
+                            <span class="h-title" style="font-family: arialblack !important; font-size:20px !important; line-height: 20px !important;">FORMULAIRE D’ADHÉSION</span>
+                            {{-- <span class="h-subtitle" style="color:#2F5597 !important; font-family: Copperplate !important;"></span> --}}
+                        </div>
                     </div>
                 </td>
             </tr>
             <tr>
                 <td colspan="2" class="border-0">
-                    <div class="row justify-content-center" style="margin-top: 25px;">
+                    <div class="row justify-content-center" style="margin-top: 15px;">
                         <div class="col-12" style="border:1.5px solid #2F5597; width:95% !important; padding: 5px 15px; background-color:#2F5597">
                             <h6 class="txt-color-wh my-auto font-cambria">SOUSCRIPTEUR</h6>
                         </div>
@@ -113,10 +118,12 @@
                                         <p class="font-cambria pb-0 mb-0">Nom : <span class="h6">{{ $sous->nom }}</span></p>
                                         <p class="font-cambria pb-0 mb-0">Prénom(s) : <span class="h6">{{ $sous->pnom }}</span></p>
                                         <p class="font-cambria pb-0 mb-0">Numéro CNI : <span class="h6">{{ $sous->num_cni }}</span></p>
-                                        <p class="font-cambria pb-0 mb-0">Tél. : <span class="h6">{{ $sous->contact }}</span> / E-mail : <span class="h6">{{ $sous->email }}</span></p>
+                                        {{-- <p class="font-cambria pb-0 mb-0">Tél. : <span class="h6">{{ $sous->contact }}</span> / E-mail : <span class="h6">{{ $sous->email }}</span></p> --}}
+                                        <p class="font-cambria pb-0 mb-0">Tél. : <span class="h6">{{ $sous->contact }}</span></p>
+                                        <p class="font-cambria pb-0 mb-0">E-mail : <span class="h6">{{ $sous->email }}</span></p>
                                         <p class="font-cambria pb-0 mb-0">Résidence : <span class="h6">{{ $sous->lieu_hab }}</span></p>
                                     </td>
-                                    <td style="width: 20%;">
+                                    <td style="width: 23%;">
                                         <div class="font-cambria mt_10 mb_10 py-4 txt-center" style=" border:1.5px solid #2F5597; font-size:14px; background-color:white !important;">Photo du bénéficiaire (Facultatif) </div>
                                     </td>
                                 </tr>
@@ -303,9 +310,9 @@
             <h6 class="font-cambria my-1 txt-center">NB : La double inscription d’un même bénéficiaire est formellement interdite ; sa découverte annule la plus récente. Toute fausse déclaration annule l’inscription.</h6>
         </div>
 
-        <table class="table my-2 mt-4">
+        <table class="table my-2 mt-3">
             <tr>
-                <td class="font-cambria border-0 txt-center"  style="font-size:15px;">
+                <td class="font-cambria border-0"  style="font-size:15px;">
                     Conseiller: 
                     @if ($adherent->isSouscripteur())
                         {{ $adherent->conseiller_diph ? $adherent->conseiller_diph : 'Indisponible' }}
@@ -313,17 +320,17 @@
                         {{ $adherent->souscripteur()->conseiller_diph ? $adherent->souscripteur()->conseiller_diph : 'Indisponible' }}
                     @endif
                 </td>
-                <td class="border-0 txt-center">
+                <td class="border-0 text-right">
                     Fait à Abidjan, le {{ ucwords((new Carbon\Carbon($adherent->date_adhesion))->locale('fr')->isoFormat('DD/MM/YYYY')) }}                                                                                                          
                 </td>
             </tr>
             <tr>
                 <td class="border-0">
-                    <h6 class="font-cambria mt-5 txt-center">SIGNATURE DU SOUSCRIPTEUR</h6> 
+                    <h6 class="font-cambria mt-4 txt-center">SIGNATURE DU SOUSCRIPTEUR</h6> 
                     <div class="font-cambria txt-center" style="font-size:14px;">{{ $adherent->isSouscripteur() ? $adherent->nom_pnom() : $adherent->souscripteur()->nom_pnom() }}</div>
                 </td>
                 <td class="border-0">
-                    <h6 class="font-cambria mt-5 txt-center">VISA DU BUREAU EXECUTIF</h6>
+                    <h6 class="font-cambria mt-4 txt-center">VISA DU BUREAU EXECUTIF</h6>
                     <div class="font-cambria txt-center" style="font-size:14px;">{{ $adherent->admin->nom_pnom() }}</div>
                 </td>
             </tr>

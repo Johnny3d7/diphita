@@ -103,10 +103,9 @@
                     series: { 
                         pie: { show: !0 },
                     }, 
-                    colors: ["#6c5ffc", "#f82649", "#09ad95", "#05c3fb", "#1170e4"], 
+                    colors: ["#09ad95", "#f82649", "#6c5ffc", "#05c3fb", "#1170e4"], 
                     legend: { show: !1 } 
                 });
-
                 
         });
     </script>
