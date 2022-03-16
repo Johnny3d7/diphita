@@ -23,7 +23,7 @@
 
                     <div class="tab-content" style="overflow-x: auto;">
                         <div class="tab-pane fade show active" id="pills-success-transaction" role="tabpanel" aria-labelledby="success-tab">
-                            @if (count($souscripteur->reglements) > 0)
+                            @if (count($souscripteur->reglements()) > 0)
                                 {{-- <ul class="list-group">
                                     @foreach($souscripteur->reglements->sortByDesc('created_at') as $reglement)
                                         <li class="list-group-item">
@@ -42,7 +42,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($souscripteur->reglements->sortByDesc('created_at') as $reglement)
+                                        @foreach($souscripteur->reglements()->sortByDesc('created_at') as $reglement)
                                         <tr>
                                             <td>{{ ucwords((new Carbon\Carbon($reglement->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm')) }}</td>
                                             <td>{{ $reglement->type }}</td>
@@ -57,7 +57,7 @@
                             @endif
                         </div>
                         <div class="tab-pane fade" id="pills-warning-transaction" role="tabpanel" aria-labelledby="warning-tab">
-                            @if (count($souscripteur->versements) > 0)
+                            @if (count($souscripteur->versements()) > 0)
                                 {{-- <ul class="list-group">
                                     @foreach($souscripteur->versements->sortByDesc('id') as $versement)
                                         <li class="list-group-item">
@@ -75,7 +75,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($souscripteur->versements->sortByDesc('created_at') as $versement)
+                                        @foreach($souscripteur->versements()->sortByDesc('created_at') as $versement)
                                         <tr>
                                             <td>{{ ucwords((new Carbon\Carbon($versement->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm')) }}</td>
                                             <td>{{ $versement->type ?? 'Versement' }}</td>

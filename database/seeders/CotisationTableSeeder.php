@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\AdherentHasCotisations;
+use App\Models\Assistance;
 use App\Models\Cotisation;
 use App\Models\Reglement;
 use Carbon\Carbon;
@@ -17,6 +18,7 @@ class CotisationTableSeeder extends Seeder
      */
     public function run()
     {
+        Assistance::truncate();
         Cotisation::truncate();
         Reglement::truncate();
         AdherentHasCotisations::truncate();

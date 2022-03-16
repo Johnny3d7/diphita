@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PDFController;
+use Database\Seeders\CotisationTableSeeder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -163,12 +164,14 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         Route::get('/depense/destroy/{id}', 'DepenseController@destroy')->name('depense.destroy');
     
         /* Cotisations */
-        // Cotisations Exceptionnelles
         Route::prefix('/cotisations')->name('cotisations.')->group( function() {
+            // Cotisations Exceptionnelles
             Route::resource('exceptionnelles', CotisationExceptController::class);
+            Route::get('exceptionnelles/{code}/publier', 'CotisationExceptController@publier')->name('exceptionnelles.publier');
             
             // Cotisations Annuelles
             Route::resource('annuelles', CotisationAnnuController::class);
+            Route::get('annuelles/{annee}/publier', 'CotisationAnnuController@publier')->name('annuelles.publier');
         });
         //Cas assisté
         Route::get('/assistances', 'AssistanceController@index')->name('assistance.index');

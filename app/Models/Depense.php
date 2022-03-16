@@ -27,6 +27,7 @@ class Depense extends Model
         'id_adherent'
     ];
     
-            
-    
+    public static function getNonParcouru(){
+        return static::whereParcouru(false)->get();
+    } 
 }

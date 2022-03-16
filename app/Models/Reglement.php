@@ -41,6 +41,10 @@ class Reglement extends Model
         });
     }
     
+    public static function getNonParcouru(){
+        return static::whereParcouru(false)->get();
+    } 
+    
     public function adherent()
     {
         return $this->belongsTo(Adherents::class, 'id_adherent');

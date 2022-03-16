@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Adherents;
 use App\Models\AyantDroit;
+use App\Models\Versement;
 use Illuminate\Database\Seeder;
 
 class AdherentsTableSeeder extends Seeder
@@ -16,7 +17,9 @@ class AdherentsTableSeeder extends Seeder
     public function run()
     {
         //
+        Versement::truncate();
         Adherents::truncate();
+        AyantDroit::truncate();
 
         $faker = (new \Faker\Factory())::create();
 

@@ -46,7 +46,8 @@ class Adherents extends Model
         'droit_inscription_montant',
         'cot_annuelle_montant',
         'kits_montant',
-        'admin_id'
+        'admin_id',
+        'solde'
     ];
 
     public static function boot(){
@@ -199,6 +200,10 @@ class Adherents extends Model
         // }
     }
 
+    public function ahcs(){
+        return $this->hasMany(AdherentHasCotisations::class, 'id_adherent');
+    }
+
     public static function selectAll(Bool $souscripteur = false,$statut = 1){
         $valides = static::where(['valide'=>1,'status'=>$statut]);
         if($souscripteur) $valides = $valides->whereRole(1);
@@ -272,15 +277,15 @@ class Adherents extends Model
     }
 
     public function versements(int $parcouru = 10){
-        $versements = $this->hasMany(Versement::class, 'id_adherent');
-        if($parcouru != 10) $versements = $versements->whereParcouru($parcouru)->get();
+        $versements = $this->hasMany(Versement::class, 'id_adherent')->get();
+        if($parcouru != 10) $versements = $versements->where('parcouru', $parcouru);
         return $versements;
     }
     
     public function reglements(Cotisation $cotisation=null, int $parcouru = 10){
-        $reglements = $this->hasMany(Reglement::class, 'id_adherent');
-        if($cotisation) $reglements = $reglements->whereIdCotisation($cotisation->id)->get();
-        if($parcouru != 10) $reglements = $reglements->whereParcouru($parcouru)->get();
+        $reglements = $this->hasMany(Reglement::class, 'id_adherent')->get();
+        if($cotisation) $reglements = $reglements->where('id_cotisation', $cotisation->id);
+        if($parcouru != 10) $reglements = $reglements->where('parcouru', $parcouru);
         return $reglements;
     }
 
@@ -295,8 +300,8 @@ class Adherents extends Model
     }
 
     public function transactions(){
-        $reglements = new Collection($this->reglements);
-        $versements = new Collection($this->versements);
+        $reglements = new Collection($this->reglements());
+        $versements = new Collection($this->versements());
         $transactions = $reglements->concat($versements);
         return $transactions;
     }
@@ -327,6 +332,10 @@ class Adherents extends Model
 
     public function solde(){
         return $this->solde + $this->versements(0)->sum('montant') - $this->reglements(null, 0)->sum('montant');
+    }
+
+    public function updateSolde(){
+        $this->update(['solde' => $this->solde()]);
     }
 
     public function total_benef_life(){

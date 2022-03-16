@@ -85,4 +85,10 @@ class CotisationExceptController extends Controller
     {
         //
     }
+
+    public function publier($code){
+        $cotisation = Cotisation::whereCodeDeces($code)->first();
+        $cotisation->publier();
+        return back();
+    }
 }

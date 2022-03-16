@@ -363,6 +363,7 @@
                             $($(modalReglement).find('.solde:first')).val(msg.data)
                             $($(modalReglement).find('.montant')).change()
                         } else {
+                            console.log("recharger la page")
                             $($(document).find('.solde:first')).html(msg.data)
                         }
                     } else {

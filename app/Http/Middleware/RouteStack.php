@@ -41,12 +41,16 @@ class RouteStack
             if(Route::currentRouteName() == $home){
                 session(['routeStack' => []]);
             } else {
-                if(count($array) == 0 || $array[array_unshift($array)-1]["name"] != Route::currentRouteName()){
-                    array_push($array, [
-                        'name' => Route::currentRouteName(),
-                        'params' => Route::getCurrentRoute()->parameters()
-                    ]);
-                    session(['routeStack' => $array]);
+                try {
+                    if(count($array) == 0 || $array[array_unshift($array)-1]["name"] != Route::currentRouteName()){
+                        array_push($array, [
+                            'name' => Route::currentRouteName(),
+                            'params' => Route::getCurrentRoute()->parameters()
+                        ]);
+                        session(['routeStack' => $array]);
+                    }
+                } catch (\Throwable $th) {
+                    return redirect()->route($home);
                 }
             }
         }
