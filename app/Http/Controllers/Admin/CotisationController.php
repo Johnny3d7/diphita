@@ -3,10 +3,36 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cotisation;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
-class ContratController extends Controller
+class CotisationController extends Controller
 {
+    public function getInfos(Request $request)
+    {
+        $cotisation = Cotisation::find($request->cotisation_id);
+        if($cotisation){
+            $results = new Collection();
+            $souscripteurs = $request->filter && in_array($request->filter, ["Regle", "Non Regle"]) ? $cotisation->souscripteurs($request->filter) : $cotisation->souscripteurs();
+            foreach($souscripteurs as $souscripteur){
+                $results->add([
+                    'cotisation_type' => $cotisation->type,
+                    'cotisation_identifiant' => $cotisation->code_deces ?? $cotisation->annee_cotis,
+                    'identifiant' => $souscripteur->num_adhesion,
+                    'nom_prenoms' => $souscripteur->nom_pnom(),
+                    'nbre_benef' => $souscripteur->psCotisation($cotisation)->nbre_benef,
+                    'date_paiement' => $cotisation->date_payement($souscripteur) ? date_format(date_create($cotisation->date_payement($souscripteur)), 'd/m/Y') : '-',
+                    'montant' => $cotisation->reglements($souscripteur)->sum('montant'),
+                    'etat' => $souscripteur->isReglee($cotisation) ? "A Jour" : "Non A Jour",
+                ]);
+            }
+            // dd($results);
+            return ['data' => $results];
+        }
+        return null;
+    }
+
     /**
      * Display a listing of the resource.
      *

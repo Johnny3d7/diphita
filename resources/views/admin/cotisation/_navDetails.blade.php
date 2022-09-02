@@ -17,7 +17,8 @@
     <div class="tab-pane fade show active" id="pills-{{ $identifiant }}-success" role="tabpanel" aria-labelledby="success-tab">
         <div class="QA_table mb_30">
             <table id="datatable-buttons"
-                class="table table-striped table-colored-bordered table-bordered-info table_diphita">
+                class="table table-striped table-colored-bordered table-bordered-info table_diphita_ajax"
+                data-url="{{ route('apiGetInfosCotisation') }}" data-type="post" data-fields='{"cotisation_id":{{ $cotisation->id }}}'>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -26,17 +27,19 @@
                         <th>Date de paiement</th>
                         <th>Montant payé</th>
                         <th>Etat</th>
-                        <th></th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($cotisation->souscripteurs() as $souscripteur)
                     <tr>
-                        {{-- <td>{{ $data->role }}</td> --}}
+                        <td colspan="7"></td>
+                    </tr>
+                {{-- @foreach($cotisation->souscripteurs()->sortBy('nom') as $souscripteur)
+                    <tr>
                         <td><a href="{{ route('admin.adhesion.show', $souscripteur) }}">{{ $souscripteur->num_adhesion }}</a></td>
                         <td>{{ $souscripteur->nom }} {{ $souscripteur->pnom }}</td>
                         <td>{{ $souscripteur->psCotisation($cotisation)->nbre_benef }}</td>
-                        <td>{{ date_format(date_create($cotisation->date_assistance), 'd/m/Y') }}</td>
+                        <td>{{ $cotisation->date_payement($souscripteur) ? date_format(date_create($cotisation->date_payement($souscripteur)), 'd/m/Y') : '-' }}</td>
                         <td>{{ $cotisation->reglements($souscripteur)->sum('montant') }}</td>
                         <td>{{ $souscripteur->isReglee($cotisation) ? "A Jour" : "Non A Jour" }}</td>
                         <td>
@@ -49,23 +52,23 @@
                                         <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Voir</a>
                                         @if(!$souscripteur->isReglee($cotisation))
                                             <a class="dropdown-item" data-toggle="modal" data-target="#reglement{{ $identifiant }}{{ $souscripteur->num_adhesion }}Modal" href="#"> <i class="ti-money"></i> Faire un reglement</a>
+                                            <a class="dropdown-item btnReglementJS" data-toggle="modal" data-target="#reglementModal" data-souscripteur="{{ $souscripteur->num_adhesion }}" data-type="{{ $cotisation->type }}" data-cotisation="{{ $identifiant }}" href="javascript:void(0);"> <i class="ti-money"></i> Faire un reglement JS</a>
                                         @endif
-                                        {{-- <a class="dropdown-item" href="{{ route('admin.adhesion.valider', ['id' => $souscripteur->id]) }}"> <i class="fas fa-edit"></i> Valider</a>
-                                        
-                                    <a class="dropdown-item" href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"> <i class="ti-trash"></i> Rejeter</a> --}}
                                     </div>
                                 </div>
                             </div>
                         </td>
                     </tr>
-                @endforeach 
+                @endforeach --}}
                 </tbody>
             </table>
         </div>
     </div>
     <div class="tab-pane fade" id="pills-{{ $identifiant }}-warning" role="tabpanel" aria-labelledby="warning-tab">
         <div class="QA_table mb_30">
-            <table class="table table-striped table-colored-bordered table-bordered-info table_diphita">
+            <table class="table table-striped table-colored-bordered table-bordered-info table_diphita_ajax"
+                data-url="{{ route('apiGetInfosCotisation') }}" data-type="post"
+                data-fields='{"cotisation_id":{{ $cotisation->id }}, "filter":"Regle"}'>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -78,14 +81,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($cotisation->souscripteurs("Regle") as $souscripteur)
                     <tr>
-                        {{-- <td>{{ $data->role }}</td> --}}
+                        <td colspan="7"></td>
+                    </tr>
+                {{-- @foreach($cotisation->souscripteurs("Regle") as $souscripteur)
+                    <tr>
                         <td><a href="{{ route('admin.adhesion.show', $souscripteur) }}">{{ $souscripteur->num_adhesion }}</a></td>
                         <td>{{ $souscripteur->nom }} {{ $souscripteur->pnom }}</td>
                         <td>{{ $souscripteur->psCotisation($cotisation)->nbre_benef }}</td>
-                        <td>{{ date_format(date_create($cotisation->date_assistance), 'd/m/Y') }}</td>
-                        <td>{{ 0 }}</td>
+                        <td>{{ $cotisation->date_payement($souscripteur) ? date_format(date_create($cotisation->date_payement($souscripteur)), 'd/m/Y') : '-' }}</td>
+                        <td>{{ $cotisation->reglements($souscripteur)->sum('montant') }}</td>
                         <td>{{ $souscripteur->isReglee($cotisation) ? "A Jour" : "Non A Jour" }}</td>
                         <td>
                             <div class="header_more_tool">
@@ -95,23 +100,21 @@
                                     </span>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Voir</a>
-                                        
-                                        {{-- <a class="dropdown-item" href="{{ route('admin.adhesion.valider', ['id' => $souscripteur->id]) }}"> <i class="fas fa-edit"></i> Valider</a>
-                                        
-                                    <a class="dropdown-item" href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"> <i class="ti-trash"></i> Rejeter</a> --}}
                                     </div>
                                 </div>
                             </div>
                         </td>
                     </tr>
-                @endforeach 
+                @endforeach --}}
                 </tbody>
             </table>
         </div>
     </div>
     <div class="tab-pane fade" id="pills-{{ $identifiant }}-errors" role="tabpanel" aria-labelledby="errors-tab">
         <div class="QA_table mb_30">
-            <table class="table table-striped table-colored-bordered table-bordered-info table_diphita">
+            <table class="table table-striped table-colored-bordered table-bordered-info table_diphita_ajax"
+                data-url="{{ route('apiGetInfosCotisation') }}" data-type="post"
+                data-fields='{"cotisation_id":{{ $cotisation->id }}, "filter":"Non Regle"}'>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -124,14 +127,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($cotisation->souscripteurs("Non Regle") as $souscripteur)
                     <tr>
-                        {{-- <td>{{ $data->role }}</td> --}}
+                        <td colspan="7"></td>
+                    </tr>
+                {{-- @foreach($cotisation->souscripteurs("Non Regle") as $souscripteur)
+                    <tr>
                         <td><a href="{{ route('admin.adhesion.show', $souscripteur) }}">{{ $souscripteur->num_adhesion }}</a></td>
                         <td>{{ $souscripteur->nom }} {{ $souscripteur->pnom }}</td>
                         <td>{{ $souscripteur->psCotisation($cotisation)->nbre_benef }}</td>
-                        <td>{{ date_format(date_create($cotisation->date_assistance), 'd/m/Y') }}</td>
-                        <td>{{ 0 }}</td>
+                        <td>{{ $cotisation->date_payement($souscripteur) ? date_format(date_create($cotisation->date_payement($souscripteur)), 'd/m/Y') : '-' }}</td>
+                        <td>{{ $cotisation->reglements($souscripteur)->sum('montant') }}</td>
                         <td>{{ $souscripteur->isReglee($cotisation) ? "A Jour" : "Non A Jour" }}</td>
                         <td>
                             <div class="header_more_tool">
@@ -142,15 +147,13 @@
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Voir</a>
                                         <a class="dropdown-item" data-toggle="modal" data-target="#reglement{{ $identifiant }}{{ $souscripteur->num_adhesion }}Modal" href="#"> <i class="ti-money"></i> Faire un reglement</a>
-                                        {{-- <a class="dropdown-item" href="{{ route('admin.adhesion.valider', ['id' => $souscripteur->id]) }}"> <i class="fas fa-edit"></i> Valider</a>
-                                        
-                                    <a class="dropdown-item" href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"> <i class="ti-trash"></i> Rejeter</a> --}}
+                                        <a class="dropdown-item btnReglementJS" data-toggle="modal" data-target="#reglementModal" data-souscripteur="{{ $souscripteur->num_adhesion }}" data-type="{{ $cotisation->type }}" data-cotisation="{{ $identifiant }}" href="javascript:void(0);"> <i class="ti-money"></i> Faire un reglement JS</a>
                                     </div>
                                 </div>
                             </div>
                         </td>
                     </tr>
-                @endforeach 
+                @endforeach --}}
                 </tbody>
             </table>
         </div>

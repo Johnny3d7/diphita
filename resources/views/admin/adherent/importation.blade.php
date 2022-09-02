@@ -41,7 +41,7 @@
                             <div class="main-title">
                                 <h3 class="m-0">Etat d'importation de contrats</h3>
                                 <div class="col-md-12 text-center mt_15">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                     <div class="white_card_body">
                         <div class="card-body">
                             {{-- <h6 class="card-subtitle mb-2">Les champs marqués du signe <code class="highlighter-rouge">(*)</code> sont tous obligatoires.</h6> --}}
-                            
+
                             <div class="col-md-8 offset-md-2">
                                 <form id="adherentForm" class="form-horizontal" role="form" method="POST" action="{{ route('admin.adhesion.importationPost') }}" enctype="multipart/form-data">
                                     {{ csrf_field() }}
@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="col-md-4 offset-md-4">
                                         <div class="input-group">
-                                            <button id="btnSubmit" type="submit" class="btn btn-info btn-block py-2">
+                                            <button id="btnSubmit" type="button" class="btn btn-info btn-block py-2">
                                                 <i class="fa fa-3x py-2 fa-upload"></i> <br> <span>Importer</span>
                                             </button>
                                         </div>
@@ -81,7 +81,7 @@
                             </div>
 
                             <div class="row my-3">
-                                
+
                                 @foreach ($resultsImportation as $key => $results)
                                     @isset ($results)
                                         <div class="col-md-12">
@@ -89,9 +89,9 @@
                                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                 <h6 class="text-center text-info"><b>{{ $key }}</b></h6>
                                                 <h4 class="text-center">{{ $results['msg'] }} <a href="javascript:void(0)" data-toggle="modal" data-target="#importation{{ $key }}Modal">Details <i class="fa fa-info-circle"></i></a></h4>
-                                                
+
                                             </div>
-                                        </div>                                        
+                                        </div>
                                     @endisset
                                 @endforeach
                             </div>
@@ -118,7 +118,7 @@
         $('#csv').change(function(){
             $('#csvLabel').html(this.files[0].name)
         })
-
+        /*
         const element = document.getElementById("myBar");
         let width = 0;
         const id = setInterval(frame, 100);
@@ -131,8 +131,44 @@
                 $(element).html(width+'%')
             }
         }
+        */
+        $('#btnSubmit').click(function(){
+            url = $($(this).parents('form:first')).attr('action');
+            file = $('#csv').prop('files')[0];
 
-        /*
+            var formData = new FormData();
+
+            formData.append("csv", file);
+            formData.append("api", true);
+
+            verifyStatus();
+
+            $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')}});
+            $.ajax({
+                url: url, //script qui traitera l'envoi du fichier
+                type: 'POST',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                //Traitements AJAX
+                beforeSend: ()=>{
+                    // verifyStatus();
+                },
+                success:(msg)=>{
+                    console.log('Success')
+                    console.log(msg)
+                    // verifyStatus();
+                },
+                error: ()=>{
+                    console.log('error')
+                },
+                //Données du formulaire envoyé
+                //Options signifiant à jQuery de ne pas s'occuper du type de données
+            });
+            console.log('verify');
+        })
+
         $('#adherentForm').submit(function(e){
             e.preventDefault();
             $this = $(this);
@@ -161,7 +197,7 @@
                 // },
                 //Traitements AJAX
                 beforeSend: ()=>{
-                    verifyStatus();
+                    // verifyStatus();
                 },
                 success:(msg)=>{
                     console.log('Success')
@@ -178,14 +214,34 @@
                 contentType: false,
                 processData: false
             });
-        });*/
+        });
 
-        function verifyStatus() {
+        // function verifyStatut() async {
+        //     const { data } = await axios.get('/import-status');
+
+        //     if (data.finished) {
+        //         this.current_row = this.total_rows
+        //         this.progress = 100
+        //         return;
+        //     };
+
+        //     this.total_rows = data.total_rows;
+        //     this.current_row = data.current_row;
+        //     this.progress = Math.ceil(data.current_row / data.total_rows * 100);
+        //     this.trackProgress();
+        // }
+
+        function verifyStatus(count = 0) {
+            count++;
+            let statut;
+
             $.ajax({
                 url: "{{ route('admin.verifyStatus') }}",
                 type: 'GET',
                 success: function(res){
                     console.log(res);
+                    if(res.statut != "Terminé" && count < 10) verifyStatus(count);
+                    // if(res.current_row <= res.total_rows) verifyStatus();
                 }
             });
         }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\PaginationHelper;
 use App\Helpers\Parameters;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,19 +17,20 @@ class Cotisation extends Model
 
     public static function boot(){
         parent::boot();
-        
+
         static::creating(function($item) {
             // Log::info('Item Creating Event:'.$item);
             if($item->date_butoire){
                 $newId = (count(static::selectAll('false')->sortByDesc('id')) > 0 ? (int) substr(static::selectAll('false')->sortByDesc('id')->first()->code_deces, 3) : 0) + 1;
                 $item->code_deces = "AD-".($newId<10 ? '000' : ($newId<100 ? '00' : ($newId<1000 ? '0' : '') )).$newId;
-                
+
                 $date_annonce = $item->date_butoire;
                 $date_annonce->subMonths(2);
                 $item->date_annonce = Carbon::create($date_annonce->isoFormat('YYYY'), $date_annonce->isoFormat('MM'), 25, 0, 0, 0);
                 $item->date_butoire->addMonths(2);
-                $item->type = 'exceptionnelle';
             }
+
+            $item->type = $item->date_butoire ? 'exceptionnelle' : 'annuelle';
 
             $item->montant = $item->type == "exceptionnelle" ? Parameters::cotisationExceptionnelle() : Parameters::cotisationAnnuelle();
 
@@ -44,7 +46,7 @@ class Cotisation extends Model
             // $adherents = $item->type == "annuelle" ? Adherents::whereYear('date_adhesion', '>=', $item->annee_cotis)->get() : Adherents::whereDate('date_debutcotisation', '>=', 'date_annonce')->get();
             // $adherents = $item->type == "exceptionnelle" ? [Adherents::selectAll()[0]] : [Adherents::selectAll(true)[0]];
             // $adherents = $item->type == "exceptionnelle" ? Adherents::whereDate('date_adhesion', '<=', $item->date_annonce)->get() : [];
-            
+
 
             $adherents = $item->type == "exceptionnelle" ? Adherents::whereDate('date_debutcotisation', '<=', $item->date_annonce)->get() : Adherents::whereYear('date_adhesion', '<=', $item->annee_cotis)->get();
 
@@ -87,8 +89,8 @@ class Cotisation extends Model
         return $result->sort();
     }
 
-    public static function selectAll(String $type = 'exceptionnelles'){
-        return $type=='exceptionnelles' ? static::selectAllExceptionnelle() : ($type=='annuelles' ? static::whereType('annuelle')->get() : ($type=='false' ? static::whereType('exceptionnelle')->get() : null));
+    public static function selectAll(String $type = 'exceptionnelles', $grouped = true){
+        return $type=='exceptionnelles' ? ($grouped ? static::selectAllExceptionnelle() : static::whereType('exceptionnelle')->get()) : ($type=='annuelles' ? static::whereType('annuelle')->get() : ($type=='false' ? static::whereType('exceptionnelle')->get() : null));
     }
 
     public function refreshCotisations(){
@@ -114,6 +116,11 @@ class Cotisation extends Model
             if($cotisation->souscripteur->isValide()) $souscripteurs->add($cotisation->souscripteur);
         }
 
+        // $perpage = 20;
+        // $paginated = PaginationHelper::paginate($souscripteurs, $perpage);
+        // // dd($paginated);
+        // // dd($souscripteurs, $paginated);
+        // return $paginated;
         return $souscripteurs;
     }
 
@@ -124,7 +131,7 @@ class Cotisation extends Model
             $montant += $souscripteur->psCotisation($this)->montant();
         }
         return $montant;
-        
+
         // $ahcs = $this->hasMany(AdherentHasCotisations::class, 'id_cotisation')->get();
         // $montant = 0;
         // foreach ($ahcs as $ahc) {
@@ -138,6 +145,10 @@ class Cotisation extends Model
         $reglements = $this->hasMany(Reglement::class, 'id_cotisation')->get();
         if($adherent) $reglements = $adherent->reglements($this);
         return $reglements;
+    }
+
+    public function date_payement(Adherents $adherent){
+        return $this->reglements($adherent)->sortByDesc('created_at')->first()->created_at ?? false;
     }
 
     public function montant_collecte(){
@@ -161,27 +172,27 @@ class Cotisation extends Model
         foreach ($souscripteurs as $souscripteur) {
             // Mise à jour et fixation du solde de chaque souscripteur
             $souscripteur->updateSolde();
-            
+
             // Mise à jour et fixation du solde de la caisse
             $caisse = Caisse::first();
             $caisse->updateSolde();
-            
+
             // Parcours des versements
             foreach ($souscripteur->versements(0) as $versement) {
                 $versement->update(['parcouru' => true]);
             }
-            
+
             // Parcours des reglements
             foreach ($souscripteur->reglements($this, 0) as $reglement) {
                 $reglement->update(['parcouru' => true]);
             }
-            
+
             // Parcours des depenses
             foreach (Depense::getNonParcouru() as $depense) {
                 $depense->update(['parcouru' => true]);
             }
         }
-        
+
         // Parcours de la cotisation
         $this->update([
             'parcouru' => true

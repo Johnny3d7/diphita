@@ -10,7 +10,7 @@ class Versement extends Model
     use HasFactory;
 
     protected $table = 'versements';
-    
+
     protected $guarded = ['id'];
 
     public $timestamps = true;
@@ -34,10 +34,14 @@ class Versement extends Model
     public static function getNonParcouru(){
         return static::whereParcouru(false)->get();
     }
-    
+
     public function adherent()
     {
         return $this->belongsTo(Adherents::class, 'id_adherent');
+    }
+
+    public static function getMontant(){
+        return static::getNonParcouru()->sum('montant');
     }
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdherentController;
+use App\Http\Controllers\Admin\CotisationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('infos-souscripteur',[AdherentController::class, 'getInfos'])->name('apiGetInfosSouscripteur');
+Route::post('infos-cotisation',[CotisationController::class, 'getInfos'])->name('apiGetInfosCotisation');

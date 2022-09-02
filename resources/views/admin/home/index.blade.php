@@ -1,7 +1,13 @@
 @extends('admin.main')
 
 @section('css')
-    
+    <style>
+        .chartsh {
+            height: 16rem;
+            overflow: hidden;
+            width: 100%;
+        }
+    </style>
 @endsection
 
 @section('title')
@@ -14,13 +20,13 @@
 
 @section('content')
 <div class="row ">
-    <div class="col-xl-8 ">
+    <div class="col-xl-4">
         <div class="white_card mb_30 card_height_100">
             <div class="white_card_header">
                 <div class="row align-items-center justify-content-between flex-wrap">
-                    <div class="col-lg-4">
+                    <div class="col-lg-8">
                         <div class="main-title">
-                            <h3 class="m-0">Stoke Details</h3>
+                            <h3 class="m-0">Cotisations Exceptionnelles</h3>
                         </div>
                     </div>
                     <div class="col-lg-4 text-right d-flex justify-content-end">
@@ -33,7 +39,40 @@
                 </div>
             </div>
             <div class="white_card_body">
-                <div id="management_bar"></div>
+                @php
+                    $collected = $cotisation_exp->montant_collecte();
+                    $to_collect = $cotisation_exp->montant_total() - $cotisation_exp->montant_collecte();
+                @endphp
+                <div id="point_exceptionnel" class="chartsh" data-fields='[{"label":"Collecté","data":{{ $collected }}},{"label":"A recouvrer","data":{{ $to_collect }}}]'></div>
+                <h4 class="text-primary mb-3"><small class="text-secondary">Montant Total : </small> <span class="float-right">{{ number_format($cotisation_exp->montant_total(), 0, ',', ' ') }} francs CFA</span></h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="white_card mb_30 card_height_100">
+            <div class="white_card_header">
+                <div class="row align-items-center justify-content-between flex-wrap">
+                    <div class="col-lg-8">
+                        <div class="main-title">
+                            <h3 class="m-0">Cotisations annuelles</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-right d-flex justify-content-end">
+                        <select class="nice_Select2 max-width-220" >
+                            <option value="1">Show by month</option>
+                            <option value="1">Show by year</option>
+                            <option value="1">Show by day</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="white_card_body">
+                @php
+                    $collected = $cotisation_an->montant_collecte();
+                    $to_collect = $cotisation_an->montant_total() - $cotisation_an->montant_collecte();
+                @endphp
+                <div id="point_annuel" class="chartsh" data-fields='[{"label":"Collecté","data":{{ $collected }}},{"label":"A recouvrer","data":{{ $to_collect }}}]'></div>
+                <h4 class="text-primary mb-3"><small class="text-secondary">Montant Total : </small> <span class="float-right">{{ number_format($cotisation_an->montant_total(), 0, ',', ' ') }} francs CFA</span></h4>
             </div>
         </div>
     </div>
@@ -49,7 +88,7 @@
                             <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                         </div>
                         <div class="crm_body">
-                            <h4>{{ Adherents::where(['valide'=>1, 'status'=> 1, 'role' => 1])->count() }}</h4>
+                            <h4>{{ $data->nbre_souscripteurs }}</h4>
                             <p>Souscripteur(s)</p>
                         </div>
                     </div>
@@ -63,7 +102,7 @@
                             <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                         </div>
                         <div class="crm_body">
-                            <h4>{{ Adherents::where(['valide'=>1, 'status'=> 1])->count() }}</h4>
+                            <h4>{{ $data->nbre_beneficiaires }}</h4>
                             <p>Bénéficiaire(s)</p>
                         </div>
                     </div>
@@ -77,7 +116,7 @@
                             <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                         </div>
                         <div class="crm_body">
-                            <h4>{{ App\Models\Caisse::first()->solde() }}</h4>
+                            <h4>{{ number_format($data->point_caisse, 0, ',', ' ')  }} FCFA</h4>
                             <p>Point de la caisse</p>
                         </div>
                     </div>
@@ -91,13 +130,41 @@
                             <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                         </div>
                         <div class="crm_body">
-                            <h4>2455</h4>
-                            <p>User Registrations</p>
+                            <h4>{{ number_format($data->point_depense, 0, ',', ' ')  }} FCFA</h4>
+                            <p>Point des dépenses</p>
                         </div>
                     </div>
                 </div>
+                {{-- <div class="col-lg-6">
+                    <div class="single_crm">
+                        <div class="crm_head crm_bg_3 d-flex align-items-center justify-content-between" >
+                            <div class="thumb">
+                                <img src="{{ url('img/crm/sqr.svg') }}" alt="">
+                            </div>
+                            <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
+                        </div>
+                        <div class="crm_body">
+                            <h4>{{ number_format($data->point_depense, 0, ',', ' ')  }} FCFA</h4>
+                            <p>Point des dépenses</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="single_crm">
+                        <div class="crm_head crm_bg_2 d-flex align-items-center justify-content-between" >
+                            <div class="thumb">
+                                <img src="{{ url('img/crm/infographic.svg') }}" alt="">
+                            </div>
+                            <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
+                        </div>
+                        <div class="crm_body">
+                            <h4>{{ number_format($data->point_caisse, 0, ',', ' ')  }} FCFA</h4>
+                            <p>Point de la caisse</p>
+                        </div>
+                    </div>
+                </div> --}}
             </div>
-            <div class="crm_reports_bnner">
+            {{-- <div class="crm_reports_bnner">
                 <div class="row justify-content-end ">
                     <div class="col-lg-6">
                         <h4>Create CRM Reports</h4>
@@ -106,762 +173,48 @@
                         <a href="#">Read More <i class="fas fa-arrow-right"></i> </a>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
-    <div class="col-xl-4">
+    <div class="col-xl-6">
         <div class="white_card card_height_100 mb_30">
             <div class="white_card_header">
                 <div class="row align-items-center">
                     <div class="col-lg-4">
                         <div class="main-title">
-                            <h3 class="m-0">New Users</h3>
+                            <h3 class="m-0">Paiement de cotisations</h3>
                         </div>
                     </div>
                     <div class="col-lg-8">
                         <div class="row justify-content-end">
                             <div class="col-lg-8 d-flex justify-content-end">
-                                <div class="serach_field-area theme_bg d-flex align-items-center">
-                                    <div class="search_inner">
-                                        <form action="#">
-                                            <div class="search_field">
-                                                <input type="text" placeholder="Search">
-                                            </div>
-                                            <button type="submit"> <img src="{{ url('img/icon/icon_search.svg') }}" alt=""> </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-end">
-                    <div class="col-lg-4 mt_20">
-                        <select class="nice_Select2 wide" >
-                            <option value="1">Show by All</option>
-                            <option value="1">Show by A</option>
-                            <option value="1">Show by B</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="white_card_body ">
-                <div class="single_user_pil d-flex align-items-center justify-content-between">
-                    <div class="user_pils_thumb d-flex align-items-center">
-                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                        <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                    </div>
-                    <div class="user_info">
-                        Customer
-                    </div>
-                    <div class="action_btns d-flex">
-                        <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                        <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                    </div>
-                </div>
-                <div class="single_user_pil admin_bg d-flex align-items-center justify-content-between">
-                    <div class="user_pils_thumb d-flex align-items-center">
-                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                        <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                    </div>
-                    <div class="user_info">
-                        Admin
-                    </div>
-                    <div class="action_btns d-flex">
-                        <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                        <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                    </div>
-                </div>
-                <div class="single_user_pil d-flex align-items-center justify-content-between">
-                    <div class="user_pils_thumb d-flex align-items-center">
-                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                        <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                    </div>
-                    <div class="user_info">
-                        Customer
-                    </div>
-                    <div class="action_btns d-flex">
-                        <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                        <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                    </div>
-                </div>
-                <div class="single_user_pil d-flex align-items-center justify-content-between">
-                    <div class="user_pils_thumb d-flex align-items-center">
-                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                        <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                    </div>
-                    <div class="user_info">
-                        Customer
-                    </div>
-                    <div class="action_btns d-flex">
-                        <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                        <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                    </div>
-                </div>
-                <div class="single_user_pil d-flex align-items-center justify-content-between mb-0">
-                    <div class="user_pils_thumb d-flex align-items-center">
-                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                        <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                    </div>
-                    <div class="user_info">
-                        Customer
-                    </div>
-                    <div class="action_btns d-flex">
-                        <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                        <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4">
-        <div class="white_card card_height_100 mb_30">
-            <div class="white_card_header">
-                <div class="box_header m-0">
-                    <div class="main-title">
-                        <h3 class="m-0">Sales of the last week</h3>
-                    </div>
-                    <div class="header_more_tool">
-                        <div class="dropdown">
-                            <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
-                              <i class="ti-more-alt"></i>
-                            </span>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Action</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-trash"></i> Delete</a>
-                              <a class="dropdown-item" href="#"> <i class="fas fa-edit"></i> Edit</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-printer"></i> Print</a>
-                              <a class="dropdown-item" href="#"> <i class="fa fa-download"></i> Download</a>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            <div class="white_card_body">
-                <div id="chart-currently"></div>
-                <div class="monthly_plan_wraper">
-                    <div class="single_plan d-flex align-items-center justify-content-between">
-                        <div class="plan_left d-flex align-items-center">
-                            <div class="thumb">
-                                <img src="{{ url('img/icon2/7.svg') }}" alt="">
-                            </div>
-                            <div>
-                                <h5>Most Sales</h5>
-                                <span>Authors with the best sales</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="single_plan d-flex align-items-center justify-content-between">
-                        <div class="plan_left d-flex align-items-center">
-                            <div class="thumb">
-                                <img src="{{ url('img/icon2/6.svg') }}" alt="">
-                            </div>
-                            <div>
-                                <h5>Total sales lead</h5>
-                                <span>40% increased on week-to-week reports</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="single_plan d-flex align-items-center justify-content-between">
-                        <div class="plan_left d-flex align-items-center">
-                            <div class="thumb">
-                                <img src="{{ url('img/icon2/5.svg') }}" alt="">
-                            </div>
-                            <div>
-                                <h5>Average Bestseller</h5>
-                                <span>Pitstop Email Marketing</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4">
-        <div class="white_card card_height_100 mb_30 overflow_hidden">
-            <div class="white_card_header">
-                <div class="box_header m-0">
-                    <div class="main-title">
-                        <h3 class="m-0">Sales Details</h3>
-                    </div>
-                    <div class="header_more_tool">
-                        <div class="dropdown">
-                            <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
-                              <i class="ti-more-alt"></i>
-                            </span>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Action</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-trash"></i> Delete</a>
-                              <a class="dropdown-item" href="#"> <i class="fas fa-edit"></i> Edit</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-printer"></i> Print</a>
-                              <a class="dropdown-item" href="#"> <i class="fa fa-download"></i> Download</a>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            <div class="white_card_body pb-0">
-                <div class="Sales_Details_plan">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="single_plan d-flex align-items-center justify-content-between">
-                                <div class="plan_left d-flex align-items-center">
-                                    <div class="thumb">
-                                        <img src="{{ url('img/icon2/email.svg') }}" alt="">
-                                    </div>
-                                    <div>
-                                        <h5>$2,034</h5>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="single_plan d-flex align-items-center justify-content-between">
-                                <div class="plan_left d-flex align-items-center">
-                                    <div class="thumb">
-                                        <img src="{{ url('img/icon2/1.svg') }}" alt="">
-                                    </div>
-                                    <div>
-                                        <h5>$706</h5>
-                                        <span>Commision</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="single_plan d-flex align-items-center justify-content-between">
-                                <div class="plan_left d-flex align-items-center">
-                                    <div class="thumb">
-                                        <img src="{{ url('img/icon2/4.svg') }}" alt="">
-                                    </div>
-                                    <div>
-                                        <h5>$49</h5>
-                                        <span>Average Bid</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="single_plan d-flex align-items-center justify-content-between">
-                                <div class="plan_left d-flex align-items-center">
-                                    <div class="thumb">
-                                        <img src="{{ url('img/icon2/2.svg') }}" alt="">
-                                    </div>
-                                    <div>
-                                        <h5>$5.8M</h5>
-                                        <span>All Time Sales</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="chart_wrap overflow_hidden">
-                <div id="chart4"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-5">
-        <div class="white_card card_height_100 mb_20 ">
-            <div class="white_card_header">
-                <div class="box_header m-0">
-                    <div class="main-title">
-                        <h3 class="m-0">New Products</h3>
-                    </div>
-                    <div class="header_more_tool">
-                        <div class="dropdown">
-                            <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
-                              <i class="ti-more-alt"></i>
-                            </span>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Action</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-trash"></i> Delete</a>
-                              <a class="dropdown-item" href="#"> <i class="fas fa-edit"></i> Edit</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-printer"></i> Print</a>
-                              <a class="dropdown-item" href="#"> <i class="fa fa-download"></i> Download</a>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            <div class="white_card_body QA_section">
-                <div class="QA_table ">
-                    <!-- table-responsive -->
-                    <table class="table lms_table_active2 p-0">
-                        <thead>
-                            <tr>
-                                <th scope="col">Product 1</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Discount</th>
-                                <th scope="col">Sold</th>
-                                <th scope="col">Source</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_1.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 1</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_7">#DE2548</td>
-                                <td class="f_s_12 f_w_400 color_text_6">60</td>
-                                <td class="f_s_12 f_w_400 text-right"><a href="#" class="text_color_1">Google</a></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_2.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 2</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_7">#DE2548</td>
-                                <td class="f_s_12 f_w_400 color_text_6">60</td>
-                                <td class="f_s_12 f_w_400 text-right"><a href="#" class="text_color_2">Direct</a></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_3.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 3</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_7">#DE2548</td>
-                                <td class="f_s_12 f_w_400 color_text_6">60</td>
-                                <td class="f_s_12 f_w_400 text-right"><a href="#" class="text_color_1">Google</a></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_4.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 4</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_7">#DE2548</td>
-                                <td class="f_s_12 f_w_400 color_text_6">60</td>
-                                <td class="f_s_12 f_w_400 text-right"><a href="#" class="text_color_1">Refferal</a></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_5.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 5</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_7">#DE2548</td>
-                                <td class="f_s_12 f_w_400 color_text_6">60</td>
-                                <td class="f_s_12 f_w_400 text-right"><a href="#" class="text_color_1">20</a></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_6.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 6</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_7">#DE2548</td>
-                                <td class="f_s_12 f_w_400 color_text_6">60</td>
-                                <td class="f_s_12 f_w_400 text-right"><a href="#" class="text_color_5">Direct</a></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_6.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 6</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_7">#DE2548</td>
-                                <td class="f_s_12 f_w_400 color_text_6">60</td>
-                                <td class="f_s_12 f_w_400 text-right"><a href="#" class="text_color_5">Direct</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-7">
-        <div class="white_card card_height_100  mb_20">
-            <div class="white_card_header">
-                <div class="box_header m-0">
-                    <div class="main-title">
-                        <h3 class="m-0">Visitors</h3>
-                    </div>
-                    <div class="header_more_tool">
-                        <div class="dropdown">
-                            <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
-                              <i class="ti-more-alt"></i>
-                            </span>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Action</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-trash"></i> Delete</a>
-                              <a class="dropdown-item" href="#"> <i class="fas fa-edit"></i> Edit</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-printer"></i> Print</a>
-                              <a class="dropdown-item" href="#"> <i class="fa fa-download"></i> Download</a>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            <div class="white_card_body">
-                <div id="world-map-markers" class="dashboard_w_map pb_20" ></div>
-                <div class="world_list_wraper">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-9">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="single_progressbar">
-                                        <h6 class="f_s_14 f_w_400" >USA</h6>
-                                        <div id="bar4" class="barfiller">
-                                            <div class="tipWrap">
-                                                <span class="tip"></span>
-                                            </div>
-                                            <span class="fill" data-percentage="81"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="single_progressbar">
-                                        <h6>Australia</h6>
-                                        <div id="bar5" class="barfiller">
-                                            <div class="tipWrap">
-                                                <span class="tip"></span>
-                                            </div>
-                                            <span class="fill" data-percentage="58"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="single_progressbar">
-                                        <h6>Brazil</h6>
-                                        <div id="bar6" class="barfiller">
-                                            <div class="tipWrap">
-                                                <span class="tip"></span>
-                                            </div>
-                                            <span class="fill" data-percentage="42"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="single_progressbar">
-                                        <h6>Latvia</h6>
-                                        <div id="bar7" class="barfiller">
-                                            <div class="tipWrap">
-                                                <span class="tip"></span>
-                                            </div>
-                                            <span class="fill" data-percentage="55"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="white_card card_height_100 mb_20 ">
-            <div class="white_card_header">
-                <div class="box_header m-0">
-                    <div class="main-title">
-                        <h3 class="m-0">Stoke Details</h3>
-                    </div>
-                    <div class="header_more_tool">
-                        <div class="dropdown">
-                            <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
-                              <i class="ti-more-alt"></i>
-                            </span>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Action</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-trash"></i> Delete</a>
-                              <a class="dropdown-item" href="#"> <i class="fas fa-edit"></i> Edit</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-printer"></i> Print</a>
-                              <a class="dropdown-item" href="#"> <i class="fa fa-download"></i> Download</a>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            <div class="white_card_body QA_section">
-                <div class="QA_table ">
-                    <!-- table-responsive -->
-                    <table class="table lms_table_active2 p-0">
-                        <thead>
-                            <tr>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">Market Price</th>
-                                <th scope="col">Selling Price</th>
-                                <th scope="col">Total Unite</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_1.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 1</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_6">$650</td>
-                                <td class="f_s_12 f_w_400 text-center"><a href="#" class="text_color_1">20</a></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_2.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 1</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_6">$650</td>
-                                <td class="f_s_12 f_w_400 text-center"><a href="#" class="text_color_1">20</a></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_3.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 1</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_6">$650</td>
-                                <td class="f_s_12 f_w_400 text-center"><a href="#" class="text_color_1">20</a></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_4.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 1</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_6">$650</td>
-                                <td class="f_s_12 f_w_400 text-center"><a href="#" class="color_text_6">210</a></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_5.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 1</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_6">$650</td>
-                                <td class="f_s_12 f_w_400 text-center"><a href="#" class="text_color_1">210</a></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_6.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 1</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_6">$650</td>
-                                <td class="f_s_12 f_w_400 text-center"><a href="#" class="text_color_5">200</a></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="customer d-flex align-items-center">
-                                        <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="img/customers/pro_6.png') }}" alt=""></div>
-                                        <span class="f_s_12 f_w_600 color_text_5" >Product 1</span>
-                                    </div>
-                                    
-                                </td>
-                                <td class="f_s_12 f_w_400 color_text_6">$564</td>
-                                <td class="f_s_12 f_w_400 color_text_6">$650</td>
-                                <td class="f_s_12 f_w_400 text-center"><a href="#" class="text_color_5">200</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4">
-        <div class="white_card card_height_100 mb_30">
-            <div class="white_card_header">
-                <div class="box_header m-0">
-                    <div class="main-title">
-                        <h3 class="m-0">Recent activity</h3>
-                    </div>
-                    <div class="header_more_tool">
-                        <div class="dropdown">
-                            <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
-                              <i class="ti-more-alt"></i>
-                            </span>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Action</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-trash"></i> Delete</a>
-                              <a class="dropdown-item" href="#"> <i class="fas fa-edit"></i> Edit</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-printer"></i> Print</a>
-                              <a class="dropdown-item" href="#"> <i class="fa fa-download"></i> Download</a>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            <div class="white_card_body">
-                <div class="Activity_timeline">
-                    <ul>
-                        <li>
-                            <div class="activity_bell"></div>
-                            <div class="timeLine_inner d-flex align-items-center">
-                                <div class="activity_wrap">
-                                    <h6>5 min ago</h6>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque
-                                    </p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="activity_bell "></div>
-                            <div class="timeLine_inner d-flex align-items-center">
-                                <div class="activity_wrap">
-                                    <h6>5 min ago</h6>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque
-                                    </p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="activity_bell bell_lite"></div>
-                            <div class="timeLine_inner d-flex align-items-center">
-                                <div class="activity_wrap">
-                                    <h6>5 min ago</h6>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque
-                                    </p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="activity_bell bell_lite"></div>
-                            <div class="timeLine_inner d-flex align-items-center">
-                                <div class="activity_wrap">
-                                    <h6>5 min ago</h6>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque
-                                    </p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4">
-        <div class="white_card card_height_100 mb_30">
-            <div class="white_card_header">
-                <div class="box_header m-0">
-                    <div class="main-title">
-                        <h3 class="m-0">Member request
-                            to mail.</h3>
-                    </div>
-                    <div class="header_more_tool">
-                        <div class="dropdown">
-                            <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
-                              <i class="ti-more-alt"></i>
-                            </span>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Action</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-trash"></i> Delete</a>
-                              <a class="dropdown-item" href="#"> <i class="fas fa-edit"></i> Edit</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-printer"></i> Print</a>
-                              <a class="dropdown-item" href="#"> <i class="fa fa-download"></i> Download</a>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            <div class="white_card_body">
-                <div class="thumb mb_30">
-                    <img src="{{ url('img/table.svg') }}" alt="" class="img-fluid">
-                </div>
-                <div class="common_form">
-                    <form action="#">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="common_input mb_15">
-                                    <input type="text" placeholder="First Name">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="common_input mb_15">
-                                    <input type="text" placeholder="Last Name">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="common_input mb_15">
-                                    <input type="text" placeholder="Email">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <select class="nice_Select2 nice_Select_line wide" >
-                                    <option value="1">Role</option>
-                                    <option value="1">Role 1</option>
-                                    <option value="1">Role2</option>
+                                <select class="nice_Select2 wide" >
+                                    <option value="1">Show by All</option>
+                                    <option value="1">Show by A</option>
+                                    <option value="1">Show by B</option>
                                 </select>
                             </div>
-                            <div class="col-12">
-                                <div class="create_report_btn mt_30">
-                                    <a href="#" class="btn_1 radius_btn d-block text-center">Send the invitation link</a>
-                                </div>
-                            </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
+            </div>
+            <div class="white_card_body">
+                <div class="apex-chart"></div>
             </div>
         </div>
     </div>
-    <div class="col-xl-12">
+    <div class="col-xl-6">
         <div class="white_card card_height_100 mb_30">
             <div class="white_card_header">
                 <div class="row align-items-center">
                     <div class="col-lg-4">
                         <div class="main-title">
-                            <h3 class="m-0">Stoke Details</h3>
+                            <h3 class="m-0">Assistances de cas</h3>
                         </div>
                     </div>
                     <div class="col-lg-8">
                         <div class="row justify-content-end">
                             <div class="col-lg-8 d-flex justify-content-end">
-                                <div class="serach_field-area theme_bg d-flex align-items-center">
-                                    <div class="search_inner">
-                                        <form action="#">
-                                            <div class="search_field">
-                                                <input type="text" placeholder="Search">
-                                            </div>
-                                            <button type="submit"> <img src="{{ url('img/icon/icon_search.svg') }}" alt=""> </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-2">
                                 <select class="nice_Select2 wide" >
                                     <option value="1">Show by All</option>
                                     <option value="1">Show by A</option>
@@ -873,215 +226,188 @@
                 </div>
             </div>
             <div class="white_card_body ">
-                <div class="row min_height_oveflow">
-                    <div class="col-lg-4 mb_30">
-                        <div class="single_user_pil d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Customer
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
-                        <div class="single_user_pil admin_bg d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Admin
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
-                        <div class="single_user_pil d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Customer
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
-                        <div class="single_user_pil d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Customer
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
-                        <div class="single_user_pil d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Customer
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
+                <div class="apex-chart" data-series='["Annuelles", "Exceptionnelles"]'></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-8">
+        <div class="white_card card_height_100 mb_20 ">
+            <div class="white_card_header">
+                <div class="box_header m-0">
+                    <div class="main-title">
+                        <h3 class="m-0">Cas à assister</h3>
                     </div>
-                    <div class="col-lg-4 mb_30">
-                        <div class="single_user_pil d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
+                    <div class="header_more_tool">
+                        <div class="dropdown">
+                            <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
+                              <i class="ti-more-alt"></i>
+                            </span>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                              <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Action</a>
+                              <a class="dropdown-item" href="#"> <i class="ti-trash"></i> Delete</a>
+                              <a class="dropdown-item" href="#"> <i class="fas fa-edit"></i> Edit</a>
+                              <a class="dropdown-item" href="#"> <i class="ti-printer"></i> Print</a>
+                              <a class="dropdown-item" href="#"> <i class="fa fa-download"></i> Download</a>
                             </div>
-                            <div class="user_info">
-                                Customer
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
-                        <div class="single_user_pil admin_bg d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Admin
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
-                        <div class="single_user_pil d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Customer
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
-                        <div class="single_user_pil d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Customer
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
-                        <div class="single_user_pil d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Customer
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 mb_30">
-                        <div class="single_user_pil d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Customer
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
-                        <div class="single_user_pil admin_bg d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Admin
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
-                        <div class="single_user_pil d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Customer
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
-                        <div class="single_user_pil d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Customer
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
-                        <div class="single_user_pil d-flex align-items-center justify-content-between">
-                            <div class="user_pils_thumb d-flex align-items-center">
-                                <div class="thumb_34 mr_15 mt-0"><img class="img-fluid radius_50" src="{{ url('img/customers/1.png') }}" alt=""></div>
-                                <span class="f_s_14 f_w_400 text_color_11">Jhon Smith</span>
-                            </div>
-                            <div class="user_info">
-                                Customer
-                            </div>
-                            <div class="action_btns d-flex">
-                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </div>
+                          </div>
                     </div>
                 </div>
             </div>
+            <div class="white_card_body QA_section">
+                <div class="QA_table ">
+                    <!-- table-responsive -->
+                    <table class="table lms_table_active2 p-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nom et Prénoms Défunt</th>
+                                <th scope="col">Date de dècès</th>
+                                <th scope="col">Lieu de décès</th>
+                                <th scope="col">Souscripteur</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($assistances as $assistance)
+                                <tr>
+                                    <th scope="row"> <a href="{{ route('admin.adherent.formulaire-print',['id'=>$assistance->beneficiaire->id]) }}" class="question_content"> {{ $assistance->beneficiaire->nom_pnom() }}</a></th>
+                                    <td>{{ ucwords((new Carbon\Carbon($assistance->date_deces))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
+                                    <td>{{ $assistance->lieu_deces }}</td>
+                                    <td>   <a href="{{ route('admin.adhesion.show',['id'=>$assistance->adherent->id]) }}">{{ $assistance->adherent->nom_pnom() }}</a></td>
+                                    <td>
+                                        <div class="header_more_tool">
+                                            <div class="dropdown">
+                                                <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
+                                                  <i class="ti-more-alt"></i>
+                                                </span>
+                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="{{ route('admin.assistance.show', ['id' => $assistance->id]) }}"> <i class="ti-eye"></i> Voir</a>
+                                                    @if (!$assistance->code_deces)
+                                                    <a class="dropdown-item" href="{{ route('admin.assistance.publier',['id' => $assistance->id]) }}">
+                                                        <i class="ti-money"></i> Attribuer Code Décès
+                                                    </a>
+                                                    @endif
+                                                    {{-- <a class="dropdown-item" href="{{ route('admin.adhesion.valider', ['id' => $souscripteur->id]) }}"> <i class="fas fa-edit"></i> Valider</a>
+
+                                                  <a class="dropdown-item" href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"> <i class="ti-trash"></i> Rejeter</a> --}}
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5">
+                                    <p class="text-center">Aucune donnée</p>
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card custom-card">
+            <div class="card-header">
+                <img class="img-fluid" src="{{ asset('img/tilt/4.jpg') }}" alt="" data-original-title="" title="">
+            </div>
+            <div class="card-profile">
+                <img class="rounded-circle" src="{{ asset('img/'.auth()->user()->image_name.'.png') }}" alt="" data-original-title="" title="">
+            </div>
+            <div class="text-center profile-details">
+                <h4>{{ auth()->user()->nom_pnom() }}</h4>
+                <h6>Super Admin</h6>
+                <a class="btn btn-primary" href="{{ route('admin.user.show_profile') }}"><i class="fa fa-eye"></i> Voir mon profil</a>
+            </div>
+            {{-- <div class="card-footer row">
+                <div class="col-4 col-sm-4">
+                    <h6>Follower</h6>
+                    <h3 class="counter">9564</h3>
+                </div>
+                <div class="col-4 col-sm-4">
+                    <h6>Following</h6>
+                    <h3><span class="counter">49</span>K</h3>
+                </div>
+                <div class="col-4 col-sm-4">
+                    <h6>Total Post</h6>
+                    <h3><span class="counter">96</span>M</h3>
+                </div>
+            </div> --}}
         </div>
     </div>
 </div>
 @endsection
 
 @section('js')
-    
+
+<!-- C3 CHART JS  -->
+<script src="{{ asset('vendors/sash/plugins/charts-c3/d3.v5.min.js') }}"></script>
+<script src="{{ asset('vendors/sash/plugins/charts-c3/c3-chart.js') }}"></script>
+<!-- Apex CHART JS  -->
+<script src="{{ asset('vendors/apex_chart/apexcharts.js') }}"></script>
+<!-- FLOT JS -->
+{{-- <script src="{{ asset('vendors/sash/js/flot.js') }}"></script> --}}
+<script src="{{ asset('vendors/sash/plugins/flot/jquery.flot.js') }}"></script>
+<script src="{{ asset('vendors/sash/plugins/flot/jquery.flot.fillbetween.js') }}"></script>
+<script src="{{ asset('vendors/sash/plugins/flot/jquery.flot.pie.js') }}"></script>
+
+<script>
+    $(function () {
+        // for (var t = [], a = Math.floor(4 * Math.random()) + 3, i = 0; i < a; i++) t[i] = { label: "Series" + (i + 1), data: Math.floor(100 * Math.random()) + 1 };
+
+
+    });
+</script>
+<script>
+    $(document).ready(function () {
+
+
+        $('.apex-chart').each(function(){
+            $this = $(this);
+            // apex_3
+            var options = {
+                series: [
+                    {
+                        name: 'series1',
+                        data: [31, 51, 28, 42, 109, 40, 100]
+                    }, {
+                        name: 'series2',
+                        data: [11, 34, 32, 32, 45, 52, 41]
+                    }
+                ],
+                chart: {
+                    height: 350,
+                    type: 'area'
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth'
+                },
+                xaxis: {
+                    type: 'datetime',
+                    categories: [
+                        "2018-09-19T00:00:00.000Z",
+                        "2018-09-19T01:30:00.000Z",
+                        "2018-09-19T02:30:00.000Z",
+                        "2018-09-19T03:30:00.000Z",
+                        "2018-09-19T04:30:00.000Z",
+                        "2018-09-19T05:30:00.000Z",
+                        "2018-09-19T06:30:00.000Z"
+                    ]
+                },
+                tooltip: {
+                    x: {
+                        format: 'dd/MM/yy HH:mm'
+                    },
+                },
+            };
+
+            var chart = new ApexCharts(this, options);
+            chart.render();
+        })
+    })
+</script>
 @endsection

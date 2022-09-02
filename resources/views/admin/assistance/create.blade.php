@@ -9,7 +9,7 @@
 @endsection
 
 @section('subtitle')
-    Créer un cas à assister   
+    Créer un cas à assister
 @endsection
 
 @section('content')
@@ -23,7 +23,7 @@
                             <div class="main-title">
                                 <h3 class="m-0">Formulaire de création d'un cas à assiter</h3>
                                 <div class="col-md-12 text-center mt_15">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                                     <div class="col-12 mt_30 mb_15">
                                         <h4 class="m-0 txt-color1 txt-upper txt-bold"> <a href="{{ route('admin.adhesion.show',['id' => $adherent->id]) }}" style="color: inherit; text-decoration: inherit;">Souscripteur</a></h4>
                                     </div>
-                        
+
                                     <div class="form-group col-lg-4">
                                         <label for="souscript_num">Numéro d'identification <code class="highlighter-rouge">*</code></label>
                                         <input type="text" value="{{ $adherent->num_adhesion }}" readonly name="souscript_num" class="form-control @error('souscript_num') is-invalid @enderror" placeholder="Numéro d'identification" required>
@@ -72,22 +72,22 @@
                                         <h4 class="m-0 txt-color1 txt-upper txt-bold">Bénéficiaires</h4>
                                     </div>
                                     <div class="form-group col-lg-4">
-                                     
+
                                         <label for="benef_num">Numéro d'identification <code class="highlighter-rouge">*</code></label>
-                                        <select id="id_beneficiaire" class="form-control @error('benef_num') is-invalid @enderror" name="benef_num" required>
+                                        <select id="id_beneficiaire" class="form-control select2 @error('benef_num') is-invalid @enderror" name="benef_num" required>
                                             <option {{ isset($beneficiaire) ? '': 'selected'}}  value="0" disabled>--- Sélectionnez un bénéficiaire ---</option>
                                             @if ($adherent->is_not_cas() && $adherent->is_not_in_assistance())
                                                 <option value="{{$adherent->num_adhesion}}">{{$adherent->num_adhesion}} </option>
                                             @endif
-                                            
+
                                             @forelse ($adherent->beneficiaires() as $benef)
                                                 @if ($benef->is_not_cas() && $benef->is_not_in_assistance())
                                                     <option {{ isset($beneficiaire) && $beneficiaire->id == $benef->id ? 'selected': '' }} value="{{$benef->num_adhesion}}">{{$benef->num_adhesion}}  </option>
-                                                @endif 
+                                                @endif
                                             @empty
-                                                
+
                                             @endforelse
-                               
+
                                         </select>
                                         <input type="text" readonly value="{{ isset($beneficiaire) ? $beneficiaire->id : '' }}" name="benef_id" id="benef_id" style="display: none" required>
                                         @error('benef_num')
@@ -148,7 +148,7 @@
                                     <div class="col-12 mt_30 mb_15">
                                         <h4 class="m-0 txt-color1 txt-upper txt-bold">Informations générales</h4>
                                     </div>
-                                   
+
                                     <div class="form-group col-lg-4">
                                         <label for="date_assistance">Date d'assistance </label>
                                         <div class="common_date_picker">
@@ -215,11 +215,11 @@
                                         @enderror
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-lg-2  offset-lg-5">
-                                       
+
                                     <button class="btn btn-primary btn-lg m-1 this-item-bg this-item-bc" type="submit">Ajouter</button>
-         
+
                                 </div>
                             </form>
                         </div>
@@ -240,12 +240,12 @@
             //console.log(e);
 
         let num_adhesion = $(this).val();
-        
+
         $('#benef_nom').empty();
         $('#benef_pnom').empty();
         $('#benef_nom').val(`Chargement...`);
         $('#benef_pnom').val(`Chargement...`);
-        
+
         $.ajax({
                 type: 'GET',
                 url: '/admin/get-benef-info/' + num_adhesion,
@@ -255,13 +255,13 @@
                         $('#benef_nom').val(response['nom']);
                         $('#benef_pnom').val(response['pnom']);
                         $('#benef_id').attr("value",response['id']);
-                        
+
                 }
             });
     });
 
     $('#moyen_paie').on('change', function() {
-      
+
         console.log('bonjour');
         switch($(this).val()) {
 
@@ -304,10 +304,10 @@
             break;
         default:
             $('#bloc_insert').empty();
-            
+
 }
-        
+
     });
-    
+
 </script>
 @endsection
