@@ -40,19 +40,19 @@
                                 </div>
 
                                 {{-- if(exceptionnelle) --}}
-                                <div class="col-md-6 py-2">
+                                <div class="col-md-6 py-2 displayExcept d-none">
                                     <label for="#montantPaye" class="control-label">Déjà Payé</label>
                                     {{-- input#montantPaye $cotisation->reglements($souscripteur)->sum('montant') --}}
                                     <input type="text" class="form-control" id="montantPaye" placeholder="Montant" value="" readonly disabled>
                                 </div>
-                                <div class="col-md-6 py-2">
+                                <div class="col-md-6 py-2 displayExcept d-none">
                                     <label for="#montantReste" class="control-label">Reste à Payer</label>
                                     {{-- input.#montantReste = $souscripteur->psCotisation($cotisation)->montant() - $cotisation->reglements($souscripteur)->sum('montant') --}}
                                     <input type="text" class="form-control" id="montantReste" placeholder="Montant" value="" readonly disabled>
                                 </div>
                                 {{-- if(annuelle) --}}
                                 {{-- input#aPayer $souscripteur->psCotisation($cotisation)->montant() --}}
-                                <input type="hidden" id="aPayer" name="montant" value="">
+                                <input class="displayAnn d-none" type="hidden" id="aPayer" name="montant" value="">
                                 {{-- EndIf --}}
 
                                 <div class="col-md-6 py-2">

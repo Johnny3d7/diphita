@@ -61,10 +61,12 @@
 @endsection
 
 @section('modals')
-    @foreach ($cotisation->souscripteurs() as $souscripteur)
+    @include('admin.cotisation._reglementModalJS')
+    @include('admin.cotisation._versementModalJS')
+    {{-- @foreach ($cotisation->souscripteurs() as $souscripteur)
         @include('admin.cotisation._reglementModal')
         @include('admin.adherent._versementModal', ['id' => ($cotisation->type == 'annuelle' ? $cotisation->annee_cotis : $cotisation->code_deces) . $souscripteur->num_adhesion])
-    @endforeach
+    @endforeach --}}
 @endsection
 
 @section('js')

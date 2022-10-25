@@ -331,6 +331,7 @@
             let type = $(this).data('type')
 
             $('#num_adherent').html(souscripteur)
+            console.log(souscripteur);
 
             $.ajax({
                 url: "{{ route('apiGetInfosSouscripteur') }}",
@@ -358,11 +359,18 @@
 
                     $('.PaiementForm').find('#montantPaye').val(res.deja_payer)
                     $('.PaiementForm').find('#montantReste').val(res.reste_a_payer)
+
+                    $('.PaiementForm').find('.displayExcept').removeClass('d-none');
+                    $('.PaiementForm').find('.displayAnn').removeClass('d-none');
+
                     if(res.annuelle == true) {
+                        $('.PaiementForm').find('.displayExcept').addClass('d-none');
                         $('.PaiementForm').find('#aPayer').val(res.reste_a_payer) // Annuelle
+                        $('.PaiementForm').find('#montantRegle').attr('disabled', true).attr('readonly', true)
                     } else {
-                        $('.PaiementForm').find('#montantRegle').val(res.reste_a_payer).change()
+                        $('.PaiementForm').find('.displayAnn').addClass('d-none');
                     }
+                    $('.PaiementForm').find('#montantRegle').val(res.reste_a_payer).change()
                     // $('#reglementModalFooter').removeClass('alert-danger').removeClass('alert-success').removeClass('alert-warning').removeClass('d-none')
 
                     HoldOn.close();
@@ -374,6 +382,9 @@
             });
             // console.log($(this));
         });
+
+        // setInterval(() => {
+        // }, 500);
     }
     function ajaxDiphita () {
         $('.table_diphita_ajax').each( function(){
@@ -384,6 +395,10 @@
                 // "processing": true,
                 // "serverSide": true,
                 "fnInitComplete": function(oSettings, json) {
+                    jqueryBtnPaie()
+                },
+                "search": function() {
+                    console.log('Searching')
                     jqueryBtnPaie()
                 },
                 "filter": true,
@@ -420,7 +435,7 @@
                                 btnPaie = `<a class="dropdown-item btnReglementJS" data-toggle="modal" data-target="#reglementModal"
                                     data-souscripteur="${row.identifiant}" data-type="${row.cotisation_type}"
                                     data-cotisation="${row.cotisation_identifiant}" href="javascript:void(0);">
-                                    <i class="ti-money"></i> Faire un reglement JS
+                                    <i class="ti-money"></i> Faire un reglement
                                 </a>`
                             }
 
@@ -437,7 +452,13 @@
                         }
                     }
                 ],
+            }).on('search.dt page.dt', function(){
+                jqueryBtnPaie();
             });
+        });
+
+        $('#reglementModal').find('.close:first').click(function(){
+            jqueryBtnPaie();
         })
     }
 

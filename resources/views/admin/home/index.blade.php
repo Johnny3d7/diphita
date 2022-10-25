@@ -81,7 +81,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="single_crm">
-                        <div class="crm_head d-flex align-items-center justify-content-between" >
+                        <div class="crm_head crm_bg_2 d-flex align-items-center justify-content-between" >
                             <div class="thumb">
                                 <img src="{{ url('img/crm/businessman.svg') }}" alt="">
                             </div>
@@ -97,7 +97,7 @@
                     <div class="single_crm ">
                         <div class="crm_head crm_bg_1 d-flex align-items-center justify-content-between" >
                             <div class="thumb">
-                                <img src="{{ url('img/crm/customer.svg') }}" alt="">
+                                <img src="{{ url('img/crm/businessman.svg') }}" alt="">
                             </div>
                             <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                         </div>
@@ -108,10 +108,25 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="single_crm">
-                        <div class="crm_head crm_bg_2 d-flex align-items-center justify-content-between" >
+                    <div class="single_crm ">
+                        <div class="crm_head bg-success d-flex align-items-center justify-content-between" >
                             <div class="thumb">
-                                <img src="{{ url('img/crm/infographic.svg') }}" alt="">
+                                <img src="{{ url('img/crm/customer.svg') }}" alt="">
+                            </div>
+                            <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
+                        </div>
+                        <div class="crm_body">
+                            <h4>{{ $data->nbre_cas_assistes }}</h4>
+                            <p>Cas assistés</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="single_crm">
+                        <div class="crm_head crm_bg_3 d-flex align-items-center justify-content-between" >
+                            <div class="thumb">
+                                <img src="{{ url('img/crm/sqr.svg') }}" alt="">
                             </div>
                             <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                         </div>
@@ -123,23 +138,9 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="single_crm">
-                        <div class="crm_head crm_bg_3 d-flex align-items-center justify-content-between" >
+                        <div class="crm_head bg-warning d-flex align-items-center justify-content-between" >
                             <div class="thumb">
-                                <img src="{{ url('img/crm/sqr.svg') }}" alt="">
-                            </div>
-                            <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
-                        </div>
-                        <div class="crm_body">
-                            <h4>{{ number_format($data->point_depense, 0, ',', ' ')  }} FCFA</h4>
-                            <p>Point des dépenses</p>
-                        </div>
-                    </div>
-                </div>
-                {{-- <div class="col-lg-6">
-                    <div class="single_crm">
-                        <div class="crm_head crm_bg_3 d-flex align-items-center justify-content-between" >
-                            <div class="thumb">
-                                <img src="{{ url('img/crm/sqr.svg') }}" alt="">
+                                <img src="{{ url('img/crm/infographic.svg') }}" alt="">
                             </div>
                             <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                         </div>
@@ -151,18 +152,19 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="single_crm">
-                        <div class="crm_head crm_bg_2 d-flex align-items-center justify-content-between" >
+                        <div class="crm_head bg-danger d-flex align-items-center justify-content-between" >
                             <div class="thumb">
-                                <img src="{{ url('img/crm/infographic.svg') }}" alt="">
+                                <img src="{{ url('img/crm/customer.svg') }}" alt="">
                             </div>
+                            <p class="text-light">{{ $data->nbre_cas_a_assister }}</p>
                             <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                         </div>
                         <div class="crm_body">
-                            <h4>{{ number_format($data->point_caisse, 0, ',', ' ')  }} FCFA</h4>
-                            <p>Point de la caisse</p>
+                            <h4> {{ number_format($data->point_cas_a_assister, 0, ',', ' ')  }} FCFA</h4>
+                            <p>Cas à assister</p>
                         </div>
                     </div>
-                </div> --}}
+                </div>
             </div>
             {{-- <div class="crm_reports_bnner">
                 <div class="row justify-content-end ">
@@ -172,6 +174,103 @@
                             indulging honest.</p>
                         <a href="#">Read More <i class="fas fa-arrow-right"></i> </a>
                     </div>
+                </div>
+            </div> --}}
+        </div>
+    </div>
+    <div class="col-xl-10">
+        <div class="white_card card_height_100 mb_20 ">
+            <div class="white_card_header">
+                <div class="box_header m-0">
+                    <div class="main-title">
+                        <h3 class="m-0">Cas à assister</h3>
+                    </div>
+                    {{-- <div class="header_more_tool">
+                        <div class="dropdown">
+                            <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
+                              <i class="ti-more-alt"></i>
+                            </span>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                              <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Action</a>
+                              <a class="dropdown-item" href="#"> <i class="ti-trash"></i> Delete</a>
+                              <a class="dropdown-item" href="#"> <i class="fas fa-edit"></i> Edit</a>
+                              <a class="dropdown-item" href="#"> <i class="ti-printer"></i> Print</a>
+                              <a class="dropdown-item" href="#"> <i class="fa fa-download"></i> Download</a>
+                            </div>
+                          </div>
+                    </div> --}}
+                </div>
+            </div>
+            <div class="white_card_body QA_section">
+                <div class="QA_table ">
+                    <!-- table-responsive -->
+                    <table class="table lms_table_active2 p-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">N° Bénéficiaire</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Date d'annonce</th>
+                                <th scope="col">N° Adhesion</th>
+                                <th scope="col">Souscripteur</th>
+                                <th scope="col">Ville</th>
+                                <th scope="col">Avance</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">A payer</th>
+                                <th scope="col">Code décès</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($assistances as $assistance)
+                                <tr>
+                                    <th scope="row"> <a href="{{ route('admin.adherent.formulaire-print',['id'=>$assistance->beneficiaire->id]) }}" class="question_content"> {{ $assistance->beneficiaire->num_adhesion }}</a></th>
+                                    <th><a href="{{ route('admin.adherent.formulaire-print',['id'=>$assistance->beneficiaire->id]) }}" class="question_content"> {{ $assistance->beneficiaire->nom_pnom() }}</a></th>
+                                    <td>{{ ucwords((new Carbon\Carbon($assistance->date_deces))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
+                                    <th scope="row"> <a href="{{ route('admin.adhesion.show',$assistance->adherent) }}" class="question_content"> {{ $assistance->adherent->num_adhesion }}</a></th>
+                                    <th scope="row"> <a href="{{ route('admin.adhesion.show',$assistance->adherent) }}" class="question_content"> {{ $assistance->adherent->nom_pnom() }}</a></th>
+                                    <td>Abidjan</td>
+                                    <td>{{ number_format($assistance->avance(), 0, ',', ' ')  }} FCFA</td>
+                                    <td>{{ $assistance->date_paiement() ? ucwords((new Carbon\Carbon($assistance->date_paiement()))->locale('fr')->isoFormat('DD/MM/YYYY')) : '-'  }}</td>
+                                    <td>{{ number_format($assistance->reste(), 0, ',', ' ')  }} FCFA</td>
+                                    <td>{{ $assistance->code_deces ?? "Non défini" }}</td>
+                                </tr>
+                            @empty
+                            <tr>
+                                <td colspan="10">
+                                    <p class="text-center">Aucune donnée</p>
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2">
+        <div class="card custom-card">
+            <div class="card-header">
+                <img class="img-fluid" src="{{ asset('img/tilt/4.jpg') }}" alt="" data-original-title="" title="">
+            </div>
+            <div class="card-profile">
+                <img class="rounded-circle" src="{{ asset('img/'.auth()->user()->image_name.'.png') }}" alt="" data-original-title="" title="">
+            </div>
+            <div class="text-center profile-details">
+                <h4>{{ auth()->user()->nom_pnom() }}</h4>
+                <h6>Super Admin</h6>
+                <a class="btn btn-primary" href="{{ route('admin.user.show_profile') }}"><i class="fa fa-eye"></i> Voir mon profil</a>
+            </div>
+            {{-- <div class="card-footer row">
+                <div class="col-4 col-sm-4">
+                    <h6>Follower</h6>
+                    <h3 class="counter">9564</h3>
+                </div>
+                <div class="col-4 col-sm-4">
+                    <h6>Following</h6>
+                    <h3><span class="counter">49</span>K</h3>
+                </div>
+                <div class="col-4 col-sm-4">
+                    <h6>Total Post</h6>
+                    <h3><span class="counter">96</span>M</h3>
                 </div>
             </div> --}}
         </div>
@@ -228,112 +327,6 @@
             <div class="white_card_body ">
                 <div class="apex-chart" data-series='["Annuelles", "Exceptionnelles"]'></div>
             </div>
-        </div>
-    </div>
-    <div class="col-xl-8">
-        <div class="white_card card_height_100 mb_20 ">
-            <div class="white_card_header">
-                <div class="box_header m-0">
-                    <div class="main-title">
-                        <h3 class="m-0">Cas à assister</h3>
-                    </div>
-                    <div class="header_more_tool">
-                        <div class="dropdown">
-                            <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
-                              <i class="ti-more-alt"></i>
-                            </span>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Action</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-trash"></i> Delete</a>
-                              <a class="dropdown-item" href="#"> <i class="fas fa-edit"></i> Edit</a>
-                              <a class="dropdown-item" href="#"> <i class="ti-printer"></i> Print</a>
-                              <a class="dropdown-item" href="#"> <i class="fa fa-download"></i> Download</a>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            <div class="white_card_body QA_section">
-                <div class="QA_table ">
-                    <!-- table-responsive -->
-                    <table class="table lms_table_active2 p-0">
-                        <thead>
-                            <tr>
-                                <th scope="col">Nom et Prénoms Défunt</th>
-                                <th scope="col">Date de dècès</th>
-                                <th scope="col">Lieu de décès</th>
-                                <th scope="col">Souscripteur</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($assistances as $assistance)
-                                <tr>
-                                    <th scope="row"> <a href="{{ route('admin.adherent.formulaire-print',['id'=>$assistance->beneficiaire->id]) }}" class="question_content"> {{ $assistance->beneficiaire->nom_pnom() }}</a></th>
-                                    <td>{{ ucwords((new Carbon\Carbon($assistance->date_deces))->locale('fr')->isoFormat('DD/MM/YYYY')) }}</td>
-                                    <td>{{ $assistance->lieu_deces }}</td>
-                                    <td>   <a href="{{ route('admin.adhesion.show',['id'=>$assistance->adherent->id]) }}">{{ $assistance->adherent->nom_pnom() }}</a></td>
-                                    <td>
-                                        <div class="header_more_tool">
-                                            <div class="dropdown">
-                                                <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
-                                                  <i class="ti-more-alt"></i>
-                                                </span>
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="{{ route('admin.assistance.show', ['id' => $assistance->id]) }}"> <i class="ti-eye"></i> Voir</a>
-                                                    @if (!$assistance->code_deces)
-                                                    <a class="dropdown-item" href="{{ route('admin.assistance.publier',['id' => $assistance->id]) }}">
-                                                        <i class="ti-money"></i> Attribuer Code Décès
-                                                    </a>
-                                                    @endif
-                                                    {{-- <a class="dropdown-item" href="{{ route('admin.adhesion.valider', ['id' => $souscripteur->id]) }}"> <i class="fas fa-edit"></i> Valider</a>
-
-                                                  <a class="dropdown-item" href="{{ route('admin.adhesion.rejeter', ['id' => $souscripteur->id]) }}"> <i class="ti-trash"></i> Rejeter</a> --}}
-                                                </div>
-                                              </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                            <tr>
-                                <td colspan="5">
-                                    <p class="text-center">Aucune donnée</p>
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4">
-        <div class="card custom-card">
-            <div class="card-header">
-                <img class="img-fluid" src="{{ asset('img/tilt/4.jpg') }}" alt="" data-original-title="" title="">
-            </div>
-            <div class="card-profile">
-                <img class="rounded-circle" src="{{ asset('img/'.auth()->user()->image_name.'.png') }}" alt="" data-original-title="" title="">
-            </div>
-            <div class="text-center profile-details">
-                <h4>{{ auth()->user()->nom_pnom() }}</h4>
-                <h6>Super Admin</h6>
-                <a class="btn btn-primary" href="{{ route('admin.user.show_profile') }}"><i class="fa fa-eye"></i> Voir mon profil</a>
-            </div>
-            {{-- <div class="card-footer row">
-                <div class="col-4 col-sm-4">
-                    <h6>Follower</h6>
-                    <h3 class="counter">9564</h3>
-                </div>
-                <div class="col-4 col-sm-4">
-                    <h6>Following</h6>
-                    <h3><span class="counter">49</span>K</h3>
-                </div>
-                <div class="col-4 col-sm-4">
-                    <h6>Total Post</h6>
-                    <h3><span class="counter">96</span>M</h3>
-                </div>
-            </div> --}}
         </div>
     </div>
 </div>
