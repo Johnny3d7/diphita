@@ -9,7 +9,7 @@
 @endsection
 
 @section('subtitle')
-    Historique de Transaction {{ $souscripteur->nom }} {{ $souscripteur->pnom }}   
+    Historique de Transaction {{ $souscripteur->nom }} {{ $souscripteur->pnom }}
 @endsection
 
 @section('content')
@@ -21,7 +21,7 @@
                     <div class="white_card_header">
                         <div class="box_header m-0">
                             <div class="main-title">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                                         <a class="nav-link" id="pills-errors-transaction-tab" data-toggle="pill" href="#pills-errors-transaction" role="tab" aria-controls="pills-errors-transaction" aria-selected="false">Toutes</a>
                                     </li>
                                 </ul>
-            
+
                                 <div class="tab-content" style="overflow-x: auto;">
                                     <div class="tab-pane fade show active" id="pills-success-transaction" role="tabpanel" aria-labelledby="success-tab">
                                         @if (count($souscripteur->reglements()) > 0)
@@ -60,7 +60,7 @@
                                                         <td>{{ $reglement->description }}</td>
                                                         <td>{{ $reglement->montant }}</td>
                                                     </tr>
-                                                    @endforeach 
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         @else
@@ -86,7 +86,7 @@
                                                         <td>{{ $versement->description }}</td>
                                                         <td>{{ $versement->montant }}</td>
                                                     </tr>
-                                                    @endforeach 
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         @else
@@ -112,7 +112,7 @@
                                                         <td>{{ $transaction->description }}</td>
                                                         <td>{{ $transaction->montant }}</td>
                                                     </tr>
-                                                    @endforeach 
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         @else

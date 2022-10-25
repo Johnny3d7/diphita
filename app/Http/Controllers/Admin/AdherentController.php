@@ -24,8 +24,82 @@ use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\Auth;
 
+
 class AdherentController extends Controller
 {
+    public static $globalResult = [
+        "statut" => "En attente",
+        "beneficiaires" => [
+            "statut" => "En attente",
+            "total" => null,
+            "courant" => null,
+            "results" => null
+        ],
+        "souscripteurs" => [
+            "statut" => "En attente",
+            "total" => null,
+            "courant" => null,
+            "results" => null
+        ],
+        "ayantdroits" => [
+            "statut" => "En attente",
+            "total" => null,
+            "courant" => null,
+            "results" => null
+        ],
+    ];
+
+    public function verify(){
+        $data = cache('globalResult');
+        if($data && $data['beneficiaires']['statut'] == 'Terminé') $this->empty_cache();
+        return response()->json($data);
+
+
+        $id = session('import');
+
+        return response()->json([
+            'started' => filled(cache("start_date_$id")),
+            'finished' => filled(cache("end_date_$id")),
+            'current_row' => (int) cache("current_row_$id"),
+            'total_rows' => (int) cache("total_rows_$id"),
+        ]);
+    }
+
+    public function empty_cache(){
+        cache()->forget("beneficiaires");
+        cache()->forget("souscripteurs");
+        cache()->forget("ayantdroits");
+        cache()->forget("globalResult");
+    }
+
+    public function initialize_cache(){
+        $this->empty_cache();
+        cache()->forever("beneficiaires", [
+            "statut" => "En attente",
+            "total" => null,
+            "courant" => null,
+            "results" => null
+        ]);
+        cache()->forever("souscripteurs", [
+            "statut" => "En attente",
+            "total" => null,
+            "courant" => null,
+            "results" => null
+        ]);
+        cache()->forever("ayantdroits", [
+            "statut" => "En attente",
+            "total" => null,
+            "courant" => null,
+            "results" => null
+        ]);
+        cache()->forever("globalResult", [
+            "statut" => "En attente",
+            "beneficiaires" => cache("beneficiaires"),
+            "souscripteurs" => cache("souscripteurs"),
+            "ayantdroits" => cache("ayantdroits"),
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -69,18 +143,47 @@ class AdherentController extends Controller
 
         if ($localite == "oume") {
             $souscripteurs = Adherents::selectAllForAdmin('OUMÉ',0)->sortByDesc('created_at');
-            
+
         } elseif($localite == "ouelle") {
             $souscripteurs = Adherents::selectAllForAdmin('OUELLÉ',0)->sortByDesc('created_at');
         }
 
         return view('admin.adherent.'.$localite,compact('souscripteurs'));
-        
+
+    }
+
+    public function getInfos(Request $request) {
+        $request->merge(['types' => ['annuelle', 'exceptionnelle']]) ;
+        $request->validate([
+            'num_souscripteur' => 'required|exists:adherents,num_adhesion',
+            'cotisation' => 'required',
+            'type' => 'required|in_array:types.*',
+            'id_user' => 'required'
+        ]);
+
+        $souscripteur = Adherents::whereNumAdhesion($request->num_souscripteur)->first();
+
+        $identifiant = $request->type == 'exceptionnelle' ? 'code_deces' : 'annee_cotis';
+        $cotisation = Cotisation::whereType($request->type)->where($identifiant, $request->cotisation)->first();
+        // dd($souscripteur);
+        $array = [
+            'id_adherent' => $souscripteur->id,
+            'nom_pnom' => $souscripteur->nom.' '.$souscripteur->pnom,
+            'solde' => $souscripteur->solde(),
+
+            'id_cotisation' => $cotisation->id,
+            'annuelle' => $cotisation->type == "annuelle" ? true : false,
+            'montant' => $souscripteur->psCotisation($cotisation)->montant(),
+
+            'deja_payer' => $cotisation->reglements($souscripteur)->sum('montant'),
+            'reste_a_payer' => $souscripteur->psCotisation($cotisation)->montant() - $cotisation->reglements($souscripteur)->sum('montant'),
+
+        ];
+        // dd($array);
+        return $array;
     }
 
 
-
-   
     /**
      * Display a listing of the resource.
      *
@@ -111,7 +214,7 @@ class AdherentController extends Controller
         //
         return view('admin.adherent.create');
     }
-   
+
     /**
      * Show the form for importing datas.
      *
@@ -129,18 +232,28 @@ class AdherentController extends Controller
      */
     public function importationPost(Request $request)
     {
+        $this->initialize_cache();
+
         $fileValidator = Validator::make($request->all(), [
             'csv' => 'required|max:5000|mimes:xlsx,xls,csv'
         ]);
 
-        
+
         if($fileValidator->fails()){
             if($request->api) return response()->json(['error' => $request->all()]);
             return redirect()->back()->withErrors($fileValidator);
         } else {
+
+            $id = now()->unix();
+            session(['import' => $id ]);
+            Excel::queueImport(new AdhesionsImport($id), request()->file('csv')->store('temp'));
+            if($request->api) return response()->json(['success' => 'true', 'data' => $request->all()]);
+
             try {
-                $import = new AdhesionsImport;
-                $collection = Excel::import($import, $request->file('csv'));
+                // $import = new AdhesionsImport;
+                // $collection = Excel::import($import, $request->file('csv'));
+                dd(static::$globalResult);
+                static::$globalResult['statut'] = "terminé";
                 if($request->api) return response()->json(['success' => 'true', 'data' => $request->all()]);
 
                 $adherents = session('resultsSousc')['data'];
@@ -163,7 +276,7 @@ class AdherentController extends Controller
                         // }
                     }
                 }
-    
+
                 return redirect()->back();
             } catch (\Throwable $th) {
                 return redirect()->back()->withErrors(['csv' => "Fichier incompatible avec les exigences de l'importation : ".$th->getMessage()]);
@@ -212,11 +325,11 @@ class AdherentController extends Controller
             "contact.required" => "Name is required",*/
         ]);
 
-        
+
         // Traiter le champ contact prévu pour les sms
         $contact = explode("-", substr($request->souscript_contact, 7, 14));
         $contact_format = "225".$contact[0].$contact[1].$contact[2].$contact[3].$contact[4];
-        
+
         $souscript_dnaiss = explode('-',$request->souscript_dnaiss);
 
         $sous_dnaiss = $souscript_dnaiss[2].$souscript_dnaiss[1].$souscript_dnaiss[0];
@@ -242,10 +355,10 @@ class AdherentController extends Controller
         //store bénéficiaire(s)
         $nb_benef = sizeof($request->benef_civilite);
 
-        for ($i=0; $i < $nb_benef; $i++) { 
+        for ($i=0; $i < $nb_benef; $i++) {
 
             //Format date
-            $ben_dnaiss = $this->formatDate($request->benef_dnaiss[$i]); 
+            $ben_dnaiss = $this->formatDate($request->benef_dnaiss[$i]);
 
             Adherents::create([
                 'nom' => $request->benef_nom[$i],
@@ -266,7 +379,7 @@ class AdherentController extends Controller
         //store ayants-droit
         $nb_ayant = sizeof($request->ayant_civilite);
 
-        for ($j=0; $j < $nb_ayant; $j++) { 
+        for ($j=0; $j < $nb_ayant; $j++) {
             AyantDroit::create([
                 'nom' => $request->ayant_nom[$j],
                 'pnom' => $request->ayant_pnom[$j],
@@ -301,7 +414,7 @@ class AdherentController extends Controller
 
         //Les bénéficiaires
         $benefs = Adherents::where(['status'=>1,'role'=>2,'parent'=>$id])->orderBy('created_at', 'DESC')->get();
-        
+
         //Les ayants-droit
         $ayants = AyantDroit::where(['status'=>1,'id_adherent'=>$id])->orderBy('created_at', 'DESC')->get();
 
@@ -345,7 +458,7 @@ class AdherentController extends Controller
     {
         //
         $validatedData = Validator::make($request->all(),[
-            
+
             'civilite' => 'required' ,
             'nom'=> 'required',
             'pnom' => 'required',
@@ -410,7 +523,7 @@ class AdherentController extends Controller
 
         if (DureeFincarences::where('status',1)->first() == null){
             return redirect()->back()->with('message', 'Vous devez configurer un délai de carence avant toute validation')->with('type', 'bg-danger');
-        } 
+        }
 
         /*if (DroitInscription::where('status',1)->first() == null){
             return redirect()->back()->with('message', 'Vous devez configurer le montant d\'inscription avant toute validation')->with('type', 'bg-danger');
@@ -430,18 +543,18 @@ class AdherentController extends Controller
         //Numero de contrat
 
         $cf_suffix = "CF-";
-        
+
         $cf_order = $this->generate_order(Adherents::where(['valide'=>1,'role'=>1])->count());
 
         $num_contrat = $cf_suffix.$cf_order;
 
         //Numero de souscripteur a generer
         $suffix= "DIP";
-        
+
         $date = (new \DateTime())->format("dmy");
 
         $order = $this->generate_order(Adherents::where('valide',1)->count());
-        
+
         //$order = (int)($order + 1);
 
         //Récupère le mois et l'année actuel
@@ -454,7 +567,7 @@ class AdherentController extends Controller
         $fifth_day_month = Carbon::createFromFormat('Y-m-d', $current_month_year.'-05');
 
         $num_adhe = $suffix.$date.'S'.$order;
-        
+
         $adhesion->valide = 1;
         $adhesion->status = 1;
 
@@ -467,16 +580,16 @@ class AdherentController extends Controller
         $adhesion->droit_inscription_montant = Parameters::droitInscription();
         $adhesion->cot_annuelle_montant = Parameters::cotisationAnnuelle();
         $adhesion->kits_montant = Parameters::traitementKit();
-        
+
         //$adhesion->date_fincarence = Carbon::create($adhesion->date_adhesion)->addMonths(DureeFincarences::where('status',1)->first()->duree);
-        
+
         $dateAD = Carbon::create($adhesion->date_adhesion);
             // Si $day < 5 alors day = 05 mois en cours sinon 05 mois suivant
             $adhesion->date_debutcotisation = Carbon::create($dateAD->year, $dateAD->month + ($dateAD->day > 5 ?? 0) + 1, 5);
 
             $adhesion->date_fincarence = $dateAD->addMonths(Parameters::dureeFinCarrence() ?? 4);
 
-       
+
 
         $adhesion->save();
         //Insérer cotisation
@@ -493,9 +606,9 @@ class AdherentController extends Controller
                 $benef->num_contrat = $num_contrat;
                 $benef->date_adhesion = Carbon::now();
             }
-            
+
             $benef->valide = 1;
-            
+
             $benef->droit_inscription_montant = Parameters::droitInscription();
             $benef->cot_annuelle_montant = Parameters::cotisationAnnuelle();
             $benef->kits_montant = Parameters::traitementKit();
@@ -511,7 +624,7 @@ class AdherentController extends Controller
         // Envoyer un sms au concerné
 
         $this->sms_inscription_valider($num_adhe,$adhesion->contact_format,$adhesion->nom,$adhesion->pnom,$adhesion->civilite, $adhesion->date_debutcotisation, $adhesion->date_fincarence);
-        
+
 
         return redirect()->back()->with('message', 'Validation réussie, l\'individu fait désormais partir des souscripteurs. Un sms lui a été envoyé.')->with('type', 'bg-success');
     }
@@ -535,7 +648,7 @@ class AdherentController extends Controller
         $nb = $nb +1;
 
         if ($nb < 10) {
-            $no = "000".$nb; 
+            $no = "000".$nb;
         } elseif($nb < 100) {
             $no = "00".$nb;
         }elseif($nb < 1000) {
@@ -563,7 +676,7 @@ class AdherentController extends Controller
         'destination' => 'NAT',
         'message' => 'Félicitations '.$civilite.' '.$nom.' '.$pnom.', votre adhésion à notre chaine de solidarité Diphita Prévoyance s\'est effetuée avec succès. Votre numéro ID: '.$num_adhe.'. Fin de carence: '.ucwords((new Carbon($date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')).'. Début de cotisation: '.ucwords((new Carbon($date_debutcotisation))->locale('fr')->isoFormat('DD/MM/YYYY')).'. La Fondation Diphita vous remercie pour la confiance !',
         'emailText' => NULL,
-        'recipients' => 
+        'recipients' =>
         [
             [
             'phone' => $contact,
@@ -595,7 +708,7 @@ class AdherentController extends Controller
         $response = curl_exec($curl1);
         $error = curl_error($curl1);
         curl_close($curl1);
-     
+
         $campagne = json_decode($response);
 
         $curl = curl_init();
@@ -615,7 +728,7 @@ class AdherentController extends Controller
             CURLOPT_SSL_VERIFYHOST =>  false,
             CURLOPT_SSL_VERIFYPEER => false
             ));
-    
+
             $response = curl_exec($curl);
             curl_close($curl);
         }
@@ -639,7 +752,7 @@ class AdherentController extends Controller
         'destination' => 'NAT',
         'message' => $civilite." ".$nom." ".$pnom." votre inscription à Diphita Prévoyance à échoué. Veuillez nous contactez au numéro suivant pour plus d'informations \n Tel: +225 01010101",
         'emailText' => NULL,
-        'recipients' => 
+        'recipients' =>
         [
             [
             'phone' => $contact,
@@ -671,7 +784,7 @@ class AdherentController extends Controller
         $response = curl_exec($curl1);
         $error = curl_error($curl1);
         curl_close($curl1);
-     
+
         $campagne = json_decode($response);
 
         $curl = curl_init();
@@ -691,11 +804,11 @@ class AdherentController extends Controller
             CURLOPT_SSL_VERIFYHOST =>  false,
             CURLOPT_SSL_VERIFYPEER => false
             ));
-    
+
             $response = curl_exec($curl);
-    
+
             curl_close($curl);
-            
+
         }
 
         return $response;
@@ -714,7 +827,7 @@ class AdherentController extends Controller
         $adhesions = Adherents::where(['valide'=>2,'role'=>1])->orderBy('created_at', 'DESC')->get();
 
         return view('client.adhesion.rejeter',compact('adhesions'));
-        
+
     }
 
     public function formulaire_print($id){
@@ -732,7 +845,7 @@ class AdherentController extends Controller
             return redirect()->back()->with('message', 'Compte désactivé avec succès')->with('type', 'bg-success');
         } else {
             return redirect()->back()->with('message', 'Une erreur c\'est produite')->with('type', 'bg-danger');
-        }    
+        }
     }
 
     public function debloquer($id){
@@ -744,8 +857,8 @@ class AdherentController extends Controller
         } else {
             return redirect()->back()->with('message', 'Une erreur c\'est produite')->with('type', 'bg-danger');
         }
-        
-        
+
+
     }
 
     public function formatDate($date){
@@ -774,7 +887,7 @@ class AdherentController extends Controller
         'destination' => 'NAT',
         'message' => "Cher souscripteur, votre rajout de bénéficiaire ".$benef->nom_pnom()." s'est effectué avec succès. ID: ".$benef->num_adhesion.". Fin de carence: ".ucwords((new Carbon($benef->date_fincarence))->locale('fr')->isoFormat('DD/MM/YYYY')).". Début de cotisation: ".ucwords((new Carbon($benef->date_debutcotisation))->locale('fr')->isoFormat('DD/MM/YYYY')).".",
         'emailText' => NULL,
-        'recipients' => 
+        'recipients' =>
         [
             [
             'phone' => $benef->souscripteur()->contact_format,
@@ -806,7 +919,7 @@ class AdherentController extends Controller
         $response = curl_exec($curl1);
         $error = curl_error($curl1);
         curl_close($curl1);
-     
+
         $campagne = json_decode($response);
 
         $curl = curl_init();
@@ -834,11 +947,11 @@ class AdherentController extends Controller
     }
 
     public function store_beneficiaire(Request $request, $sous){
-        
+
         $sous_parent = Adherents::find($sous);
 
         $validatedData = Validator::make($request->all(),[
-            
+
             'civilite' => 'required' ,
             'nom'=> 'required',
             'pnom' => 'required',
@@ -874,7 +987,7 @@ class AdherentController extends Controller
 
             //Récupère la date du 5ième jour du mois en cours
             $fifth_day_month = Carbon::createFromFormat('Y-m-d', $current_month_year.'-05');
-            
+
             //Vérifie si la date d'aujourd'hui est entre le 1er et le 5 du mois en cours
             $dateAD = Carbon::now();
             // Si $day < 5 alors day = 05 mois en cours sinon 05 mois suivant
@@ -887,7 +1000,7 @@ class AdherentController extends Controller
                 'lieu_naiss' => $request->lieu_naiss,
                 'num_cni' => $request->num_cni,
                 'num_adhesion'=> $suffix.$date.'B'.$no,
-                'num_contrat' => $sous_parent->num_contrat, 
+                'num_contrat' => $sous_parent->num_contrat,
                 'lieu_hab' =>  $request->lieu_hab,
                 'parent' => $sous,
                 'date_adhesion' => $dateAD,
@@ -923,7 +1036,7 @@ class AdherentController extends Controller
         $beneficiaire = Adherents::find($benef);
 
         $validatedData = Validator::make($request->all(),[
-            
+
             'civilite' => 'required' ,
             'nom'=> 'required',
             'pnom' => 'required',
@@ -969,9 +1082,9 @@ class AdherentController extends Controller
     public function store_ayantdroit(Request $request, $sous){
 
         $souscripteur = Adherents::find($sous);
-        
+
         $validatedData = Validator::make($request->all(),[
-            
+
             'civilite' => 'required' ,
             'nom'=> 'required',
             'pnom' => 'required',
@@ -1013,7 +1126,7 @@ class AdherentController extends Controller
         $ayant = AyantDroit::find($ayant);
 
         $validatedData = Validator::make($request->all(),[
-            
+
             'civilite' => 'required' ,
             'nom'=> 'required',
             'pnom' => 'required',
@@ -1094,7 +1207,7 @@ class AdherentController extends Controller
         }
     }
 
-   
 
-    
+
+
 }

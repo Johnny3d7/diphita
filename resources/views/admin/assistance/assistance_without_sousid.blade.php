@@ -9,7 +9,7 @@
 @endsection
 
 @section('subtitle')
-    Créer un cas à assister   
+    Créer un cas à assister
 @endsection
 
 @section('content')
@@ -23,7 +23,7 @@
                             <div class="main-title">
                                 <h3 class="m-0">Formulaire de création d'un cas à assiter</h3>
                                 <div class="col-md-12 text-center mt_15">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                                     <div class="col-12 mt_30 mb_15">
                                         <h4 class="m-0 txt-color1 txt-upper txt-bold"> <a href="{{-- route('admin.adhesion.show',['id'=>$adherent->id]) --}}" style="color: inherit; text-decoration: inherit;">Souscripteur</a></h4>
                                     </div>
-                        
+
                                     <div class="form-group col-lg-4">
                                         <label for="souscript_num">Numéro d'identification <code class="highlighter-rouge">*</code></label>
                                         <input type="text" readonly name="souscript_num" class="form-control @error('souscript_num') is-invalid @enderror" placeholder="Numéro d'identification" id="souscript_num" required>
@@ -81,15 +81,14 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-lg-6">
-                                     
                                         <label for="benef_nom">Nom et Prénom(s)  <code class="highlighter-rouge">*</code></label>
-                                        <select id="id_beneficiaire" class="form-control @error('benef_nom') is-invalid @enderror" name="benef_nom" required>
-                                            <option value="0" selected disabled>--- Sélectionnez un bénéficiaire ---</option>
+                                        <select id="id_beneficiaire" class="form-control select2 @error('benef_nom') is-invalid @enderror" name="benef_nom" required>
+                                            <option value="" selected disabled>--- Sélectionnez un bénéficiaire ---</option>
                                             @foreach (Adherents::list_benef_in_life() as $item)
-                                                <option value="{{ $item->num_adhesion }}" >{{ $item->nom_pnom() }}</option>
+                                                <option value="{{ $item->num_adhesion }}" >{{ $item->num_adhesion }} - {{ $item->nom_pnom() }}</option>
                                             @endforeach
-                                            
-                               
+
+
                                         </select>
                                         <input type="text" readonly name="benef_id" id="benef_id" style="display: none" required>
                                         @error('benef_nom')
@@ -132,7 +131,7 @@
                                     <div class="col-12 mt_30 mb_15">
                                         <h4 class="m-0 txt-color1 txt-upper txt-bold">Informations générales</h4>
                                     </div>
-                                   
+
                                     <div class="form-group col-lg-4">
                                         <label for="date_assistance">Date d'assistance </label>
                                         <div class="common_date_picker">
@@ -199,11 +198,11 @@
                                         @enderror
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-lg-2  offset-lg-5">
-                                       
+
                                     <button class="btn btn-primary btn-lg m-1 this-item-bg this-item-bc" type="submit">Ajouter</button>
-         
+
                                 </div>
                             </form>
                         </div>
@@ -224,7 +223,7 @@
             //console.log(e);
 
         let num_adhesion = $(this).val();
-        
+
         $('#benef_num').empty();
         $('#souscript_num').empty();
         $('#souscript_nom').empty();
@@ -235,7 +234,7 @@
         $('#souscript_nom').val(`Chargement...`);
         $('#souscript_contact').val(`Chargement...`);
         $('#souscript_id').val(`Chargement...`);
-        
+
         $.ajax({
                 type: 'GET',
                 url: '/admin/get-benef-nom-pnom/' + num_adhesion,
@@ -244,8 +243,8 @@
                         //console.log(response['id']);
                         $('#benef_num').val(response['num_adhesion']);
                         $('#benef_id').attr("value",response['id']);
-                
-                        
+
+
                 }
             });
 
@@ -259,13 +258,13 @@
                         $('#souscript_nom').val(response['nom']+' '+response['pnom']);
                         $('#souscript_id').val(response['id']);
                         $('#souscript_contact').val(response['contact']);
-                        
+
                 }
             });
     });
 
     $('#moyen_paie').on('change', function() {
-      
+
         console.log('bonjour');
         switch($(this).val()) {
 
@@ -308,10 +307,10 @@
             break;
         default:
             $('#bloc_insert').empty();
-            
+
 }
-        
+
     });
-    
+
 </script>
 @endsection

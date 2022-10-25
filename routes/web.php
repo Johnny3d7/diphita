@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdherentController;
 use App\Http\Controllers\PDFController;
 use Database\Seeders\CotisationTableSeeder;
 use Illuminate\Support\Facades\Route;
@@ -46,12 +47,12 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     Route::middleware('route-stack')->group(function(){
         //Dashboard
         Route::get('/home', 'HomeController@index')->name('index');
-        
+
         //User routes
         Route::get('/profil', 'UserController@show_profile')->name('user.show_profile');
 
         //user update infos
-        
+
         Route::get('/edit-infos', 'UserController@edit_infos')->name('user.edit_infos');
         Route::get('/update-infos', 'UserController@update_infos')->name('user.update_infos');
 
@@ -73,60 +74,57 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
 
 
         //Adhesion
-    
+
         //Formulaire d'importation de données
         Route::get('/adhesions/importation', 'AdherentController@importation')->name('adhesion.importation');
         Route::post('/adhesions/importation', 'AdherentController@importationPost')->name('adhesion.importationPost');
-        Route::get('/adhesions/importation/status', function(){
-            dd('Yeah', session('statutAdherent'));
-            return response()->json(session('statutAdherent'));
-        })->name('verifyStatus');
-    
+        Route::get('/adhesions/importation/status', [AdherentController::class, 'verify'])->name('verifyStatus');
+
         //Formulaire d'ajout d'un adhérent
         Route::get('/adhesions/create', 'AdherentController@create')->name('adhesion.create');
-    
+
         //Formulaire d'ajout d'un adhérent
         Route::post('/adhesions/store', 'AdherentController@store')->name('adhesion.store');
-        
+
         //Adhesion deja valider
         Route::get('/adhesions-valider-liste', 'AdherentController@adhesion_valider_liste')->name('adhesion.valider.liste');
-    
+
         //Adhesion deja rejeter
-        Route::get('/adhesions-rejeter-liste', 'AdherentController@adhesion_rejeter_liste')->name('adhesion.rejeter.liste');   
-        
-         
-        
-    
-        //show contrat souscriptzur
+        Route::get('/adhesions-rejeter-liste', 'AdherentController@adhesion_rejeter_liste')->name('adhesion.rejeter.liste');
+
+
+
+
+        //show contrat souscripteur
         Route::get('/adherent/show/{id}', 'AdherentController@show')->name('adhesion.show');
-    
+
         //Validation
         Route::get('/adhesion-valider/{id}', 'AdherentController@valider')->name('adhesion.valider');
-    
+
         //Rejet
         Route::get('/adhesion-rejeter/{id}', 'AdherentController@rejeter')->name('adhesion.rejeter');
-    
-    
+
+
         //Adhérents routes
         Route::get('/adherents', 'AdherentController@index')->name('adherent.index');
         Route::get('/beneficiaires', 'AdherentController@beneficiaires')->name('beneficiaires.index');
         Route::get('/adherent/show/{id}/transactions', 'AdherentController@transactionHistory')->name('adherent.transactionHistory');
         // Generate PDF before printing
         Route::get('/adherent/{id}/imprimer/', [PDFController::class, 'generatePDF'])->name('adherent.print');
-        
+
         //Adherent inactif
         Route::get('/adherents-inactifs', 'AdherentController@adherent_inactif_liste')->name('adhesion.inactif.liste');
-        
+
         //Adherent localité
         Route::get('/adherents/{localite}', 'AdherentController@adhesion_par_localite_liste')->name('adhesion.localite.liste');
 
         // Reglement de cotisation adherent
         Route::post('/adherents/cotisation/paiement', 'AdherentController@paiementCotisation')->name('adherent.cotisation.paiement');
-    
+
         //Modifier infos souscripteur
         Route::get('/souscripteur/edit/{id}', 'AdherentController@edit')->name('souscripteur.edit');
         Route::any('/souscripteur/update/{id}', 'AdherentController@update')->name('souscripteur.update');
-    
+
         //Ajouter-Modif bénéficiaire
         Route::get('/beneficiaire/create/{sous}', 'AdherentController@create_beneficiaire')->name('beneficiaire.create');
         Route::post('/beneficiaire/store/{sous}', 'AdherentController@store_beneficiaire')->name('beneficiaire.store');
@@ -134,27 +132,27 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         Route::any('/beneficiaire/update/{benef}', 'AdherentController@update_beneficiaire')->name('beneficiaire.update');
         Route::get('/beneficiaire/remove/{benef}', 'AdherentController@remove_beneficiaire')->name('beneficiaire.remove');
 
-    
+
         //Ajouter-Modif ayant-droit
         Route::get('/ayant-droit/create/{sous}', 'AdherentController@create_ayantdroit')->name('ayantdroit.create');
         Route::post('/ayant-droit/store/{sous}', 'AdherentController@store_ayantdroit')->name('ayantdroit.store');
         Route::get('/ayant-droit/edit/{ayant}', 'AdherentController@edit_ayantdroit')->name('ayantdroit.edit');
         Route::any('/ayant-droit/update/{ayant}', 'AdherentController@update_ayantdroit')->name('ayantdroit.update');
         Route::get('/ayant-droit/remove/{ayant}', 'AdherentController@remove_ayantdroit')->name('ayantdroit.remove');
-        
+
         //Bloquer ou débloquer le compte
         Route::get('/adherent-bloquer/{id}', 'AdherentController@bloquer')->name('adherent.bloquer');
         Route::get('/adherent-debloquer/{id}', 'AdherentController@debloquer')->name('adherent.debloquer');
-    
+
         //Adhérent formulaire print
         Route::get('/adherent-formulaire-print/{id}', 'AdherentController@formulaire_print')->name('adherent.formulaire-print');
 
-        //Contrats 
+        //Contrats
         Route::get('/contrats', 'ContratController@index')->name('contrat.index');
         Route::get('/contrats/expire', 'ContratController@expire')->name('contrat.expire');
         Route::get('/contrat/create', 'ContratController@create')->name('contrat.create');
         Route::post('/contrat/store', 'ContratController@store')->name('contrat.store');
-    
+
         //Dépenses
         Route::get('/depenses', 'DepenseController@index')->name('depense.index');
         Route::get('/depense/create', 'DepenseController@create')->name('depense.create');
@@ -162,13 +160,13 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
         Route::get('/depense/edit/{id}', 'DepenseController@edit')->name('depense.edit');
         Route::any('/depense/update/{id}', 'DepenseController@update')->name('depense.update');
         Route::get('/depense/destroy/{id}', 'DepenseController@destroy')->name('depense.destroy');
-    
+
         /* Cotisations */
         Route::prefix('/cotisations')->name('cotisations.')->group( function() {
             // Cotisations Exceptionnelles
             Route::resource('exceptionnelles', CotisationExceptController::class);
             Route::get('exceptionnelles/{code}/publier', 'CotisationExceptController@publier')->name('exceptionnelles.publier');
-            
+
             // Cotisations Annuelles
             Route::resource('annuelles', CotisationAnnuController::class);
             Route::get('annuelles/{annee}/publier', 'CotisationAnnuController@publier')->name('annuelles.publier');
@@ -193,31 +191,31 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
 
         Route::get('/assistance/importation', 'AssistanceController@importation')->name('assistance.importation');
         Route::post('/assistance/importation', 'AssistanceController@importationPost')->name('assistance.importationPost');
-    
-    
+
+
         //Demande adhésion en ligne
         Route::get('/demandes-a-traiter', 'DemandeController@index')->name('demande.index');
         Route::get('/demandes/valider', 'DemandeController@valider')->name('demande.valider');
         Route::get('/demandes/refuser', 'DemandeController@refuser')->name('demande.refuser');
-    
+
         //Versement
         Route::post('/versement/store', 'VersementController@store')->name('versement.store');
-    
-    
+
+
         //Configuration
-        
+
         //Droit d'inscription
         Route::get('/montant-droit-inscription', 'ConfigurationController@droitInscription')->name('droit-inscription.index');
         Route::post('/montant-droit-inscription/store', 'ConfigurationController@droitInscriptionStore')->name('droit-inscription.store');
-    
+
         //Cotisations annuelles
         Route::get('/montant-cotisation-annuelle', 'ConfigurationController@cotisationAnnuelle')->name('montant-cotisation-annuelle.index');
         Route::post('/montant-cotisation-annuelle/store', 'ConfigurationController@cotisationAnnuelleStore')->name('montant-cotisation-annuelle.store');
-    
+
         //Cotisations exceptionnelles
         Route::get('/montant-cotisation-exceptionnelle', 'ConfigurationController@cotisationExcept')->name('montant-cotisation-exceptionnelle.index');
         Route::post('/montant-cotisation-exceptionnelle/store', 'ConfigurationController@cotisationExceptionnelleStore')->name('montant-cotisation-exceptionnelle.store');
-    
+
         //Kit d'inscription
         Route::get('/montant-kit', 'ConfigurationController@traitementKit')->name('montant-kit.index');
         Route::post('/montant-kit/store', 'ConfigurationController@traitementKitStore')->name('montant-kit.store');
@@ -228,13 +226,13 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
     });
 
     //Ajax
-    
+
     //Afficher les informations d'un bénéficiaire à partir de son numéro d'adhesion
     Route::get('get-benef-info/{num_adhesion}', 'AjaxController@getBenefNomPnom')->name('get-benef-info.search');
 
     //Afficher les informations d'un bénéficiaire à partir de son nom et prénom(s)
     Route::get('get-benef-nom-pnom/{num_adhesion}', 'AjaxController@getBenefNumAdhe')->name('get-benef-info.search_num_adhesion');
-    
+
     //Afficher les infos d'un souscripteur à partir du nom et prénom
     Route::get('get-sous-benef/{num_adhesion}', 'AjaxController@getSousBenef')->name('get-sous-benef.search');
 

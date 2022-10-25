@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,7 +12,7 @@ class UserController extends Controller
 {
     //
     public function user(){
-        return Auth::user();
+        return \Auth::user();
     }
 
     public function index(){
@@ -33,7 +32,8 @@ class UserController extends Controller
         ]);
 
         $creds = $request->only('name','password');
-        if (Auth::guard('web')->attempt($creds)) {
+
+        if (\Auth::guard('web')->attempt($creds)) {
             return redirect()->route('admin.index');
         }
         else{
@@ -43,7 +43,7 @@ class UserController extends Controller
 
     public function show_profile(){
 
-        $user = Auth::user();
+        $user = \Auth::user();
 
         return view('admin.user.show_profile',compact('user'));
     }
@@ -58,7 +58,7 @@ class UserController extends Controller
     public function update_infos(Request $request){
 
         $validatedData = Validator::make($request->all(),[
-            
+
             'nom' => 'required|min:3' ,
             'pnom'=> 'required|min:3',
             'contact' => 'required|min:21',
@@ -71,7 +71,7 @@ class UserController extends Controller
             'contact.required' => 'Le contact est un champ obligatoire.' ,
             'contact.min' => 'Le contact doit contenir au moins 21 caractères.' ,
             'email.email' => 'Le champ email n\'est pas valide.' ,
-            
+
         ]);
         //dd($validatedData->errors());
         if ($validatedData->fails()) {
@@ -85,7 +85,7 @@ class UserController extends Controller
                     'contact' => $request->contact,
                     'email' => $request->email,
                 ]);
-                
+
                 return redirect()->back()->with('message', 'Mot de passe modifié avec succès.')->with('type', 'bg-success');
         }
 
@@ -101,7 +101,7 @@ class UserController extends Controller
     public function update_password(Request $request){
 
         $validatedData = Validator::make($request->all(),[
-            
+
             'old_password' => 'required' ,
             'new_password'=> 'required|min:8',
             'confirm_password' => 'required|same:new_password',
@@ -122,13 +122,13 @@ class UserController extends Controller
                 $this->user()->update([
                     'password' => Hash::make($request->new_password),
                 ]);
-                
+
                 return redirect()->back()->with('message', 'Mot de passe modifié avec succès.')->with('type', 'bg-success');
             }
             else{
                 return redirect()->back()->with('message', 'Votre ancien mot de passe est incorrect. Si cela persiste veuillez bien vouloir contacter l\'administrateur pour le réinitialiser.')->with('type', 'bg-danger');
             }
-            
+
         }
 
     }
@@ -148,7 +148,7 @@ class UserController extends Controller
         $user->update([
             'password' => Hash::make('diphita2022'),
         ]);
-        
+
         return redirect()->back()->with('message', 'Le mot de passe de l\'utilisateur à été réinitialisé et à pour valeur "diphita2022". ')->with('type', 'bg-success');
     }
 
@@ -158,7 +158,7 @@ class UserController extends Controller
         $user->update([
             'active' => 0,
         ]);
-        
+
         return redirect()->back()->with('message', 'Le compte a été désactivé.')->with('type', 'bg-success');
     }
 

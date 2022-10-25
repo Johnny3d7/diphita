@@ -29,8 +29,8 @@ class AssistancesImport implements ToCollection, WithHeadingRow
         ];
 
         $nb_success = $nb_error = $nb_warning = 0;
-        
-        foreach ($collection as $key => $row) 
+
+        foreach ($collection as $key => $row)
         {
             try{
                 // Création d'une Request en vue de la validation des informations renseignées dans chaque ligne
@@ -75,7 +75,7 @@ class AssistancesImport implements ToCollection, WithHeadingRow
                                     "title" => "Avertissement à la ligne ".($key+1),
                                     "msg" => ["Cas déjà assisté pour le bénéficiaire ".$beneficiaire->num_adhesion],
                                 ]);
-                                $nb_warning ++; 
+                                $nb_warning ++;
                             } else {
                                 $beneficiaire->update(["cas" => 1]);
                                 $request2->merge([

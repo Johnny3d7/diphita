@@ -3,8 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Adherents;
+use App\Models\Assistance;
+use App\Models\Caisse;
+use App\Models\Cotisation;
+use App\Models\Depense;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
+use stdClass;
 
 class HomeController extends Controller
 {
@@ -15,8 +21,23 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //
-        return view('admin.home.index');
+        $souscripteurs = Adherents::selectAll(true);
+        $beneficiaires = Adherents::selectAll();
+        $caisse = Caisse::first();
+        $cotisation_exp = Cotisation::selectAll('exceptionnelles', false)->last();
+        $cotisation_an = Cotisation::selectAll('annuelles')->last();
+
+        $assistances = Assistance::to_assist();
+
+        $data = new stdClass();
+        $data->nbre_souscripteurs = $souscripteurs->count();
+        $data->nbre_beneficiaires = $beneficiaires->count();
+        $data->nbre_cas_assistes = Assistance::nbre_assisted();
+        $data->nbre_cas_a_assister = Assistance::nbre_to_assist();
+        $data->point_cas_a_assister = Assistance::montant_to_assist();
+        $data->point_caisse = $caisse->solde();
+        $data->point_depense = Depense::getMontant();
+        return view('admin.home.index', compact('data', 'cotisation_exp', 'cotisation_an', 'assistances'));
     }
 
     /**

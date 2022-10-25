@@ -13,7 +13,7 @@ class Caisse extends Model
 
     public function solde(){
         // return $this->solde;
-        return $this->solde + Versement::getNonParcouru()->sum('montant') - Depense::getNonParcouru()->sum('montant');
+        return $this->solde + Versement::getMontant() - Depense::getMontant();
     }
 
     public function updateSolde(){

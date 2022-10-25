@@ -54,7 +54,7 @@ class AssistanceController extends Controller
             try {
                 $import = new AssistancesImport;
                 $collection = Excel::import($import, $request->file('csv'));
-    
+
                 return redirect()->back();
             } catch (\Throwable $th) {
                 return redirect()->back()->withErrors(['csv' => "Fichier incompatible avec les exigences de l'importation : ".$th->getMessage()]);
@@ -79,7 +79,7 @@ class AssistanceController extends Controller
         }
         return view('admin.assistance.create',compact('adherent'));
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -100,20 +100,20 @@ class AssistanceController extends Controller
     {
         //
             $validatedData = Validator::make($request->all(),[
-            
+
             "souscript_num" => "required",
             "benef_num" => "required",
-            "date_assistance" => "required|date_format:d-m-Y",
-            "moyen_assistance" => "required",
+            // "date_assistance" => "required|date_format:d-m-Y",
+            "moyen_assistance" => "required_with:date_assistance",
             "lieu_deces" => "required",
             "date_deces" => "required|date_format:d-m-Y",
             "date_obseques" => "required|date_format:d-m-Y",
-        
+
         ], [
             "souscript_num.required" => "Le numéro d'identification du souscripteur est obligatoire",
             "benef_num.required" => "Le numéro d'identification du bénéficiaire est obligatoire",
-            "date_assistance.required" => "La date d'assistance est obligatoire",
-            "date_assistance.date_format" => "Format de date d'assistance incorrect",
+            // "date_assistance.required" => "La date d'assistance est obligatoire",
+            // "date_assistance.date_format" => "Format de date d'assistance incorrect",
             "moyen_assistance.required" => "Moyen d'assistance est obligatoire",
             "date_deces.date_format" => "Format de date de décès incorrect",
             "date_deces.required" => "La date de décès est obligatoire",
@@ -132,7 +132,7 @@ class AssistanceController extends Controller
                 'date_deces'=> Carbon::parse($this->formatDate($request->date_deces)),
                 'lieu_deces'=>$request->lieu_deces,
                 'date_obseques'=> Carbon::parse($this->formatDate($request->date_obseques)),
-                'date_assistance'=> Carbon::parse($this->formatDate($request->date_assistance)),
+                'date_assistance'=> $request->date_assistance ? Carbon::parse($this->formatDate($request->date_assistance)) : null,
                 'moyen_assistance'=> $request->moyen_assistance,
                 'enfant_defunt'=> $request->enfant_defunt,
                 'enfant_contact'=> $request->enfant_contact,
@@ -188,7 +188,7 @@ class AssistanceController extends Controller
     {
         //
         $validatedData = Validator::make($request->all(),[
-            
+
             "souscript_num" => "required",
             "benef_num" => "required",
             "date_assistance" => "required|date_format:d-m-Y",
@@ -247,7 +247,7 @@ class AssistanceController extends Controller
         $assistance = Assistance::find($id);
         $assistance->status = 0;
         $assistance->save();
-        
+
         return redirect()->back()->with('message', 'Assistance supprimée avec succès.')->with('type', 'bg-success');
     }
 
@@ -257,7 +257,7 @@ class AssistanceController extends Controller
         $assistance = Assistance::find($id);
         $assistance->valide = 1;
         $assistance->save();
-        
+
         return redirect()->back()->with('message', 'Assistance validée avec succès.')->with('type', 'bg-success');
     }
 
@@ -271,7 +271,7 @@ class AssistanceController extends Controller
         $adherent = Adherents::find($assistance->beneficiaire->id);
         $adherent->cas = 1;
         $adherent->save();
-        
+
         return redirect()->back()->with('message', 'Assistance est passée au statut rejeté.')->with('type', 'bg-success');
     }
 
@@ -281,7 +281,7 @@ class AssistanceController extends Controller
         $assistance = Assistance::find($id);
         $assistance->assiste = 1;
         $assistance->save();
-        
+
         return redirect()->back()->with('message', 'Cas assisté avec succés. Le montant actuel de la caisse est de .')->with('type', 'bg-success');
     }
 
@@ -320,7 +320,7 @@ class AssistanceController extends Controller
             $assistance->code_deces = $cotisation->code_deces;
             $assistance->save();
         }
-        
+
         return redirect()->back()->with('message', 'Cas assisté avec succés. Le montant actuel de la caisse est de .')->with('type', 'bg-success');
     }
 

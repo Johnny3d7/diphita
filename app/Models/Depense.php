@@ -10,7 +10,7 @@ class Depense extends Model
     use HasFactory;
 
     protected $table = 'depenses';
-    
+
     protected $guarded = ['id'];
 
     public $timestamps = true;
@@ -26,8 +26,12 @@ class Depense extends Model
         'status',
         'id_adherent'
     ];
-    
+
     public static function getNonParcouru(){
         return static::whereParcouru(false)->get();
-    } 
+    }
+
+    public static function getMontant(){
+        return static::getNonParcouru()->sum('montant');
+    }
 }

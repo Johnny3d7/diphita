@@ -12,7 +12,7 @@ class Assistance extends Model
     use HasFactory;
 
     protected $table = 'assistances';
-    
+
     protected $guarded = ['id'];
 
     public $timestamps = true;
@@ -50,6 +50,24 @@ class Assistance extends Model
         });
 	}
 
+    public static $montant_assistance = 600000;
+
+    public static function nbre_assisted(){
+        return static::whereAssiste(1)->count();
+    }
+
+    public static function to_assist(){
+        return static::whereAssiste(0)->get();
+    }
+
+    public static function nbre_to_assist(){
+        return static::to_assist()->count();
+    }
+
+    public static function montant_to_assist(){
+        return static::nbre_to_assist() * static::$montant_assistance;
+    }
+
 
 
     /**
@@ -66,14 +84,30 @@ class Assistance extends Model
     {
         return $this->belongsTo(Adherents::class, 'id_souscripteur');
     }
-    
+
     public function beneficiaire()
     {
         return $this->belongsTo(Adherents::class, 'id_benef');
     }
-    
+
     public function cotisation()
     {
         return $this->belongsTo(Cotisation::class, 'code_deces', 'code_deces');
+    }
+
+    public function avance()
+    {
+        return 0;
+    }
+
+    public function reste()
+    {
+        $montant = 600000;
+        return $montant - $this->avance();
+    }
+
+    public function date_paiement()
+    {
+        return new \DateTime();
     }
 }

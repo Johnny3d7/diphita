@@ -30,7 +30,7 @@
      <link rel="stylesheet" href="{{ url('vendors/datepicker/date-picker.css') }}" />
 
      <link rel="stylesheet" href="{{ url('vendors/vectormap-home/vectormap-2.0.2.css') }}" />
-     
+
      <!-- scrollabe  -->
      <link rel="stylesheet" href="{{ url('vendors/scroll/scrollable.css') }}" />
     <!-- datatable CSS -->
@@ -43,6 +43,9 @@
     <link rel="stylesheet" href="{{ url('vendors/morris/morris.css') }}">
     <!-- metarial icon css -->
     <link rel="stylesheet" href="{{ url('vendors/material_icon/material-icons.css') }}" />
+
+    <link rel="stylesheet" href="{{ asset('vendors/HoldOn/HoldOn.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('myplugins/select2/css/select2.min.css') }}">
 
     @yield('css')
 
@@ -59,7 +62,7 @@
             background: linear-gradient(rgba(246,247,251,0.9),
      rgba(246,247,251,0.95)),
         url("http://web.medcare-ci.com/wp-content/uploads/2021/06/pexels-jep-gambardella-7689757-scaled.jpg") !important;
-   
+
         background-attachment: fixed;
         background-position: center;
         background-size: cover;
@@ -67,9 +70,9 @@
     </style>
 </head>
 <body class="crm_body_bg">
-    
+
 <!-- main content part here -->
- 
+
  <!-- sidebar  -->
 @include('admin.partials.sidebar')
  <!--/ sidebar  -->
@@ -92,9 +95,9 @@
                                 <li class="breadcrumb-item active">@yield('subtitle')</li>
                             </ol>
                         </div>
-                        
+
                         <div class="page_title_right">
-                            <div class="page_date_button d-flex align-items-center"> 
+                            <div class="page_date_button d-flex align-items-center">
                                 <img src="{{ url('img/icon/calender_icon.svg') }}" alt="">
                                 {{ ucwords((new Carbon\Carbon(Now()))->locale('fr')->isoFormat('DD MMMM YYYY')) }}</td>
                             </div>
@@ -102,7 +105,7 @@
                         {{-- <a href="{{ url()->previous() }}" class="white_btn3">Retour</a> --}}
 
                         @if (Route::currentRouteName() != 'admin.index')
-                            <a href="{{ route('backStack') }}" class="white_btn3">Retour</a> 
+                            <a href="{{ route('backStack') }}" class="white_btn3">Retour</a>
                         @endif
                     </div>
                 </div>
@@ -181,7 +184,7 @@
         <p class="mesaged_send_date">
         Sunday, 12 January
         </p>
-    
+
     <div class="CHATING_SENDER">
         <div class="SMS_thumb">
             <img src="{{ url('img/staf/1.png') }}" alt="">
@@ -191,9 +194,9 @@
             How can I help you?</P>
         </div>
     </div>
-    
+
     <div class="CHATING_SENDER CHATING_RECEIVEr">
-        
+
         <div class="SEND_SMS_VIEW">
             <P>Hello</P>
         </div>
@@ -201,14 +204,14 @@
             <img src="{{ url('img/staf/1.png') }}" alt="">
         </div>
     </div>
-    
+
     </div>
     <div class="CHAT_POPUP_BOTTOM">
         <div class="chat_input_box d-flex align-items-center">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Write your message" aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                    <button class="btn " type="button"> 
+                    <button class="btn " type="button">
                         <!-- svg      -->
                         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M18.7821 3.21895C14.4908 -1.07281 7.50882 -1.07281 3.2183 3.21792C-1.07304 7.50864 -1.07263 14.4908 3.21872 18.7824C7.50882 23.0729 14.4908 23.0729 18.7817 18.7815C23.0726 14.4908 23.0724 7.50906 18.7821 3.21895ZM17.5813 17.5815C13.9525 21.2103 8.04773 21.2108 4.41871 17.5819C0.78907 13.9525 0.789485 8.04714 4.41871 4.41832C8.04752 0.789719 13.9521 0.789304 17.5817 4.41874C21.2105 8.04755 21.2101 13.9529 17.5813 17.5815ZM6.89503 8.02162C6.89503 7.31138 7.47107 6.73534 8.18131 6.73534C8.89135 6.73534 9.46739 7.31117 9.46739 8.02162C9.46739 8.73228 8.89135 9.30811 8.18131 9.30811C7.47107 9.30811 6.89503 8.73228 6.89503 8.02162ZM12.7274 8.02162C12.7274 7.31138 13.3038 6.73534 14.0141 6.73534C14.7241 6.73534 15.3002 7.31117 15.3002 8.02162C15.3002 8.73228 14.7243 9.30811 14.0141 9.30811C13.3038 9.30811 12.7274 8.73228 12.7274 8.02162ZM15.7683 13.2898C14.9712 15.1332 13.1043 16.3243 11.0126 16.3243C8.8758 16.3243 6.99792 15.1272 6.22834 13.2744C6.09642 12.9573 6.24681 12.593 6.56438 12.4611C6.64238 12.4289 6.72328 12.4136 6.80293 12.4136C7.04687 12.4136 7.27836 12.5577 7.37772 12.7973C7.95376 14.1842 9.38048 15.0799 11.0126 15.0799C12.6077 15.0799 14.0261 14.1836 14.626 12.7959C14.7625 12.4804 15.1288 12.335 15.4441 12.4717C15.7594 12.6084 15.9048 12.9745 15.7683 13.2898Z" fill="#707DB7"/>
@@ -260,6 +263,9 @@
 <script src="{{ url('vendors/niceselect/js/jquery.nice-select.min.js') }}"></script>
 <!-- owl carousel -->
 <script src="{{ url('vendors/owl_carousel/js/owl.carousel.min.js') }}"></script>
+
+<script src="{{ asset('vendors/HoldOn/HoldOn.min.js') }}"></script>
+<script src="{{ asset('myplugins/select2/js/select2.min.js') }}"></script>
 
 <!-- responsive table -->
 <script src="{{ url('vendors/datatable/js/jquery.dataTables.min.js') }}"></script>
@@ -317,12 +323,152 @@
     $('[data-mask]').inputmask();
 </script>
 <script>
+    function jqueryBtnPaie (){
+        $('.btnReglementJS').click(function(){
+            HoldOn.open();
+            let souscripteur = $(this).data('souscripteur')
+            let cotisation = $(this).data('cotisation')
+            let type = $(this).data('type')
+
+            $('#num_adherent').html(souscripteur)
+            console.log(souscripteur);
+
+            $.ajax({
+                url: "{{ route('apiGetInfosSouscripteur') }}",
+                type: 'POST',
+                data:{
+                    'num_souscripteur':souscripteur,
+                    'cotisation':cotisation,
+                    'type':type,
+                    'id_user':"{{ Auth::user()->id }}"
+                },
+                success: function(res){
+                    $('#nom_pnom').html(res.nom_pnom);
+
+                    $('#versementModal').find('#id_souscripteur').val(res.id_adherent)
+                    $('#versementModal').find('input.versement').val(0)
+
+                    $('.PaiementForm').find('#id_adherent').val(res.id_adherent)
+                    $('.PaiementForm').find('#id_cotisation').val(res.id_cotisation)
+
+                    $('.PaiementForm').find('.solde:first').val(res.solde)
+                    $('.PaiementForm').find('.aRegler:first').val(res.reste_a_payer)
+
+                    // $('.PaiementForm').find('#nom_pnom').html(res.nom_pnom)
+                    $('.PaiementForm').find('#montant').val(res.montant)
+
+                    $('.PaiementForm').find('#montantPaye').val(res.deja_payer)
+                    $('.PaiementForm').find('#montantReste').val(res.reste_a_payer)
+
+                    $('.PaiementForm').find('.displayExcept').removeClass('d-none');
+                    $('.PaiementForm').find('.displayAnn').removeClass('d-none');
+
+                    if(res.annuelle == true) {
+                        $('.PaiementForm').find('.displayExcept').addClass('d-none');
+                        $('.PaiementForm').find('#aPayer').val(res.reste_a_payer) // Annuelle
+                        $('.PaiementForm').find('#montantRegle').attr('disabled', true).attr('readonly', true)
+                    } else {
+                        $('.PaiementForm').find('.displayAnn').addClass('d-none');
+                    }
+                    $('.PaiementForm').find('#montantRegle').val(res.reste_a_payer).change()
+                    // $('#reglementModalFooter').removeClass('alert-danger').removeClass('alert-success').removeClass('alert-warning').removeClass('d-none')
+
+                    HoldOn.close();
+                },
+                error: function(e){
+                    HoldOn.close();
+                    console.log(e);
+                }
+            });
+            // console.log($(this));
+        });
+
+        // setInterval(() => {
+        // }, 500);
+    }
+    function ajaxDiphita () {
+        $('.table_diphita_ajax').each( function(){
+            let fields = $(this).data('fields') ?? {};
+            let url = $(this).data('url') ?? '';
+            let type = $(this).data('type') ?? 'get';
+            $(this).DataTable({
+                // "processing": true,
+                // "serverSide": true,
+                "fnInitComplete": function(oSettings, json) {
+                    jqueryBtnPaie()
+                },
+                "search": function() {
+                    console.log('Searching')
+                    jqueryBtnPaie()
+                },
+                "filter": true,
+                "ajax": {
+                    "url": url,
+                    "type": type,
+                    "data": fields,
+                    "datatype": "json",
+                },
+                "columns": [
+                    {
+                        "data": "identifiant"
+                    },
+                    {
+                        "data": "nom_prenoms"
+                    },
+                    {
+                        "data": "nbre_benef"
+                    },
+                    {
+                        "data": "date_paiement"
+                    },
+                    {
+                        "data": "montant"
+                    },
+                    {
+                        "data": "etat"
+                    },
+                    {
+                        "data": "identifiant",
+                        "render": function (data, type, row) {
+                            btnPaie = '';
+                            if(row.etat == "Non A Jour") {
+                                btnPaie = `<a class="dropdown-item btnReglementJS" data-toggle="modal" data-target="#reglementModal"
+                                    data-souscripteur="${row.identifiant}" data-type="${row.cotisation_type}"
+                                    data-cotisation="${row.cotisation_identifiant}" href="javascript:void(0);">
+                                    <i class="ti-money"></i> Faire un reglement
+                                </a>`
+                            }
+
+                            res = `<div class="header_more_tool">
+                                <div class="dropdown">
+                                    <span class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"><i class="ti-more-alt"></i></span>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#"> <i class="ti-eye"></i> Voir</a>${btnPaie}
+                                    </div>
+                                </div>
+                            </div>`;
+
+                            return res;
+                        }
+                    }
+                ],
+            }).on('search.dt page.dt', function(){
+                jqueryBtnPaie();
+            });
+        });
+
+        $('#reglementModal').find('.close:first').click(function(){
+            jqueryBtnPaie();
+        })
+    }
+
     $(document).ready(function () {
         $('.table_diphita').DataTable({
             paging: true,
             "language": {
                 "url": "{{ url('js/language/french_json.json')}}"
             },
+            ordering:false,
             searching: true,
             dom: 'Bfrtip',
             buttons: [
@@ -330,10 +476,12 @@
             ]
         });
 
+        $('.select2').select2();
+
         $(".verser").on('click', function(e) {
             $this = $(this);
             modalParent = $this.parents('.modal')[0];
-            
+
             span = $(modalParent).find('span.error')[0]
             versement = $(modalParent).find('.versement');
             id_souscripteur = $(modalParent).find('.id_souscripteur');
@@ -354,7 +502,7 @@
                 },
                 success: function(msg) {
                     if(!$($(span).parent()).hasClass('d-none')) $($(span).parent()).addClass('d-none')
-                    
+
                     if(msg.status && msg.status == 'success'){
                         $(modalParent).find(".close").click()
                         modalReglement = $('.reglementModal.show:first')
@@ -375,8 +523,6 @@
                     console.log(error)
                 }
             });
-
-            
         });
 
         $(".PaiementForm .montant").on('change keyup', function(){
@@ -387,14 +533,14 @@
             identifiant = $(modalParent).attr('id');
             btnSubmit = $(formParent).find('#' + identifiant + 'Submit')
             btnDocker = $(btnSubmit).parent()
-            
+
             solde = $($(formParent).find('.solde')[0]).val();
             aRegler = $($(formParent).find('.aRegler')[0]).val();
 
             if($this.val() - aRegler > 0 || $this.val() < 0) $this.val(aRegler)
 
             $($(modalParent).find('#'+identifiant+'Footer')).remove()
-            
+
             if($this.val() < 0 || ($this.val() % 50 != 0)){
                 btnSubmit.attr('disabled')
                 if(!btnDocker.hasClass('d-none')) btnDocker.addClass('d-none');
@@ -435,13 +581,46 @@
                             <div class="row mt-2 h6">
                                 <div class="container">
                                     <span>Solde Actuel : ${solde} FCFA</span> <div class="py-1"></div>
-                                    <a href="#" class="pt-2 btn btn-sm btn-info" data-toggle="modal" data-target="#versementModal${identifiant}"><i class="fa fa-plus"></i> <span> <span>Versement</span>  </span> </a>
+                                    <a href="#" class="pt-2 btn btn-sm btn-info" data-toggle="modal" data-target="#versementModal"><i class="fa fa-plus"></i> <span> <span>Versement</span>  </span> </a>
                                 </div>
                             </div>
                         </div>
                     `)
                 }
             }
+        })
+
+        $('.chartsh').each(function(){
+            data=$(this).data('fields');
+            $.plot($(this), data, {
+                series: {
+                    pie: { innerRadius: 0.5, show: !0 },
+                },
+                grid:{
+                    hoverable:true,
+                },
+                colors: ["#09ad95", "#f82649", "#6c5ffc", "#05c3fb", "#1170e4"],
+                legend: { show: !1 }
+            });
+        })
+
+
+        $('.chartsh').each(function(){
+            let data=$(this).data('fields');
+            let collecte = data[0]['data'];
+            let recouvrer = data[1]['data'];
+
+            let pieLabel0 = $(this).find('#pieLabel0').find('div:first')
+            let pieLabel1 = $(this).find('#pieLabel1').find('div:first')
+
+            let converter = Intl.NumberFormat();
+            $(pieLabel0).append(`<br>${converter.format(collecte)} Fcfa`)
+            $(pieLabel1).append(`<br>${converter.format(recouvrer)} Fcfa`)
+
+            $(pieLabel0).css({'font-size':'15px', 'background-color':'white'})
+            $(pieLabel1).css({'font-size':'15px', 'background-color':'white'})
+            $($(pieLabel1).parent()).css({'top':'10px', 'left':'10px'})
+            $($(pieLabel0).parent()).css({'top':'10px', 'left':'auto', 'right':'10px'})
         })
     });
 </script>
