@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdherentController;
 use App\Http\Controllers\Admin\CotisationController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('infos-souscripteur',[AdherentController::class, 'getInfos'])->name('apiGetInfosSouscripteur');
 Route::post('infos-cotisation',[CotisationController::class, 'getInfos'])->name('apiGetInfosCotisation');
+
+Route::post('montant-du-souscripteur',[AdherentController::class, 'getMontantDu'])->name('apiGetMontantDuSouscripteur');
+Route::post('souscripteurs-a-avertir',[AdherentController::class, 'getSouscripteurAvertir'])->name('apiGetSouscripteurAvertir');
+
+Route::post('cotisations-dues',[AdherentController::class, 'getCotisationsDues'])->name('apiGetCotisationsDues');
+Route::post('personnal-message',[AdherentController::class, 'getPersonnalMessage'])->name('apiGetPersonnalMessage');
+Route::post('send-messages',[MessageController::class, 'postSendMessages'])->name('apiPostSendMessages');

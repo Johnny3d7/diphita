@@ -53,7 +53,7 @@
                 <li><a href="{{ route('admin.adhesion.localite.liste',['localite'=>'oume']) }}">Les souscripteurs Oumé</a></li>
                 <li><a href="{{ route('admin.adhesion.localite.liste',['localite'=> 'ouelle']) }}">Les souscripteurs Ouellé</a></li>
               @endif
-              
+
             </ul>
         </li>
         <li class="">
@@ -96,7 +96,7 @@
               <li><a href="{{ route('admin.assistance.attente') }}">Cas en attente</a></li>
             </ul>
         </li>
-        
+
         <li class="">
             <a   class="has-arrow" href="#" aria-expanded="false">
               <div class="nav_icon_small">
@@ -109,10 +109,10 @@
             <ul>
               <li><a href="{{ route('admin.depense.index') }}">Liste</a></li>
               <li><a href="{{ route('admin.depense.create') }}">Ajout</a></li>
-              
+
             </ul>
         </li>
-        
+
         <li class="">
             <a   class="has-arrow" href="#" aria-expanded="false">
               <div class="nav_icon_small">
@@ -127,7 +127,7 @@
               <li><a href="javascript:void(0);">Sms</a></li>
             </ul>
         </li>
-        
+
         <li class="">
             <a  class="has-arrow" href="#" aria-expanded="false">
               <div class="nav_icon_small">
@@ -174,7 +174,17 @@
             </ul>
         </li>
         <li class="">
-          
+            <a href="{{ route('admin.messages.index') }}">
+                <div class="nav_icon_small">
+                    <img src="{{ url('img/menu-icon/20.svg') }}" alt="">
+                </div>
+                <div class="nav_title">
+                    <span>Messagerie</span>
+                </div>
+            </a>
+        </li>
+        <li class="">
+
           <a href="{{ route('logout') }}" onclick="event.preventDefault();
           document.getElementById('logout-form-sidebar').submit();" aria-expanded="false">
               <div class="nav_icon_small">

@@ -15,7 +15,7 @@ class Adherents extends Model
     use HasFactory; use HasSlug;
 
     protected $table = 'adherents';
-    
+
     protected $guarded = ['id'];
 
     public $timestamps = true;
@@ -58,7 +58,7 @@ class Adherents extends Model
                 $dateAD = Carbon::create($item->date_adhesion);
                 // Si $day < 5 alors day = 05 mois en cours sinon 05 mois suivant
                 $item->date_debutcotisation = Carbon::create($dateAD->year, $dateAD->month + ($dateAD->day > 5 ?? 0) + 1, 5);
-    
+
                 $item->date_fincarence = $dateAD->addMonths(Parameters::dureeFinCarrence() ?? 4);
             }
         });
@@ -85,7 +85,7 @@ class Adherents extends Model
             //     }
             // }
 
-            
+
             if($item->isValide()){
                 if($item->isSouscripteur()) $item->firstCotisations();
                 if($item->isBeneficiaire() && $item->souscripteur()){
@@ -94,7 +94,7 @@ class Adherents extends Model
                         'id_adherent' => $souscripteur->id,
                         'montant' => Parameters::cotisationAnnuelle()+Parameters::droitInscription()+Parameters::traitementKit()
                     ]);
-            
+
                     $souscripteur->firstReglementPerso($item);
 
                     $annuelle = $item->cotisations("annuelle")->last()->first();
@@ -113,7 +113,7 @@ class Adherents extends Model
     }
 
     public function valider(){
-        
+
     }
 
     public function firstCotisations(){
@@ -177,10 +177,10 @@ class Adherents extends Model
         }
 
     }
-    
+
     public function firstReglement(){
         $souscripteur = $this->isSouscripteur() ? $this : $this->souscripteur();
-        
+
         $exists = Versement::whereIdAdherent($souscripteur->id)->whereDate('created_at', Carbon::today())->first();
         if(!$exists) {
             Versement::create([
@@ -204,6 +204,20 @@ class Adherents extends Model
         return $this->hasMany(AdherentHasCotisations::class, 'id_adherent');
     }
 
+    public static function avertir() {
+        $result = new Collection();
+        foreach (static::selectAll(true) as $value) {
+            if($value->ownCotisations->where('reglee', false)->first()){
+                $result->add([
+                    'num_adhesion' => $value->num_adhesion,
+                    'nom' => $value->nom,
+                    'pnom' => $value->pnom,
+                ]);
+            }
+        }
+        return $result;
+    }
+
     public static function selectAll(Bool $souscripteur = false,$statut = 1){
         $valides = static::where(['valide'=>1,'status'=>$statut]);
         if($souscripteur) $valides = $valides->whereRole(1);
@@ -217,7 +231,7 @@ class Adherents extends Model
         }else{
             return static::where(['valide'=>1,'status'=>$status,'lieu_hab'=>$lieu_hab,'role'=>1])->get();
         }
-        
+
     }
 
     public static function selectAllBenefLocalite($lieu_hab){
@@ -250,7 +264,7 @@ class Adherents extends Model
     {
         return $this->hasMany(AyantDroit::class, 'id_adherent');
     }
-  
+
     public function assistances()
     {
         return $this->hasMany(Assistance::class, 'id_souscripteur');
@@ -281,7 +295,7 @@ class Adherents extends Model
         if($parcouru != 10) $versements = $versements->where('parcouru', $parcouru);
         return $versements;
     }
-    
+
     public function reglements(Cotisation $cotisation=null, int $parcouru = 10){
         $reglements = $this->hasMany(Reglement::class, 'id_adherent')->get();
         if($cotisation) $reglements = $reglements->where('id_cotisation', $cotisation->id);
@@ -323,7 +337,7 @@ class Adherents extends Model
         // $cotisations = new Collection();
         $cotisations = Cotisation::whereNotNull('type');
         if($type) $cotisations = Cotisation::whereType($type);
-        $cotisations = $cotisations->where(function ($q) { 
+        $cotisations = $cotisations->where(function ($q) {
             $q->where('annee_cotis', '>=', Carbon::create($this->date_adhesion)->year)
                 ->orWhere('date_annonce', '>=', Carbon::create($this->date_adhesion));
         });
@@ -382,8 +396,35 @@ class Adherents extends Model
     }
 
     public function admin(){
-         return $this->belongsTo(User::class, 'admin_id');
+        return $this->belongsTo(User::class, 'admin_id');
     }
-    
 
+    public function montant_du() {
+        return $this->montant_annuel_du() + $this->montant_exceptionnel_du();
+    }
+
+    private function somme_montant_cotisation($cotisations){
+        $somme = 0;
+        foreach ($cotisations as $cotisation) {
+            $somme += $this->psCotisation($cotisation)->montant();
+        }
+        return $somme;
+    }
+
+    public function montant_annuel_du() {
+        return $this->somme_montant_cotisation($this->cotisations_annuelles_dues());
+    }
+
+    public function montant_exceptionnel_du() {
+        return $this->somme_montant_cotisation($this->cotisations_exceptionnelles_dues());
+    }
+
+    public function cotisations_exceptionnelles_dues() {
+        return $this->cotisations('exceptionnelle', false);
+
+    }
+
+    public function cotisations_annuelles_dues() {
+        return $this->cotisations('annuelle', false);
+    }
 }

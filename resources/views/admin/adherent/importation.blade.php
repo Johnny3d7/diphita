@@ -133,9 +133,11 @@
         }
         */
         $('#btnSubmit').click(function(){
+            HoldOn.open({
+                "message":"Chargement"
+            });
             url = $($(this).parents('form:first')).attr('action');
             file = $('#csv').prop('files')[0];
-
             var formData = new FormData();
 
             formData.append("csv", file);
@@ -156,9 +158,11 @@
                     // verifyStatus();
                 },
                 success:(msg)=>{
+                    HoldOn.close()
                     console.log('Success')
                     console.log(msg)
                     // verifyStatus();
+                    location.reload();
                 },
                 error: ()=>{
                     console.log('error')

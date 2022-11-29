@@ -19,6 +19,7 @@ use App\Models\TraitementKit;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Stmt\TryCatch;
@@ -183,6 +184,61 @@ class AdherentController extends Controller
         return $array;
     }
 
+    public function getMontantDu(Request $request)
+    {
+        $souscripteur = Adherents::whereNumAdhesion($request->num_souscripteur)->first();
+        $data = $souscripteur->montant_du() ?? null;
+
+        return [
+            'status' => 'OK',
+            'data' => $data
+        ];
+    }
+
+    public function getSouscripteurAvertir() {
+        $adherents = Adherents::avertir();
+        // $adherents = $adherents->only(['num_adhesion']);
+        return $adherents->all();
+    }
+
+    public function getCotisationsDues(Request $request) {
+        $adherent = Adherents::where('num_adhesion',$request->num_adhesion)->first();
+        $annuelles = $adherent->cotisations_annuelles_dues();
+        $exceptionnelles = $adherent->cotisations_exceptionnelles_dues();
+
+        $result = new Collection();
+        foreach($annuelles->merge($exceptionnelles) as $cotisation){
+            $ahc = $adherent->psCotisation($cotisation);
+            $result->add([
+                'identifiant' => $cotisation->annee_cotis ?? $cotisation->code_deces,
+                'type' => $cotisation->type,
+                'nbre_benef' => $ahc->nbre_benef,
+                'montant' => $ahc->montant(),
+            ]);
+        }
+
+        return $result;
+    }
+
+    public function getPersonnalMessage(Request $request) {
+        $adherent = Adherents::where('num_adhesion',$request->num_adhesion)->first();
+        $conversion = [
+            '%Nom%' => $adherent->nom,
+            '%Prénoms%' => $adherent->pnom,
+            '%MontantTotal%' => $adherent->montant_du(),
+            '%MontantCotisationAnnuelle%' => $adherent->montant_annuel_du(),
+            '%MontantCotisationExceptionnelle%' => $adherent->montant_exceptionnel_du(),
+        ];
+        $message = $request->message;
+        $result = implode('<br>', explode("\n", trim($message)));
+
+        foreach ($conversion as $var => $val) {
+            $result = str_replace($var, $val, $result);
+        }
+        // dd($request->all(), $result, $message);
+
+        return $result;
+    }
 
     /**
      * Display a listing of the resource.
