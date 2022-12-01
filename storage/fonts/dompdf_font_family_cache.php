@@ -79,11 +79,11 @@ return array (
     'normal' => $rootDir . '/lib/fonts/DejaVuSerif',
   ),
   'font awesome 5 brands' => array(
-    'normal' => $fontDir . '/font_awesome_5_brands_normal_97f37f92c5523995da4be3573ee3a765',
+    'normal' => $fontDir . '/font_awesome_5_brands_normal_18c58deadb357bc9993f1d6a5d306702',
   ),
   'font awesome 5 free' => array(
-    'normal' => $fontDir . '/font_awesome_5_free_normal_ddf20134b8c3e7e9a9b5f32382499932',
-    '900' => $fontDir . '/font_awesome_5_free_900_993ec0aa10d3a6be659cf928da8d62b1',
+    'normal' => $fontDir . '/font_awesome_5_free_normal_0e68e59e2aa32a6e0a6a352cd2b3407a',
+    '900' => $fontDir . '/font_awesome_5_free_900_f572c461395c01c2d48a3d1bcd8f7cd5',
   ),
   'copperplate' => array(
     'normal' => $fontDir . '/copperplate_normal_4b6569de649e527bdd0b968bd4f7ba17',

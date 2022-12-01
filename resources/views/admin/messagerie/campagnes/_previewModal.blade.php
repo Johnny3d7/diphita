@@ -12,8 +12,8 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <div class="text-center text-primary h5">
-                        <i class="fa fa-user pr-2"></i> <span id="nom_pnom"></span>
+                    <div class="text-center font-weight-bold text-uppercase h4 p-2">
+                        <u>Point des cotisations dues</u>
                     </div>
                     <div class="row">
                         <div class="col-xl-8 border rounded p-0" style="height: 50vh; overflow-y:auto">
@@ -37,8 +37,25 @@
                             </table>
                         </div>
                         <div class="col-xl-4">
-                            <h6 class="text-center">Message personnalisé</h6>
-                            <div class="container-fluid rounded border p-2" id="previewPersonnalMessage">
+                            <h5 class="text-center font-weight-bold text-uppercase">
+                                <u>Informations générales</u>
+                            </h5>
+                            <h5>
+                                <em>Nom :</em>
+                                <span class="text-info" id="nom_pnom"></span>
+                            </h5>
+                            <h5>
+                                <em>Annuel :</em>
+                                <span class="text-info" id="montantAnnuel">%Montant Annuel%</span>
+                            </h5>
+                            <h5>
+                                <em>Exceptionnel :</em>
+                                <span class="text-info" id="montantExceptionnel">%Montant Exceptionnel%</span>
+                            </h5>
+
+                            <hr class="bg-danger w-25 my-4" style="border-width: 2px">
+                            <h6 class="text-center font-weight-bold text-uppercase" style="color: #fd517d;">Message personnalisé</h6>
+                            <div class="container-fluid rounded border p-2" id="previewPersonnalMessage" style="border-color: #fd517d !important;">
                                 <div class="text-center">
                                     <i class="fa fa-spinner fa-spin fa-3x"></i>
                                     <h6 class=" pt-3">Chargement</h6>
@@ -55,9 +72,10 @@
                             </center>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="container-fluid">
-                            <button class="btn btn-light float-right" data-dismiss="modal">Fermer</button>
+                    <div class="row mt-2">
+                        <div class="container-fluid d-flex justify-content-end">
+                            <a id="externalLink" href="#" class="btn btn-primary mr-2"><i class="fa fa-external-link-alt"></i> Consulter le souscripteur</a>
+                            <button class="btn btn-secondary float-right" data-dismiss="modal">Fermer</button>
                         </div>
                     </div>
                 </div>

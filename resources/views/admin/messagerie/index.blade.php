@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4 text-right d-flex justify-content-end">
-                            <a href="{{ route('admin.messages.campagnes.avertissement') }}" class="btn btn-sm btn-danger"><i class="fa fa-exclamation-triangle"></i> Nouvelle campagne d'avertissement</a>
+                            <a href="{{ route('admin.messages.campagnes.avertissement') }}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Nouvelle campagne d'avertissement</a>
                         </div>
                     </div>
                 </div>

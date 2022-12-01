@@ -16,7 +16,7 @@ class MessagerieController extends Controller
         //     'destinataires' => '$faker->sentences()',
         //     // 'status' => 'pending',
         // ]);
-        $campagnes = Campagne::all();
+        $campagnes = [];// Campagne::all();
         return view('admin.messagerie.index', compact('campagnes'));
     }
 }

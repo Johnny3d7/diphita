@@ -206,18 +206,26 @@ class AdherentController extends Controller
         $annuelles = $adherent->cotisations_annuelles_dues();
         $exceptionnelles = $adherent->cotisations_exceptionnelles_dues();
 
+        $mntAn = $mntEx = 0;
+
         $result = new Collection();
         foreach($annuelles->merge($exceptionnelles) as $cotisation){
             $ahc = $adherent->psCotisation($cotisation);
+            $montant = $ahc->montant();
+            if($cotisation->annee_cotis) $mntAn += $montant;
+            if($cotisation->code_deces) $mntEx += $montant;
             $result->add([
                 'identifiant' => $cotisation->annee_cotis ?? $cotisation->code_deces,
                 'type' => $cotisation->type,
                 'nbre_benef' => $ahc->nbre_benef,
-                'montant' => $ahc->montant(),
+                'montant' => $montant,
             ]);
         }
 
-        return $result;
+        return [
+            'total' => ['annuel' => $mntAn, 'exceptionnel' => $mntEx],
+            'data' => $result
+        ];
     }
 
     public function getPersonnalMessage(Request $request) {
@@ -558,7 +566,7 @@ class AdherentController extends Controller
                 'conseiller_diph' => $request->souscript_conseiller,
             ]);
 
-            return redirect()->back()->with('message', 'Les informations ont été mises à jour avec succèss !')->with('type', 'bg-success');
+            return redirect()->route('admin.adhesion.show', $souscripteur->id)->with('message', 'Les informations ont été mises à jour avec succèss !')->with('type', 'bg-success');
         }
     }
 

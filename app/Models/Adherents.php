@@ -205,10 +205,15 @@ class Adherents extends Model
     }
 
     public static function avertir() {
+
+        return static::selectAll(true);
+        return static::selectAll(true)->only(['id', 'num_adhesion', 'nom', 'pnom']);
+
         $result = new Collection();
         foreach (static::selectAll(true) as $value) {
             if($value->ownCotisations->where('reglee', false)->first()){
                 $result->add([
+                    'id' => $value->id,
                     'num_adhesion' => $value->num_adhesion,
                     'nom' => $value->nom,
                     'pnom' => $value->pnom,
