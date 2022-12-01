@@ -129,7 +129,7 @@ Comme %Nom% %Prénoms% %MontantTotal% FCFA</textarea>
 
         function sendAjax({url, type = 'POST', data = {}, success = function(res){}, error = function(e){console.log(e)}, options = {}, api = false}){
             settings = { url: url, type: type, data: data, success: success, error: error}
-            if(api === true) $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
+            if(api != true) $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
             $.ajax({ ...settings, ...options });
         }
 
