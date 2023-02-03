@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\AdherentController;
+use App\Http\Controllers\CampagneController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\MessagerieController;
 use App\Http\Controllers\PDFController;
 use Database\Seeders\CotisationTableSeeder;
 use Illuminate\Support\Facades\Route;
@@ -235,6 +238,21 @@ Route::prefix('/admin')->namespace('App\Http\Controllers\Admin')->name('admin.')
 
     //Afficher les infos d'un souscripteur à partir du nom et prénom
     Route::get('get-sous-benef/{num_adhesion}', 'AjaxController@getSousBenef')->name('get-sous-benef.search');
+
+    // Routes de messages
+    Route::prefix('messagerie')->name('messages.')->group(function(){
+        Route::get('index', [MessagerieController::class, 'index'])->name('index');
+
+        Route::prefix('campagnes')->name('campagnes.')->group(function(){
+            Route::get('index', [CampagneController::class, 'index'])->name('index');
+            Route::get('avertissement', [CampagneController::class, 'avertissement'])->name('avertissement');
+            Route::post('avertissement', [CampagneController::class, 'avertissementPost'])->name('avertissementPost');
+        });
+
+        Route::prefix('messages')->name('messages.')->group(function(){
+            Route::get('index', [MessageController::class, 'index'])->name('index');
+        });
+    });
 
 });
 

@@ -1,13 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Cotisation;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class CotisationExceptController extends Controller
+class CampagneController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +13,7 @@ class CotisationExceptController extends Controller
      */
     public function index()
     {
-        // Cotisation::create(['date_butoire' => Carbon::create(2023, 01, 05, 0, 0, 0)]);
-        $cotisations = Cotisation::selectAll();
-        return view("admin.cotisation.exceptionnelles.index", compact('cotisations'));
+        return view('admin.messagerie.campagnes.index');
     }
 
     /**
@@ -29,6 +24,27 @@ class CotisationExceptController extends Controller
     public function create()
     {
         //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function avertissement()
+    {
+        return view('admin.messagerie.campagnes.avertissement');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function avertissementPost(Request $request)
+    {
+        dd($request->all());
     }
 
     /**
@@ -50,8 +66,7 @@ class CotisationExceptController extends Controller
      */
     public function show($id)
     {
-        $cotisation = Cotisation::whereCodeDeces($id)->first();
-        return view("admin.cotisation.exceptionnelles.show", compact('cotisation'));
+        //
     }
 
     /**
@@ -86,11 +101,5 @@ class CotisationExceptController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function publier($code){
-        $cotisation = Cotisation::whereCodeDeces($code)->first();
-        $cotisation->publier();
-        return back();
     }
 }

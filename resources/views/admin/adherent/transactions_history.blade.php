@@ -28,6 +28,11 @@
                     <div class="white_card_body">
                         <div class="card-body">
                             <div class="container-fluid">
+                                <h4 class="text-right">
+                                    <em class=""> Total cotisations </em> : <span class="">{{ number_format($souscripteur->reglements()->sum('montant'), 0, ',', ' ') }} F CFA</span>
+                                </h4>
+                            </div>
+                            <div class="container-fluid">
                                 <ul class="nav nav-pills nav-justified mb-3" id="pills-tab-transaction" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="pills-success-transaction-tab" data-toggle="pill" href="#pills-success-transaction" role="tab" aria-controls="pills-success-transaction" aria-selected="true">Cotisations</a>
@@ -58,7 +63,7 @@
                                                         <td>{{ ucwords((new Carbon\Carbon($reglement->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm')) }}</td>
                                                         <td>{{ $reglement->type }}</td>
                                                         <td>{{ $reglement->description }}</td>
-                                                        <td>{{ $reglement->montant }}</td>
+                                                        <td>{{ number_format($reglement->montant, 0, ',', ' ') }} F CFA</td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
@@ -84,7 +89,7 @@
                                                         <td>{{ ucwords((new Carbon\Carbon($versement->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm')) }}</td>
                                                         <td>{{ $versement->type ?? 'Versement' }}</td>
                                                         <td>{{ $versement->description }}</td>
-                                                        <td>{{ $versement->montant }}</td>
+                                                        <td>{{ number_format($versement->montant, 0, ',', ' ') }} F CFA</td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
@@ -110,7 +115,7 @@
                                                         <td>{{ ucwords((new Carbon\Carbon($transaction->created_at))->locale('fr')->isoFormat('DD MMM YYYY à HH:mm')) }}</td>
                                                         <td>{{ $transaction->type ?? 'Versement' }}</td>
                                                         <td>{{ $transaction->description }}</td>
-                                                        <td>{{ $transaction->montant }}</td>
+                                                        <td>{{ number_format($transaction->montant, 0, ',', ' ') }} F CFA</td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
