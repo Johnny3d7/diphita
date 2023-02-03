@@ -29,14 +29,14 @@
             @foreach ($cotisations->sortByDesc('year') as $key => $cotisation)
                 @php $year = $cotisation['year'] @endphp
                 <li class="nav-item">
-                    <a class="nav-link {{ $year == date_format(date_create(), 'Y') ? 'active' : '' }}" id="pills-{{ $year }}-tab" data-toggle="pill" href="#pills-{{ $year }}" role="tab" aria-controls="pills-{{ $year }}" aria-selected="true">{{ $year }}</a>
+                    <a class="nav-link {{ $year == date_format(Carbon\Carbon::now()->addMonth(), 'Y') ? 'active' : '' }}" id="pills-{{ $year }}-tab" data-toggle="pill" href="#pills-{{ $year }}" role="tab" aria-controls="pills-{{ $year }}" aria-selected="true">{{ $year }}</a>
                 </li>
             @endforeach
         </ul>
         <div class="tab-content" id="pills-tabContent">
             @forelse ($cotisations as $key => $cots)
                 @php $year = $cots['year']; $cotis = $cots['cotisations'];@endphp
-                <div class="tab-pane fade {{ $year == date_format(date_create(), 'Y') ? 'show active' : '' }}" id="pills-{{ $year }}" role="tabpanel" aria-labelledby="pills-{{ $year }}-tab">
+                <div class="tab-pane fade {{ $year == date_format(Carbon\Carbon::now()->addMonth(), 'Y') ? 'show active' : '' }}" id="pills-{{ $year }}" role="tabpanel" aria-labelledby="pills-{{ $year }}-tab">
                     <div class="row">
                         @foreach ($cotis->sortByDesc('id') as $cotisation)
                             <div class="col-lg-3 col-md-4 col-sm-6">

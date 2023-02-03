@@ -35,8 +35,10 @@ class Cotisation extends Model
             $item->montant = $item->type == "exceptionnelle" ? Parameters::cotisationExceptionnelle() : Parameters::cotisationAnnuelle();
 
             // if this month or this year => parcouru : false
-            if($item->type != "exceptionnelle" && $item->annee_cotis < Carbon::now()->year) $item->parcouru = true;
-            if($item->type == "exceptionnelle" && Carbon::create($item->date_annonce) < Carbon::create(Carbon::now()->year, Carbon::now()->month, 5)) $item->parcouru = true;
+            /*
+                if($item->type != "exceptionnelle" && $item->annee_cotis < Carbon::now()->year) $item->parcouru = true;
+                if($item->type == "exceptionnelle" && Carbon::create($item->date_annonce) < Carbon::create(Carbon::now()->year, Carbon::now()->month, 5)) $item->parcouru = true;
+            */
         });
 
         static::created(function($item) {
@@ -199,12 +201,12 @@ class Cotisation extends Model
         ]);
 
         if($this->type == 'annuelle'){
-            Cotisation::create(['annee_cotis' => $this->annee_cotis + 1]);
+            if(!Cotisation::whereAnneeCotis($this->annee_cotis + 1)->first()) Cotisation::create(['annee_cotis' => $this->annee_cotis + 1]);
         }
 
         if($this->type == 'exceptionnelle'){
             $date_butoire = Carbon::create($this->date_butoire);
-            Cotisation::create(['date_butoire' => $date_butoire->addMonth(1)]);
+            if(!Cotisation::whereDateButoire($date_butoire->copy()->addMonth(1))->first()) Cotisation::create(['date_butoire' => $date_butoire->copy()->addMonth(1)]);
         }
     }
 }

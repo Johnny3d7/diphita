@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cotisation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CotisationExceptController extends Controller
@@ -15,6 +16,7 @@ class CotisationExceptController extends Controller
      */
     public function index()
     {
+        // Cotisation::create(['date_butoire' => Carbon::create(2023, 01, 05, 0, 0, 0)]);
         $cotisations = Cotisation::selectAll();
         return view("admin.cotisation.exceptionnelles.index", compact('cotisations'));
     }

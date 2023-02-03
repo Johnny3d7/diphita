@@ -16,6 +16,8 @@ class MessagerieController extends Controller
         //     'destinataires' => '$faker->sentences()',
         //     // 'status' => 'pending',
         // ]);
+        return redirect()->route('admin.messages.campagnes.avertissement');
+
         $campagnes = [];// Campagne::all();
         return view('admin.messagerie.index', compact('campagnes'));
     }
