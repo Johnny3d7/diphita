@@ -67,8 +67,8 @@
     <script>
         $(document).ready(function () {
             // $('.nav-link:first()').click();
-            $("").dataTable({
-            });
+            // $("").dataTable({
+            // });
         });
     </script>
 @endsection

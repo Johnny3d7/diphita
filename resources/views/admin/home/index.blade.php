@@ -30,11 +30,11 @@
                         </div>
                     </div>
                     <div class="col-lg-4 text-right d-flex justify-content-end">
-                        <select class="nice_Select2 max-width-220" >
+                        {{-- <select class="nice_Select2 max-width-220" >
                             <option value="1">Show by month</option>
                             <option value="1">Show by year</option>
                             <option value="1">Show by day</option>
-                        </select>
+                        </select> --}}
                     </div>
                 </div>
             </div>
@@ -58,11 +58,11 @@
                         </div>
                     </div>
                     <div class="col-lg-4 text-right d-flex justify-content-end">
-                        <select class="nice_Select2 max-width-220" >
+                        {{-- <select class="nice_Select2 max-width-220" >
                             <option value="1">Show by month</option>
                             <option value="1">Show by year</option>
                             <option value="1">Show by day</option>
-                        </select>
+                        </select> --}}
                     </div>
                 </div>
             </div>
@@ -287,18 +287,32 @@
                     <div class="col-lg-8">
                         <div class="row justify-content-end">
                             <div class="col-lg-8 d-flex justify-content-end">
-                                <select class="nice_Select2 wide" >
+                                {{-- <select class="nice_Select2 wide" >
                                     <option value="1">Show by All</option>
                                     <option value="1">Show by A</option>
                                     <option value="1">Show by B</option>
-                                </select>
+                                </select> --}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="white_card_body">
-                <div class="apex-chart"></div>
+            <div class="white_card_body text-center">
+                {{-- <div class="apex-chart"></div> --}}
+                <div class="loader--grid colord_bg_3 mb_30">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <h4 class="text-primary">
+                    Bientôt disponible !
+                </h4>
             </div>
         </div>
     </div>
@@ -314,18 +328,32 @@
                     <div class="col-lg-8">
                         <div class="row justify-content-end">
                             <div class="col-lg-8 d-flex justify-content-end">
-                                <select class="nice_Select2 wide" >
+                                {{-- <select class="nice_Select2 wide" >
                                     <option value="1">Show by All</option>
                                     <option value="1">Show by A</option>
                                     <option value="1">Show by B</option>
-                                </select>
+                                </select> --}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="white_card_body ">
-                <div class="apex-chart" data-series='["Annuelles", "Exceptionnelles"]'></div>
+            <div class="white_card_body text-center">
+                {{-- <div class="apex-chart" data-series='["Annuelles", "Exceptionnelles"]'></div> --}}
+                <div class="loader--grid colord_bg_3 mb_30">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <h4 class="text-primary">
+                    Bientôt disponible !
+                </h4>
             </div>
         </div>
     </div>

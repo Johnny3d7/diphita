@@ -70,8 +70,8 @@ class SouscripteursImport implements ToCollection, WithHeadingRow
                     'num_adhesion' => 'required|unique:adherents',
                     'civilite' => 'required',
                     'nom' => 'required',
-                    'num_cni' => 'required|unique:adherents',
-                    'contact' => 'required',
+                    // 'num_cni' => 'required|unique:adherents',
+                    // 'contact' => 'required',
                 ],[
                     "num_adhesion.required" => "Veuillez entrer l'ID souscripteur",
                     "num_adhesion.unique" => "Un souscripteur possède déjà cet id",
